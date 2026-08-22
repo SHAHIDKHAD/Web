@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GalaxyMC — Final Goodbye</title>
+<!-- Favicon -->
+<link rel="icon" type="image/webp" href="https://ik.imagekit.io/td6lavsbp/1458361061257380009.webp">
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+<style>
+/* ============================================
+   GALAXYMC — SHUTDOWN THEME (AQUA & GREY COMPACT)
+============================================ */
+
+:root {
+  --theme-bg-dark:   #080c14; 
+  --theme-bg-mid:    #111827; 
+  --theme-bg-light:  #1e293b; 
+  --theme-aqua:      #00e5ff;
+  --theme-aqua-dark: #008ba3;
+  --theme-gold:      #ffd700;
+  --theme-gold-dark: #b8860b;
+  --mc-redstone:     #ff1744;
+  --text-main:       #f8fafc;
+  --text-muted:      #94a3b8;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: 'Press Start 2P', monospace;
+  background: var(--theme-bg-dark);
+  color: var(--text-main);
+  font-size: 12px; 
+  line-height: 2;
+  overflow-x: hidden;
+  image-rendering: pixelated;
+  background: linear-gradient(-45deg, #05080f, #0a1120, #080c14, #0f172a);
+  background-size: 400% 400%;
+  animation: bgGradient 20s ease infinite;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+@keyframes bgGradient {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+header {
+  background: rgba(17, 24, 39, 0.95);
+  border-bottom: 4px solid var(--mc-redstone);
+  padding: 20px 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.inline-logo { height: 28px; width: auto; margin-right: 14px; image-rendering: pixelated; filter: drop-shadow(2px 2px 0 #000); }
+.nav-logo { font-size: 16px; color: var(--theme-gold); text-shadow: 2px 2px 0 var(--theme-gold-dark), 4px 4px 0 #000; letter-spacing: 2px; display: flex; align-items: center; }
+
+.site-wrapper { position: relative; z-index: 1; padding: 40px 20px; flex-grow: 1; display: flex; align-items: center; justify-content: center; }
+
+.hero { max-width: 800px; width: 100%; position: relative; overflow: hidden; padding: 60px 20px; text-align: center; background: linear-gradient(to bottom, rgba(8, 12, 20, 0.85), rgba(8, 12, 20, 0.98)); border: 4px solid #000; outline: 4px solid #000; box-shadow: 0 0 30px rgba(255, 23, 68, 0.15); }
+.hero-logo-img { height: 90px; margin-bottom: 20px; filter: grayscale(80%) drop-shadow(4px 4px 0 #000); }
+.hero-title { font-size: clamp(20px, 4vw, 36px); color: var(--mc-redstone); text-shadow: 4px 4px 0 #000; margin-bottom: 12px; letter-spacing: 4px; }
+.hero-sub { font-size: 10px; color: var(--text-muted); margin-bottom: 40px; letter-spacing: 1px; text-transform: uppercase; }
+
+.mc-card { background: linear-gradient(to bottom, var(--theme-bg-light), var(--theme-bg-mid)); border-top: 3px solid rgba(255,255,255,0.05); border-left: 3px solid rgba(255,255,255,0.05); border-bottom: 3px solid #000; border-right: 3px solid #000; outline: 4px solid #000; padding: 28px; margin: 0 auto; text-align: left; max-width: 650px; }
+.card-title { font-size: 12px; color: var(--theme-gold); text-shadow: 2px 2px 0 #000; margin-bottom: 20px; padding-bottom: 14px; border-bottom: 2px solid var(--mc-redstone); letter-spacing: 1px; }
+.card-body { font-size: 11px; color: var(--text-muted); line-height: 2.2; }
+.hl-aqua { color: var(--theme-aqua); }
+.hl-red { color: var(--mc-redstone); text-shadow: 1px 1px 0 #000; }
+
+footer { background: #05080f; border-top: 4px solid var(--mc-redstone); padding: 24px; text-align: center; }
+.footer-copy { font-size: 8px; color: #475569; letter-spacing: 1px; }
+
+@media (max-width: 600px) {
+  .hero { padding: 40px 16px; }
+  .hero-logo-img { height: 70px; }
+  .hero-title { font-size: 18px; }
+  .mc-card { padding: 20px; }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="nav-logo">
+    <img src="https://ik.imagekit.io/td6lavsbp/1458361061257380009.webp" alt="GalaxyMC Logo" class="inline-logo">
+    GalaxyMC
+  </div>
+</header>
+
+<div class="site-wrapper">
+  <div class="hero">
+    <img src="https://ik.imagekit.io/td6lavsbp/1458361061257380009.webp" alt="GalaxyMC Logo" class="hero-logo-img">
+    <h1 class="hero-title">✦ GALAXYMC SHUTDOWN ✦</h1>
+    <p class="hero-sub">The Journey Has Come To An End</p>
+
+    <div class="mc-card">
+      <div class="card-title">🚨 Official Announcement</div>
+      <div class="card-body">
+        GalaxyMC has been officially <span class="hl-red">SHUT DOWN</span> on <span class="hl-aqua">30th June 2025</span>.<br><br>
+        We want to give a massive thank you to our amazing community, active staff members, and everyone who supported us throughout this incredible journey. The memories we built together in this galaxy will always be cherished.<br><br>
+        <strong>Thank you for being a part of India's classic survival journey!</strong>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <div class="footer-bottom">
+    <div class="footer-copy">© GalaxyMC — Final Farewell (Closed 2025)</div>
+  </div>
+</footer>
+
+</body>
+</html>
