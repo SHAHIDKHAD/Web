@@ -3,16 +3,18 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>GalaxyMC — Final Goodbye</title>
+<title>GalaxyMC — Survival Server</title>
 <!-- Favicon -->
 <link rel="icon" type="image/webp" href="https://ik.imagekit.io/td6lavsbp/1458361061257380009.webp">
 <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
 <style>
 /* ============================================
-   GALAXYMC — SHUTDOWN THEME (AQUA & GREY COMPACT)
+   GALAXYMC — AQUA & GREY PREMIUM THEME
+   Mobile-Optimized & Compact Desktop
 ============================================ */
 
 :root {
+  /* Core Theme Colors */
   --theme-bg-dark:   #080c14; 
   --theme-bg-mid:    #111827; 
   --theme-bg-light:  #1e293b; 
@@ -20,12 +22,22 @@
   --theme-aqua-dark: #008ba3;
   --theme-gold:      #ffd700;
   --theme-gold-dark: #b8860b;
-  --mc-redstone:     #ff1744;
-  --text-main:       #f8fafc;
-  --text-muted:      #94a3b8;
+  
+  /* Standard MC Colors */
+  --mc-grass:    #4caf50;
+  --mc-grass2:   #2e7d32;
+  --mc-lava:     #ff6600;
+  --mc-redstone: #ff1744;
+  --mc-emerald:  #00e676;
+  --mc-amethyst: #ce93d8;
+  
+  /* Text Colors */
+  --text-main:   #f8fafc;
+  --text-muted:  #94a3b8;
 }
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
 
 body {
   font-family: 'Press Start 2P', monospace;
@@ -38,11 +50,8 @@ body {
   background: linear-gradient(-45deg, #05080f, #0a1120, #080c14, #0f172a);
   background-size: 400% 400%;
   animation: bgGradient 20s ease infinite;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
 }
+body.modal-open { overflow: hidden; }
 
 @keyframes bgGradient {
   0% { background-position: 0% 50%; }
@@ -50,73 +59,845 @@ body {
   100% { background-position: 0% 50%; }
 }
 
+/* ============================================
+   ANIMATED CANVAS BACKGROUND
+============================================ */
+#bg-canvas { position: fixed; inset: 0; z-index: 0; pointer-events: none; opacity: 0.6; }
+
+/* ============================================
+   SCROLLBAR
+============================================ */
+::-webkit-scrollbar { width: 14px; }
+::-webkit-scrollbar-track { background: var(--theme-bg-dark); }
+::-webkit-scrollbar-thumb { background: var(--theme-bg-light); border: 3px solid var(--theme-bg-dark); }
+::-webkit-scrollbar-thumb:hover { background: var(--theme-aqua-dark); }
+
+/* ============================================
+   HEADER / NAV
+============================================ */
 header {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 200;
   background: rgba(17, 24, 39, 0.95);
-  border-bottom: 4px solid var(--mc-redstone);
-  padding: 20px 32px;
+  backdrop-filter: blur(8px);
+  border-bottom: 4px solid var(--theme-aqua);
+  box-shadow: 0 4px 0 rgba(0,0,0,0.5), 0 8px 30px rgba(0, 229, 255, 0.15);
+  padding: 0 32px;
+  height: 70px;
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: space-between;
 }
 
 .inline-logo { height: 28px; width: auto; margin-right: 14px; image-rendering: pixelated; filter: drop-shadow(2px 2px 0 #000); }
-.nav-logo { font-size: 16px; color: var(--theme-gold); text-shadow: 2px 2px 0 var(--theme-gold-dark), 4px 4px 0 #000; letter-spacing: 2px; display: flex; align-items: center; }
+.nav-logo { font-size: 16px; color: var(--theme-gold); text-shadow: 2px 2px 0 var(--theme-gold-dark), 4px 4px 0 #000; letter-spacing: 2px; animation: logoPulse 3s ease-in-out infinite; white-space: nowrap; display: flex; align-items: center; }
 
-.site-wrapper { position: relative; z-index: 1; padding: 40px 20px; flex-grow: 1; display: flex; align-items: center; justify-content: center; }
+@keyframes logoPulse {
+  0%,100% { text-shadow: 2px 2px 0 var(--theme-gold-dark), 4px 4px 0 #000, 0 0 15px rgba(255,215,0,0.3); }
+  50% { text-shadow: 2px 2px 0 var(--theme-gold-dark), 4px 4px 0 #000, 0 0 25px rgba(0,229,255,0.6); }
+}
 
-.hero { max-width: 800px; width: 100%; position: relative; overflow: hidden; padding: 60px 20px; text-align: center; background: linear-gradient(to bottom, rgba(8, 12, 20, 0.85), rgba(8, 12, 20, 0.98)); border: 4px solid #000; outline: 4px solid #000; box-shadow: 0 0 30px rgba(255, 23, 68, 0.15); }
-.hero-logo-img { height: 90px; margin-bottom: 20px; filter: grayscale(80%) drop-shadow(4px 4px 0 #000); }
-.hero-title { font-size: clamp(20px, 4vw, 36px); color: var(--mc-redstone); text-shadow: 4px 4px 0 #000; margin-bottom: 12px; letter-spacing: 4px; }
-.hero-sub { font-size: 10px; color: var(--text-muted); margin-bottom: 40px; letter-spacing: 1px; text-transform: uppercase; }
+nav { display: flex; gap: 8px; align-items: center; }
+.nav-btn { font-family: 'Press Start 2P', monospace; font-size: 10px; color: var(--text-muted); background: var(--theme-bg-mid); border: none; border-top: 2px solid var(--theme-bg-light); border-left: 2px solid var(--theme-bg-light); border-bottom: 2px solid #000; border-right: 2px solid #000; padding: 12px 16px; cursor: pointer; text-transform: uppercase; letter-spacing: 1px; transition: all 0.2s ease; outline: 2px solid #000; flex-shrink: 0; }
+.nav-btn:hover { color: var(--theme-aqua); background: var(--theme-bg-light); transform: translateY(-2px); box-shadow: 0 4px 10px rgba(0, 229, 255, 0.2); }
+.nav-btn.active { color: var(--theme-aqua); background: var(--theme-bg-dark); border-top: 2px solid #000; border-left: 2px solid #000; border-bottom: 2px solid var(--theme-aqua-dark); border-right: 2px solid var(--theme-aqua-dark); box-shadow: inset 0 0 10px rgba(0,0,0,0.5); }
 
-.mc-card { background: linear-gradient(to bottom, var(--theme-bg-light), var(--theme-bg-mid)); border-top: 3px solid rgba(255,255,255,0.05); border-left: 3px solid rgba(255,255,255,0.05); border-bottom: 3px solid #000; border-right: 3px solid #000; outline: 4px solid #000; padding: 28px; margin: 0 auto; text-align: left; max-width: 650px; }
-.card-title { font-size: 12px; color: var(--theme-gold); text-shadow: 2px 2px 0 #000; margin-bottom: 20px; padding-bottom: 14px; border-bottom: 2px solid var(--mc-redstone); letter-spacing: 1px; }
+/* ============================================
+   MAIN LAYOUT & TABS
+============================================ */
+.site-wrapper { position: relative; z-index: 1; padding-top: 70px; min-height: 100vh; }
+.tab-page { display: none; opacity: 0; min-height: calc(100vh - 70px); animation: fadeIn 0.5s forwards; }
+.tab-page.active { display: block; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+/* ============================================
+   HERO SECTION
+============================================ */
+.hero { position: relative; overflow: hidden; padding: 80px 20px 60px; text-align: center; background: linear-gradient(to bottom, rgba(8, 12, 20, 0.7), rgba(8, 12, 20, 0.95)), repeating-linear-gradient(45deg, transparent, transparent 31px, rgba(0, 229, 255, 0.02) 32px); border-bottom: 4px solid #000; }
+.hero-trim { position: absolute; bottom: 0; left: 0; right: 0; height: 16px; background: repeating-linear-gradient(90deg, var(--theme-aqua-dark) 0px, var(--theme-aqua-dark) 16px, var(--theme-aqua) 16px, var(--theme-aqua) 32px); border-top: 4px solid #000; opacity: 0.8; }
+.hero-logo-img { height: 90px; margin-bottom: 20px; animation: floatLogo 4s ease-in-out infinite; filter: drop-shadow(4px 4px 0 #000) drop-shadow(0 0 30px rgba(0, 229, 255, 0.4)); }
+@keyframes floatLogo { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-15px); } }
+.hero-title { font-size: clamp(24px, 5vw, 48px); color: var(--theme-gold); text-shadow: 4px 4px 0 var(--theme-gold-dark), 8px 8px 0 #000; margin-bottom: 12px; letter-spacing: 4px; }
+.hero-sub { font-size: 11px; color: var(--theme-aqua); text-shadow: 2px 2px 0 #000, 0 0 10px rgba(0, 229, 255, 0.5); margin-bottom: 40px; letter-spacing: 2px; text-transform: uppercase; }
+
+/* STATUS CARDS - Desktop & Mobile Grid */
+.status-row { 
+  display: grid; 
+  grid-template-columns: repeat(4, 1fr); 
+  gap: 16px; 
+  max-width: 900px; 
+  margin: 0 auto 40px auto; 
+}
+.stat-block { background: linear-gradient(to bottom, var(--theme-bg-light), var(--theme-bg-mid)); border-top: 3px solid rgba(255,255,255,0.1); border-left: 3px solid rgba(255,255,255,0.1); border-bottom: 3px solid #000; border-right: 3px solid #000; outline: 3px solid #000; padding: 16px 20px; text-align: center; transition: transform 0.2s, box-shadow 0.2s; cursor: default; }
+.stat-block:hover { transform: translateY(-4px); border-top-color: var(--theme-aqua); border-left-color: var(--theme-aqua); box-shadow: 0 10px 20px rgba(0, 229, 255, 0.15); }
+.stat-label { font-size: 8px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; display: block; }
+.stat-value { font-size: 14px; color: var(--theme-aqua); text-shadow: 2px 2px 0 #000, 0 0 10px rgba(0,229,255,0.4); }
+.stat-value.green { color: var(--mc-emerald); text-shadow: 2px 2px 0 #000, 0 0 10px rgba(0,230,118,0.4); }
+.stat-value.red { color: var(--mc-redstone); text-shadow: 2px 2px 0 #000, 0 0 10px rgba(255,23,68,0.4); }
+
+.hero-btns { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
+
+/* ============================================
+   MC BUTTONS
+============================================ */
+.mc-btn { font-family: 'Press Start 2P', monospace; font-size: 10px; letter-spacing: 1px; padding: 14px 24px; cursor: pointer; text-transform: uppercase; border: none; outline: 3px solid #000; transition: all 0.2s ease; position: relative; color: #fff; text-shadow: 2px 2px 0 #000; box-shadow: 0 6px 0 #000; }
+.mc-btn:active { transform: translateY(4px); box-shadow: 0 2px 0 #000; }
+.mc-btn.aqua { background: linear-gradient(to bottom, #00b8d4, #006064); border-top: 3px solid #00e5ff; border-left: 3px solid #00e5ff; border-bottom: 3px solid #00363a; border-right: 3px solid #00363a; }
+.mc-btn.aqua:hover { filter: brightness(1.2); box-shadow: 0 6px 0 #000, 0 0 20px rgba(0,229,255,0.4); }
+.mc-btn.green { background: linear-gradient(to bottom, #5cb85c, #3d8b3d); border-top: 3px solid #7fd07f; border-left: 3px solid #7fd07f; border-bottom: 3px solid #1a5e1a; border-right: 3px solid #1a5e1a; }
+.mc-btn.green:hover { filter: brightness(1.2); box-shadow: 0 6px 0 #000, 0 0 20px rgba(92,184,92,0.4);}
+.mc-btn.gold { background: linear-gradient(to bottom, #d4a017, #8b6914); border-top: 3px solid #ffd700; border-left: 3px solid #ffd700; border-bottom: 3px solid #5c4510; border-right: 3px solid #5c4510; }
+.mc-btn.gold:hover { filter: brightness(1.2); box-shadow: 0 6px 0 #000, 0 0 20px rgba(255,215,0,0.4);}
+.mc-btn.red { background: linear-gradient(to bottom, #c0392b, #7b241c); border-top: 3px solid #e74c3c; border-left: 3px solid #e74c3c; border-bottom: 3px solid #4a1209; border-right: 3px solid #4a1209; }
+.mc-btn.red:hover { filter: brightness(1.2); box-shadow: 0 6px 0 #000, 0 0 20px rgba(231,76,60,0.4);}
+.mc-btn.purple { background: linear-gradient(to bottom, #9c27b0, #4a148c); border-top: 3px solid #ce93d8; border-left: 3px solid #ce93d8; border-bottom: 3px solid #1a0033; border-right: 3px solid #1a0033; }
+.mc-btn.purple:hover { filter: brightness(1.2); box-shadow: 0 6px 0 #000, 0 0 20px rgba(206,147,216,0.4);}
+
+/* ============================================
+   PAGE SECTIONS & GRIDS (COMPACT DESKTOP)
+============================================ */
+.page-body { max-width: 1100px; /* Made compact for readability */ margin: 0 auto; padding: 50px 20px 80px; }
+.grid-2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 24px; margin-bottom: 32px; }
+
+/* MC CARD */
+.mc-card { background: linear-gradient(to bottom, var(--theme-bg-light), var(--theme-bg-mid)); border-top: 3px solid rgba(255,255,255,0.1); border-left: 3px solid rgba(255,255,255,0.1); border-bottom: 3px solid #000; border-right: 3px solid #000; outline: 4px solid #000; padding: 28px; transition: transform 0.2s, box-shadow 0.2s; }
+.mc-card:hover { transform: translateY(-4px); box-shadow: 0 12px 24px rgba(0,0,0,0.6); border-top-color: rgba(0, 229, 255, 0.3); border-left-color: rgba(0, 229, 255, 0.3); }
+.card-title { font-size: 13px; color: var(--theme-gold); text-shadow: 2px 2px 0 #000; margin-bottom: 20px; padding-bottom: 14px; border-bottom: 2px solid #000; border-bottom-color: var(--theme-aqua-dark); letter-spacing: 1px; display: flex; align-items: center; gap: 12px; }
 .card-body { font-size: 11px; color: var(--text-muted); line-height: 2.2; }
-.hl-aqua { color: var(--theme-aqua); }
-.hl-red { color: var(--mc-redstone); text-shadow: 1px 1px 0 #000; }
+.card-body strong { color: var(--text-main); }
+.hl-aqua { color: var(--theme-aqua); text-shadow: 1px 1px 0 #000; }
+.hl-green { color: var(--mc-emerald); text-shadow: 1px 1px 0 #000; }
+.hl-gold { color: var(--theme-gold); text-shadow: 1px 1px 0 #000; }
+.hl-purple { color: var(--mc-amethyst); text-shadow: 1px 1px 0 #000; }
 
-footer { background: #05080f; border-top: 4px solid var(--mc-redstone); padding: 24px; text-align: center; }
-.footer-copy { font-size: 8px; color: #475569; letter-spacing: 1px; }
+.feature-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 16px; }
+.feature-box { background: rgba(0, 0, 0, 0.2); padding: 14px; border-left: 3px solid var(--theme-aqua-dark); outline: 1px solid #000; transition: all 0.2s; }
+.feature-box:hover { background: rgba(0, 229, 255, 0.05); border-left-color: var(--theme-aqua); transform: translateX(4px); }
+.feature-sub { font-size: 8px; color: #64748b; margin-top: 8px; display: block; line-height: 1.6; }
+
+.gm-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; }
+.gm-box { padding: 14px 18px; outline: 2px solid #000; transition: transform 0.2s, box-shadow 0.2s; background: rgba(0,0,0,0.3); }
+.gm-box:hover { transform: scale(1.03); box-shadow: 0 8px 16px rgba(0,0,0,0.5); }
+.gm-surv { border-left: 4px solid var(--mc-emerald); }
+.gm-life { border-left: 4px solid var(--mc-redstone); }
+.gm-pvp { border-left: 4px solid var(--mc-lava); }
+.gm-bed { border-left: 4px solid var(--theme-aqua); }
+.gm-title { font-size: 10px; }
+
+/* ============================================
+   SHOP / STORE / VOTE GRID
+============================================ */
+.shop-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 20px; }
+.shop-card { background: linear-gradient(to bottom, var(--theme-bg-mid), var(--theme-bg-dark)); border-top: 3px solid rgba(255,255,255,0.1); border-left: 3px solid rgba(255,255,255,0.1); border-bottom: 3px solid #000; border-right: 3px solid #000; outline: 3px solid #000; padding: 24px 20px; text-align: center; transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); display: flex; flex-direction: column; }
+.shop-card:hover { transform: translateY(-8px) scale(1.02); border-top-color: var(--theme-aqua); box-shadow: 0 15px 30px rgba(0,0,0,0.6), 0 0 15px rgba(0,229,255,0.2); }
+.shop-icon { font-size: 36px; margin-bottom: 14px; display: block; filter: drop-shadow(2px 2px 0 #000); }
+.shop-name { font-size: 11px; color: var(--theme-gold); text-shadow: 2px 2px 0 #000; margin-bottom: 10px; letter-spacing: 1px;}
+.shop-desc { font-size: 9px; color: var(--text-muted); line-height: 2; margin-bottom: 20px; flex-grow: 1; }
+
+/* ============================================
+   MODAL / POPUP STYLES
+============================================ */
+.modal-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0, 0, 0, 0.85); backdrop-filter: blur(5px); z-index: 999; display: flex; align-items: center; justify-content: center; opacity: 0; pointer-events: none; transition: opacity 0.3s ease; padding: 20px; }
+.modal-overlay.active { opacity: 1; pointer-events: auto; }
+.modal-content { background: linear-gradient(to bottom, #1e293b, #0f172a); border: 4px solid var(--theme-aqua); box-shadow: 0 0 40px rgba(0, 229, 255, 0.2), inset 0 0 20px rgba(0,0,0,0.8); width: 100%; max-width: 800px; max-height: 90vh; overflow-y: auto; position: relative; transform: translateY(20px); transition: transform 0.3s ease; padding: 0; }
+.modal-overlay.active .modal-content { transform: translateY(0); }
+.modal-header { background: #080c14; padding: 20px; border-bottom: 3px solid var(--theme-aqua-dark); display: flex; justify-content: space-between; align-items: center; }
+.modal-title { font-size: 14px; color: var(--theme-gold); text-shadow: 2px 2px 0 #000; }
+.close-btn { font-size: 24px; color: var(--theme-red); cursor: pointer; text-shadow: 2px 2px 0 #000; transition: color 0.2s; }
+.close-btn:hover { color: #ff1744; }
+.modal-body { padding: 24px; text-align: center; }
+.modal-kit-img { width: 100%; max-width: 400px; display: block; margin: 0 auto 24px auto; border: 3px solid #334155; border-radius: 4px; box-shadow: 0 8px 25px rgba(0,0,0,0.5); image-rendering: pixelated; }
+.modal-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-bottom: 24px; text-align: left; }
+@media (max-width: 600px) { .modal-grid { grid-template-columns: 1fr; } }
+.rank-list { list-style: none; padding: 0; margin: 0; }
+.rank-list li { font-size: 9px; color: var(--text-muted); margin-bottom: 12px; padding-left: 20px; position: relative; line-height: 1.8; }
+.rank-list li::before { content: '•'; position: absolute; left: 0; color: var(--theme-aqua); font-size: 14px; }
+.rank-list code { background: rgba(0,0,0,0.4); padding: 4px 6px; color: #a78bfa; border: 1px solid #334155; font-family: monospace; }
+.modal-footer { background: rgba(0,0,0,0.3); padding: 20px 24px; border-top: 2px solid #334155; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; }
+.price-tag { font-size: 10px; color: var(--text-main); line-height: 2; text-align: left; }
+.price-tag span { color: var(--mc-emerald); font-size: 11px; }
+
+/* ============================================
+   SECTION DIVIDER & PAGE BANNER
+============================================ */
+.mc-divider { height: 6px; background: var(--theme-aqua-dark); border-top: 2px solid #000; border-bottom: 2px solid #000; margin: 0; box-shadow: 0 0 10px rgba(0,229,255,0.2); }
+.page-banner { background: linear-gradient(to right, rgba(8,12,20,0.9), rgba(17,24,39,0.7), rgba(8,12,20,0.9)), repeating-linear-gradient(45deg, rgba(0,229,255,0.03) 0px, rgba(0,229,255,0.03) 4px, transparent 4px, transparent 32px); border-bottom: 4px solid #000; border-top: 4px solid #000; padding: 32px 20px; text-align: center; margin-bottom: 0; }
+.page-banner h2 { font-size: 20px; color: var(--theme-aqua); text-shadow: 3px 3px 0 #000; letter-spacing: 4px; margin-bottom: 10px;}
+.page-banner p { font-size: 9px; color: var(--text-muted); letter-spacing: 1px; }
+
+/* ============================================
+   MISC UTILITIES
+============================================ */
+.mb24 { margin-bottom: 24px; }
+.mt24 { margin-top: 24px; }
+.badge { display: inline-block; font-size: 8px; padding: 6px 10px; outline: 2px solid #000; text-shadow: 1px 1px 0 #000; letter-spacing: 1px; }
+.badge.green { background: var(--mc-grass2); color: #fff; }
+.badge.blue { background: var(--theme-aqua-dark); color: #fff; }
+.pinned-note { border-left: 4px solid var(--theme-gold); padding: 14px 16px; margin-bottom: 16px; background: rgba(255,215,0,0.05); font-size: 10px; }
+.pinned-note.aqua-border { border-left-color: var(--theme-aqua); background: rgba(0,229,255,0.05); }
+.rules-list { list-style-type: none; padding: 0; margin: 0; line-height: 2.8; font-size: 10px; }
+.rules-list li::before { content: "» "; color: var(--theme-aqua); font-size: 12px; }
+
+/* ============================================
+   FOOTER
+============================================ */
+footer { position: relative; z-index: 1; background: #05080f; border-top: 4px solid var(--theme-aqua); padding: 50px 24px 32px; }
+.footer-inner { max-width: 1100px; margin: 0 auto; display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 40px; margin-bottom: 40px; }
+.footer-logo { font-size: 16px; color: var(--theme-gold); text-shadow: 2px 2px 0 var(--theme-gold-dark), 4px 4px 0 #000; margin-bottom: 16px; letter-spacing: 2px; display: flex; align-items: center; }
+.footer-desc { font-size: 9px; color: #64748b; line-height: 2.2; max-width: 280px; }
+.footer-heading { font-size: 10px; color: var(--theme-aqua); text-shadow: 2px 2px 0 #000; margin-bottom: 16px; letter-spacing: 1px; }
+.footer-links { list-style: none; }
+.footer-links li { margin-bottom: 12px; }
+.footer-links a { font-size: 9px; color: #94a3b8; text-decoration: none; cursor: pointer; transition: color 0.2s; letter-spacing: 1px; }
+.footer-links a:hover { color: var(--theme-gold); text-shadow: 1px 1px 0 #000;}
+.footer-bottom { max-width: 1100px; margin: 0 auto; padding-top: 20px; border-top: 2px solid #111827; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; }
+.footer-copy, .footer-ip { font-size: 8px; color: #475569; letter-spacing: 1px; }
+
+/* ============================================
+   TOAST
+============================================ */
+.toast { position: fixed; bottom: 40px; left: 50%; transform: translateX(-50%) translateY(20px); background: var(--theme-bg-light); border: 2px solid var(--theme-aqua); color: var(--text-main); font-size: 10px; letter-spacing: 1px; padding: 14px 28px; z-index: 9999; opacity: 0; transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55); white-space: nowrap; box-shadow: 0 10px 30px rgba(0,0,0,0.8); pointer-events: none; }
+.toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+/* ============================================
+   MOBILE OPTIMIZATION (THE MAGIC FIX)
+============================================ */
+@media (max-width: 800px) {
+  /* 2x2 Grid for status cards on tablet/mobile */
+  .status-row { grid-template-columns: repeat(2, 1fr); gap: 12px; }
+  .grid-2 { grid-template-columns: 1fr; }
+  .footer-inner { grid-template-columns: 1fr 1fr; gap: 24px; }
+}
 
 @media (max-width: 600px) {
-  .hero { padding: 40px 16px; }
+  /* Restructure Header for Mobile */
+  header { 
+    flex-direction: column; 
+    height: auto; 
+    padding: 12px 0 0 0; 
+    gap: 12px; 
+  }
+  .nav-logo { margin: 0 auto; font-size: 14px; }
+  nav { 
+    width: 100%; 
+    overflow-x: auto; 
+    padding: 0 16px 12px 16px; 
+    justify-content: flex-start; 
+  }
+  /* Hide scrollbar for a clean look */
+  nav::-webkit-scrollbar { display: none; }
+  
+  /* Adjust wrapper for taller header */
+  .site-wrapper { padding-top: 96px; } 
+  
+  .hero { padding: 50px 16px 40px; }
   .hero-logo-img { height: 70px; }
-  .hero-title { font-size: 18px; }
+  .hero-title { font-size: 22px; margin-bottom: 8px; }
+  .hero-sub { font-size: 9px; margin-bottom: 30px; }
+  
+  .stat-block { padding: 12px 10px; min-width: auto; }
+  .stat-label { font-size: 7px; }
+  .stat-value { font-size: 12px; }
+  
+  .page-body { padding: 30px 16px 60px; }
   .mc-card { padding: 20px; }
+  
+  .footer-inner { grid-template-columns: 1fr; text-align: center; }
+  .footer-logo { justify-content: center; }
+  .footer-desc { margin: 0 auto; }
+  .footer-bottom { flex-direction: column; text-align: center; }
 }
 </style>
 </head>
 <body>
+
+<canvas id="bg-canvas"></canvas>
 
 <header>
   <div class="nav-logo">
     <img src="https://ik.imagekit.io/td6lavsbp/1458361061257380009.webp" alt="GalaxyMC Logo" class="inline-logo">
     GalaxyMC
   </div>
+  <nav>
+    <button class="nav-btn active" onclick="showPage('dashboard', this)">🏠 Home</button>
+    <button class="nav-btn" onclick="showPage('news', this)">📢 News</button>
+    <button class="nav-btn" onclick="showPage('store', this)">🛒 Store</button>
+    <button class="nav-btn" onclick="showPage('vote', this)">🗳️ Vote</button>
+    <button class="nav-btn" onclick="showPage('rules', this)">📜 Rules</button>
+  </nav>
 </header>
 
 <div class="site-wrapper">
-  <div class="hero">
-    <img src="https://ik.imagekit.io/td6lavsbp/1458361061257380009.webp" alt="GalaxyMC Logo" class="hero-logo-img">
-    <h1 class="hero-title">✦ GALAXYMC SHUTDOWN ✦</h1>
-    <p class="hero-sub">The Journey Has Come To An End</p>
 
-    <div class="mc-card">
-      <div class="card-title">🚨 Official Announcement</div>
-      <div class="card-body">
-        GalaxyMC has been officially <span class="hl-red">SHUT DOWN</span> on <span class="hl-aqua">30th June 2025</span>.<br><br>
-        We want to give a massive thank you to our amazing community, active staff members, and everyone who supported us throughout this incredible journey. The memories we built together in this galaxy will always be cherished.<br><br>
-        <strong>Thank you for being a part of India's classic survival journey!</strong>
+  <!-- HOME TAB -->
+  <div id="page-dashboard" class="tab-page active">
+    <div class="hero">
+      <img src="https://ik.imagekit.io/td6lavsbp/1458361061257380009.webp" alt="GalaxyMC Logo" class="hero-logo-img">
+      <h1 class="hero-title">✦ GALAXYMC ✦</h1>
+      <p class="hero-sub">🚀 India's #1 Minecraft Server 🚀</p>
+
+      <div class="status-row">
+        <div class="stat-block">
+          <span class="stat-label">Server Status</span>
+          <span class="stat-value" id="server-status">Loading...</span>
+        </div>
+        <div class="stat-block">
+          <span class="stat-label">Players Online</span>
+          <span class="stat-value" id="player-count">Loading...</span>
+        </div>
+        <div class="stat-block">
+          <span class="stat-label">Version</span>
+          <span class="stat-value" id="server-version">Loading...</span>
+        </div>
+        <div class="stat-block">
+          <span class="stat-label">Server TPS</span>
+          <span class="stat-value" id="server-tps">Loading...</span>
+        </div>
       </div>
+
+      <div class="hero-btns">
+        <button class="mc-btn aqua" onclick="copyIP('play.galaxymcpe.fun:19132')">📋 COPY IP</button>
+        <button class="mc-btn gold" onclick="showPage('store', document.querySelector('[onclick*=store]'))">🛒 Buy Ranks</button>
+        <button class="mc-btn" style="background:#5865F2; border-color:#4752C4;" onclick="window.open('https://discord.galaxymcpe.fun','_blank')">💬 Discord</button>
+      </div>
+      <div class="hero-trim"></div>
+    </div>
+
+    <div class="mc-divider"></div>
+
+    <div class="page-body">
+      <div class="grid-2">
+        <div class="mc-card">
+          <div class="card-title">🌌 About GalaxyMC</div>
+          <div class="card-body">
+            Welcome to <span class="hl-aqua">GalaxyMC</span> — India's premium public Minecraft server.<br><br>
+            Built with 2+ years of Minecraft experience, we deliver a <span class="hl-green">lag-free</span>, <span class="hl-aqua">custom</span>, and <span class="hl-gold">competitive</span> experience.<br><br>
+            No pay-to-win. Just pure gameplay.
+          </div>
+        </div>
+
+        <div class="mc-card">
+          <div class="card-title">⭐ Quick Connect</div>
+          <div class="card-body">
+            <span class="hl-aqua">🔗 Bedrock IP:</span><br>
+            &nbsp;&nbsp;<span class="hl-gold" style="cursor:pointer" onclick="copyIP('play.galaxymcpe.fun:19132')">play.galaxymcpe.fun</span><br>
+            &nbsp;&nbsp;Port: <span class="hl-green">19132</span><br><br>
+            <span class="hl-purple">💬 Discord:</span><br>
+            &nbsp;&nbsp;<span class="hl-gold" style="cursor:pointer" onclick="window.open('https://discord.galaxymcpe.fun','_blank')">discord.galaxymcpe.fun</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="mc-card mb24">
+        <div class="card-title">✨ Server Features</div>
+        <div class="card-body feature-grid">
+          <div class="feature-box">💻 &nbsp;<span class="hl-aqua">Cross-Play Support</span><span class="feature-sub">Java + Bedrock + Cracked + Premium</span></div>
+          <div class="feature-box">⏳ &nbsp;<span class="hl-green">24/7 Online</span><span class="feature-sub">Server is always up and running</span></div>
+          <div class="feature-box">🗳️ &nbsp;<span class="hl-gold">Voting & Free Ranks</span><span class="feature-sub">Free rankup system by doing votes</span></div>
+          <div class="feature-box">🏡 &nbsp;<span class="hl-green">Land Claim & Eco</span><span class="feature-sub">Protect builds and trade with players</span></div>
+          <div class="feature-box">⚔️ &nbsp;<span class="hl-aqua">Arena & Warps</span><span class="feature-sub">Fast travel and PvP arenas</span></div>
+          <div class="feature-box">🛡️ &nbsp;<span class="hl-green">Lag-Free Play</span><span class="feature-sub">Smooth experience with low ping</span></div>
+          <div class="feature-box">🌍 &nbsp;<span class="hl-gold">Custom World Gen</span><span class="feature-sub">Beautiful terrain and structures</span></div>
+          <div class="feature-box">👮 &nbsp;<span class="hl-aqua">Active Staff</span><span class="feature-sub">Active support and no hackers</span></div>
+        </div>
+      </div>
+
+      <div class="grid-2">
+        <div class="mc-card">
+          <div class="card-title">🎮 Gamemodes</div>
+          <div class="card-body gm-grid">
+            <div class="gm-box gm-surv">
+              <span class="hl-green gm-title">⚔️ Survival</span> &nbsp;<span class="badge green">ACTIVE</span><br>
+              <span class="feature-sub">Custom world gen, rare ores, brutal mobs</span>
+            </div>
+            <div class="gm-box gm-life">
+              <span class="hl-purple gm-title">❤️ Lifesteal</span> &nbsp;<span class="badge blue">SOON</span><br>
+              <span class="feature-sub">Steal hearts on kill, lose hearts on death</span>
+            </div>
+            <div class="gm-box gm-pvp">
+              <span class="hl-gold gm-title">🔥 PvP Practice</span> &nbsp;<span class="badge blue">SOON</span><br>
+              <span class="feature-sub">Action-packed player vs player combat</span>
+            </div>
+            <div class="gm-box gm-bed">
+              <span class="hl-aqua gm-title">🛏️ Bedwars</span> &nbsp;<span class="badge blue">SOON</span><br>
+              <span class="feature-sub">Defend your bed and destroy others</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- NEWS TAB -->
+  <div id="page-news" class="tab-page">
+    <div class="page-banner">
+      <h2>📢 ANNOUNCEMENTS</h2>
+      <p>Latest news, updates and events from GalaxyMC</p>
+    </div>
+    <div class="mc-divider"></div>
+    <div class="page-body">
+      <div style="max-width: 700px; margin: 0 auto;">
+        <div class="mc-card">
+          <div class="card-title">📌 Pinned Announcements</div>
+          <div class="card-body">
+            <div class="pinned-note">
+              <span class="hl-gold">Server IP Update</span><br><br>
+              play.galaxymcpe.fun is the official IP. Port: 19132
+            </div>
+            <div class="pinned-note aqua-border">
+              <span class="hl-aqua">Discord is mandatory</span><br><br>
+              Join Discord for events, support, and purchasing ranks via tickets.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- STORE TAB -->
+  <div id="page-store" class="tab-page">
+    <div class="page-banner">
+      <h2>🛒 RANK STORE</h2>
+      <p>Support the server — unlock exclusive perks!</p>
+    </div>
+    <div class="mc-divider"></div>
+    <div class="page-body">
+      <div class="mc-card mb24" style="border-top-color:var(--mc-emerald); border-left-color:var(--mc-emerald);">
+        <div class="card-title">ℹ️ How To Purchase</div>
+        <div class="card-body">
+          All purchases go directly toward server development and maintenance. Ranks are <span class="hl-green">NOT pay-to-win</span>.<br><br>
+          <span class="hl-gold">⚠️ PURCHASE INSTRUCTIONS:</span> To buy a rank, please join our Discord server at <b>discord.galaxymcpe.fun</b> and create a <b>Higher-Up Support Ticket</b>. Our team will assist you with the payment and activate your perks!
+        </div>
+      </div>
+
+      <!-- RANKS GRID -->
+      <div class="shop-grid">
+        <div class="shop-card">
+          <span class="shop-icon">🛡️</span>
+          <div class="shop-name">ELITE</div>
+          <div class="shop-desc">Basic starting rank with homes, vault space, and glow!</div>
+          <button class="mc-btn aqua" style="font-size:9px;padding:12px 16px;" onclick="openRankModal('elite')">More</button>
+        </div>
+
+        <div class="shop-card">
+          <span class="shop-icon">⚔️</span>
+          <div class="shop-name">ELDER</div>
+          <div class="shop-desc">Step up your game with more warps, colors, and money.</div>
+          <button class="mc-btn green" style="font-size:9px;padding:12px 16px;" onclick="openRankModal('elder')">More</button>
+        </div>
+
+        <div class="shop-card">
+          <span class="shop-icon">👑</span>
+          <div class="shop-name">NOBLE</div>
+          <div class="shop-desc">Unlock advanced commands like /fly and /rtp!</div>
+          <button class="mc-btn gold" style="font-size:9px;padding:12px 16px;" onclick="openRankModal('noble')">More</button>
+        </div>
+
+        <div class="shop-card">
+          <span class="shop-icon">🌋</span>
+          <div class="shop-name">LEGEND</div>
+          <div class="shop-desc">Insane perks including /nick, speed multipliers, and huge claims.</div>
+          <button class="mc-btn red" style="font-size:9px;padding:12px 16px;" onclick="openRankModal('legend')">More</button>
+        </div>
+
+        <div class="shop-card">
+          <span class="shop-icon">🌌</span>
+          <div class="shop-name">GALAXY</div>
+          <div class="shop-desc">The ultimate status. All commands, all glows, max everything.</div>
+          <button class="mc-btn purple" style="font-size:9px;padding:12px 16px;" onclick="openRankModal('galaxy')">More</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- VOTE TAB -->
+  <div id="page-vote" class="tab-page">
+    <div class="page-banner">
+      <h2>🗳️ VOTE FOR US</h2>
+      <p>Support GalaxyMC and earn free in-game rewards every day!</p>
+    </div>
+    <div class="mc-divider"></div>
+    <div class="page-body">
+      <div class="mc-card mb24" style="border-top-color:var(--theme-aqua); border-left-color:var(--theme-aqua);">
+        <div class="card-title">🎁 Voting Rewards</div>
+        <div class="card-body">
+          Vote on all links daily to receive <span class="hl-gold">Vote Keys, In-game Money, and exclusive items</span>. Make sure to enter your exact Minecraft Gamertag when voting!
+        </div>
+      </div>
+
+      <div class="shop-grid">
+        <div class="shop-card">
+          <span class="shop-icon">🌟</span>
+          <div class="shop-name">VOTE LINK 1</div>
+          <div class="shop-desc">Vote on Site #1 to claim your daily rewards.</div>
+          <button class="mc-btn aqua mt24" style="font-size:9px;padding:12px 16px;" onclick="window.open('https://vote.galaxymcpe.fun/1','_blank')">Vote Now</button>
+        </div>
+        <div class="shop-card">
+          <span class="shop-icon">⭐</span>
+          <div class="shop-name">VOTE LINK 2</div>
+          <div class="shop-desc">Vote on Site #2 to claim your daily rewards.</div>
+          <button class="mc-btn green mt24" style="font-size:9px;padding:12px 16px;" onclick="window.open('https://vote.galaxymcpe.fun/2','_blank')">Vote Now</button>
+        </div>
+        <div class="shop-card">
+          <span class="shop-icon">✨</span>
+          <div class="shop-name">VOTE LINK 3</div>
+          <div class="shop-desc">Vote on Site #3 to claim your daily rewards.</div>
+          <button class="mc-btn gold mt24" style="font-size:9px;padding:12px 16px;" onclick="window.open('https://vote.galaxymcpe.fun/3','_blank')">Vote Now</button>
+        </div>
+        <div class="shop-card">
+          <span class="shop-icon">💫</span>
+          <div class="shop-name">VOTE LINK 4</div>
+          <div class="shop-desc">Vote on Site #4 to claim your daily rewards.</div>
+          <button class="mc-btn red mt24" style="font-size:9px;padding:12px 16px;" onclick="window.open('https://vote.galaxymcpe.fun/4','_blank')">Vote Now</button>
+        </div>
+        <div class="shop-card">
+          <span class="shop-icon">☄️</span>
+          <div class="shop-name">VOTE LINK 5</div>
+          <div class="shop-desc">Vote on Site #5 to claim your daily rewards.</div>
+          <button class="mc-btn purple mt24" style="font-size:9px;padding:12px 16px;" onclick="window.open('https://vote.galaxymcpe.fun/5','_blank')">Vote Now</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- RULES TAB -->
+  <div id="page-rules" class="tab-page">
+    <div class="page-banner">
+      <h2>📜 SERVER RULES</h2>
+      <p>To keep our galaxy running smoothly, follow these rules and USE COMMON SENSE.</p>
+    </div>
+    <div class="mc-divider"></div>
+    <div class="page-body">
+      <div class="grid-2">
+        <div>
+          <div class="mc-card mb24" style="border-top-color:#ce93d8;border-left-color:#ce93d8;">
+            <div class="card-title" style="color:var(--mc-amethyst);">💬 Discord Rules</div>
+            <div class="card-body">
+              <ul class="rules-list">
+                <li><b>Treat everyone with respect</b> – No hate, bullying, or drama.</li>
+                <li><b>Keep it clean</b> – No NSFW or disturbing content.</li>
+                <li><b>No excessive pinging</b>, spam, or promotions.</li>
+                <li><b>Listen to staff</b> – Don't argue if you're warned.</li>
+                <li><b>VC Rules</b> – No loud noises, echo mics, or trolling.</li>
+                <li>Follow Discord Terms & Privacy Policy</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div>
+          <div class="mc-card mb24" style="border-top-color:var(--theme-aqua);border-left-color:var(--theme-aqua);">
+            <div class="card-title" style="color:var(--theme-aqua);">⛏️ Minecraft Rules</div>
+            <div class="card-body">
+              <ul class="rules-list">
+                <li><b>No hacks, cheats, or auto-clickers</b> – Play fair.</li>
+                <li><b>No tp trapping players</b> – avoid tp trapping.</li>
+                <li><b>No spawn camping or exploiting bugs</b>.</li>
+                <li><b>Avoid lag machines, auto farms</b>.</li>
+                <li><b>No scams or trust abuse</b> – Be honest in trades.</li>
+                <li><b>Chat respectfully</b> – No toxic spam.</li>
+              </ul>
+            </div>
+          </div>
+          <div class="mc-card" style="background:rgba(255,255,255,0.02);">
+            <div class="card-body" style="text-align:center;">
+              ⚠️ Need help or want to report an issue?<br><br>
+              <span class="hl-aqua">Open a ticket in #🎟・ticket</span>. We're here to help!
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  <div class="footer-inner">
+    <div>
+      <div class="footer-logo">
+        <img src="https://ik.imagekit.io/td6lavsbp/1458361061257380009.webp" alt="GalaxyMC Logo" class="inline-logo">
+        GalaxyMC
+      </div>
+      <div class="footer-desc">India's premium Minecraft server. Built with 2+ years of MC experience. Season 2 is live.</div>
+    </div>
+    <div>
+      <div class="footer-heading">🎮 Server</div>
+      <ul class="footer-links">
+        <li><a onclick="showPage('dashboard', null)">Dashboard</a></li>
+        <li><a onclick="showPage('news', null)">News</a></li>
+        <li><a onclick="showPage('store', null)">Store</a></li>
+        <li><a onclick="showPage('vote', null)">Vote</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="footer-heading">🔗 Connect</div>
+      <ul class="footer-links">
+        <li><a href="https://discord.galaxymcpe.fun" target="_blank">Discord Server</a></li>
+        <li><a href="https://discord.galaxymcpe.fun" target="_blank">Report Bug (Tickets)</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="footer-heading">📋 Server Info</div>
+      <ul class="footer-links">
+        <li><a onclick="copyIP('play.galaxymcpe.fun:19132')">play.galaxymcpe.fun</a></li>
+        <li><a>Port: 19132</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <div class="footer-copy">© 2026 GalaxyMC — All Rights Reserved</div>
+    <div class="footer-ip">play.galaxymcpe.fun · 19132</div>
+  </div>
+</footer>
+
+<div class="toast" id="toast">📋 Copied!</div>
+
+<!-- RANK MODAL -->
+<div id="rankModalOverlay" class="modal-overlay" onclick="closeRankModal(event)">
+  <div class="modal-content" onclick="event.stopPropagation()">
+    <div class="modal-header">
+      <div class="modal-title" id="modalTitle">RANK NAME</div>
+      <div class="close-btn" onclick="closeRankModal(true)">&times;</div>
+    </div>
+    <div class="modal-body">
+      <!-- Image for the Kit -->
+      <img id="modalImage" src="" alt="Kit Preview" class="modal-kit-img" style="display:none;">
+
+      <div class="modal-grid">
+        <!-- Commands -->
+        <div>
+          <h3 style="color:var(--theme-aqua); font-size:12px; margin-bottom:16px;">📝 Commands</h3>
+          <ul class="rank-list" id="modalCmds"></ul>
+        </div>
+        <!-- Perks -->
+        <div>
+          <h3 style="color:var(--theme-gold); font-size:12px; margin-bottom:16px;">✨ Perks</h3>
+          <ul class="rank-list" id="modalPerks"></ul>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <div class="price-tag" id="modalPrice"></div>
+      <button class="mc-btn green" style="padding:12px 24px;" onclick="window.open('https://discord.galaxymcpe.fun','_blank')">🛒 Buy via Ticket</button>
     </div>
   </div>
 </div>
 
-<footer>
-  <div class="footer-bottom">
-    <div class="footer-copy">© GalaxyMC — Final Farewell (Closed 2025)</div>
-  </div>
-</footer>
+<script>
+/* ============================================
+   RANK DATA OBJECT
+============================================ */
+const rankData = {
+  elite: {
+    title: "🛡️ ELITE RANK",
+    image: "https://ik.imagekit.io/td6lavsbp/image-3.png",
+    cmds: ["Access To <code>/back</code>", "Access To <code>/dback</code>", "Access To <code>/enderchest (3 line)</code>"],
+    perks: ["Elite Prefix", "Elite Kit", "3X Homes", "3X Player Vault", "1X Glow", "1X Chat Colour", "2,000 Claim Blocks", "50,000 In-game Money"],
+    price: "1 Month - <span>@99₹</span><br>3 Month - <span>@280₹</span> (save 6%)"
+  },
+  elder: {
+    title: "⚔️ ELDER RANK",
+    image: "https://ik.imagekit.io/td6lavsbp/image-2.png",
+    cmds: ["Access To <code>/craft</code>", "Access To <code>/back</code>", "Access To <code>/dback</code>", "Access To <code>/enderchest (4 rows)</code>", "Access To <code>/ptime</code> (change personal time)"],
+    perks: ["Elder Prefix", "Elder Kit", "5x Homes", "5x Player Vault", "5x Player Warps", "2 Glows", "2 Chat Colours", "4,000 Claim Blocks", "100,000 In-game Money"],
+    price: "1 Month - <span>@199₹</span><br>3 Month - <span>@565₹</span> (save 6%)"
+  },
+  noble: {
+    title: "👑 NOBLE RANK",
+    image: "https://ik.imagekit.io/td6lavsbp/image-1.png",
+    cmds: ["Access To <code>/craft</code>", "Access To <code>/anvil</code>", "Access To <code>/sit</code>", "Access To <code>/back</code>", "Access To <code>/dback</code>", "Access To <code>/fly</code>", "Access To <code>/rtp</code> (overworld + nether)", "Access To <code>/enderchest 5 rows</code>", "Access To <code>/ptime</code>", "Access To <code>/pweather</code>", "Access To <code>/pp gui</code> (Custom particles)"],
+    perks: ["Noble Prefix", "Nobel Kit", "10x Homes", "10x Player Vault", "10x Player Warps", "3x Glows", "3x Chat Colours", "8,000 Claim Blocks", "150,000 in-game money"],
+    price: "1 Month - <span>@399₹</span><br>3 Month - <span>@1080₹</span> (save 10%)"
+  },
+  legend: {
+    title: "🌋 LEGEND RANK",
+    image: "https://ik.imagekit.io/td6lavsbp/image-4.png",
+    cmds: ["Access To <code>/craft</code>", "Access To <code>/anvil</code>", "Access To <code>/sit</code>", "Access To <code>/nick</code>", "Access To <code>/walk x1.5</code>", "Access To <code>/fly x1.5</code>", "Access To <code>/back</code>", "Access To <code>/dback</code>", "Access To <code>/up</code>", "Access To <code>/down</code>", "Access To <code>/RTP in all dimensions</code>", "Access To <code>/crawl</code>", "Access To <code>/grindstone</code>", "Access To <code>/enderchest 5lrows</code>", "Access To <code>/ptime</code> & <code>/pweather</code>", "Access To <code>/pp gui</code>"],
+    perks: ["Legend Prefix", "Legend Kit", "20x Homes", "20x Player Vault", "20x Player Warps", "4x Glows", "4x Chat Colours", "10,000 Claim Blocks", "250,000 in-game Money"],
+    price: "1 Month - <span>@499₹</span><br>3 Month - <span>@1350₹</span> (save 10%)"
+  },
+  galaxy: {
+    title: "🌌 GALAXY RANK",
+    image: "https://ik.imagekit.io/td6lavsbp/image-6.png",
+    cmds: ["Access To <code>/craft</code>", "Access To <code>/anvil</code>", "Access To <code>/sit</code>", "Access To <code>/nick</code>", "Access To <code>/glow</code>", "Access To <code>/crawl</code>", "Access To <code>/walk with 2X speed</code>", "Access To <code>/fly with 2X speed</code>", "Access To <code>/hat</code>", "Access To <code>/grindstone</code>", "Access To <code>/smithingtable</code>", "Access To <code>/up</code> & <code>/down</code>", "Access To <code>/back</code> & <code>/dback</code>", "Access To <code>/RTP no cooldown</code>", "Access To <code>/enderchest</code>", "Access To <code>/ptime</code> & <code>/pweather</code>", "Access To <code>/pp gui</code>"],
+    perks: ["Galaxy Prefix", "Galaxy Kit", "30X Homes", "30X Player Vault", "30X Player Warps", "All Glows", "All Chat Colours", "15,000 Claim Blocks", "500,000 in-game Money"],
+    price: "1 Month - <span>@699₹</span><br>3 Month - <span>@1890₹</span> (save 10%)<br>Seasonal - <span>@3,500₹</span> (6 Months)<br>Lifetime - <span>@6,000₹</span>"
+  }
+};
 
+function openRankModal(rankKey) {
+  const data = rankData[rankKey];
+  if(!data) return;
+
+  document.getElementById('modalTitle').innerHTML = data.title;
+  
+  // Set and Show Image
+  const imgElement = document.getElementById('modalImage');
+  if (data.image) {
+    imgElement.src = data.image;
+    imgElement.style.display = 'block';
+  } else {
+    imgElement.style.display = 'none';
+  }
+  
+  // Populate Commands
+  const cmdsList = document.getElementById('modalCmds');
+  cmdsList.innerHTML = '';
+  data.cmds.forEach(cmd => {
+    let li = document.createElement('li');
+    li.innerHTML = cmd;
+    cmdsList.appendChild(li);
+  });
+
+  // Populate Perks
+  const perksList = document.getElementById('modalPerks');
+  perksList.innerHTML = '';
+  data.perks.forEach(perk => {
+    let li = document.createElement('li');
+    li.innerHTML = perk;
+    perksList.appendChild(li);
+  });
+
+  document.getElementById('modalPrice').innerHTML = data.price;
+
+  // Show Modal & Lock Scroll
+  document.getElementById('rankModalOverlay').classList.add('active');
+  document.body.classList.add('modal-open');
+}
+
+function closeRankModal(force = false) {
+  document.getElementById('rankModalOverlay').classList.remove('active');
+  document.body.classList.remove('modal-open');
+}
+
+/* ============================================
+   AQUA & GOLD STARS / PARTICLES LOGIC
+============================================ */
+const canvas = document.getElementById('bg-canvas');
+const ctx = canvas.getContext('2d');
+
+function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
+resize(); window.addEventListener('resize', resize);
+
+const STARS = Array.from({length: 120}, () => ({
+  x: Math.random(), y: Math.random(), r: Math.random() * 2 + 0.5, a: Math.random(),
+  spd: Math.random() * 0.003 + 0.001, ph: Math.random() * Math.PI * 2,
+  color: Math.random() > 0.5 ? 'rgba(0, 229, 255,' : 'rgba(255, 215, 0,'
+}));
+
+const PIXEL_STARS = Array.from({length: 15}, () => ({
+  x: Math.random(), y: Math.random(), size: Math.floor(Math.random() * 2 + 1) * 2,
+  color: ['#00e5ff','#ffd700','#ffffff'][Math.floor(Math.random()*3)],
+  blink: Math.random() * 0.002 + 0.001, ph: Math.random() * Math.PI * 2
+}));
+
+const CLICK_PARTICLES = [];
+
+window.addEventListener('click', (e) => {
+  // Don't spawn particles if clicking inside modal content
+  if(e.target.closest('.modal-content')) return;
+  
+  const particleCount = Math.floor(Math.random() * 6) + 12;
+  for (let i = 0; i < particleCount; i++) {
+    CLICK_PARTICLES.push({
+      x: e.clientX, y: e.clientY, vx: (Math.random() - 0.5) * 10, vy: (Math.random() - 0.5) * 10,
+      size: Math.floor(Math.random() * 3 + 1) * 2, life: 1.0,
+      color: ['#00e5ff', '#ffd700', '#ffffff'][Math.floor(Math.random() * 3)]
+    });
+  }
+});
+
+let t = 0;
+function draw() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  STARS.forEach(s => {
+    const a = (Math.sin(t * s.spd + s.ph) + 1) / 2 * 0.6 + 0.1;
+    ctx.beginPath(); ctx.arc(s.x * canvas.width, s.y * canvas.height, s.r, 0, Math.PI * 2);
+    ctx.fillStyle = s.color + a + ')'; ctx.shadowBlur = 10; ctx.shadowColor = s.color + '1)';
+    ctx.fill(); ctx.shadowBlur = 0;
+  });
+  PIXEL_STARS.forEach(s => {
+    const a = (Math.sin(t * s.blink + s.ph) + 1) / 2 * 0.8 + 0.2;
+    ctx.globalAlpha = a; ctx.fillStyle = s.color;
+    ctx.fillRect(s.x * canvas.width, s.y * canvas.height, s.size, s.size); ctx.globalAlpha = 1;
+  });
+  for (let i = CLICK_PARTICLES.length - 1; i >= 0; i--) {
+    let p = CLICK_PARTICLES[i];
+    p.x += p.vx; p.y += p.vy; p.vy += 0.3; p.life -= 0.02; 
+    if (p.life <= 0) { CLICK_PARTICLES.splice(i, 1); } else {
+      ctx.globalAlpha = p.life; ctx.fillStyle = p.color;
+      ctx.fillRect(p.x, p.y, p.size, p.size);
+    }
+  }
+  ctx.globalAlpha = 1; t += 1; requestAnimationFrame(draw);
+}
+draw();
+
+/* ============================================
+   LIVE PLAYER COUNT (BEDROCK API)
+============================================ */
+function updateServerStats() {
+  fetch('https://api.mcsrvstat.us/bedrock/2/play.galaxymcpe.fun')
+    .then(response => response.json())
+    .then(data => {
+      const countEl = document.getElementById('player-count');
+      const statusEl = document.getElementById('server-status');
+      const tpsEl = document.getElementById('server-tps');
+      const versionEl = document.getElementById('server-version');
+
+      if (data.online) {
+        countEl.textContent = `${data.players.online}/${data.players.max}`;
+        statusEl.textContent = '🟢 ONLINE'; statusEl.className = 'stat-value green';
+        if (versionEl) { versionEl.textContent = data.version || 'Online'; versionEl.className = 'stat-value aqua'; }
+        tpsEl.textContent = '20.0'; tpsEl.className = 'stat-value green';
+      } else {
+        countEl.textContent = 'Offline';
+        statusEl.textContent = '🔴 OFFLINE'; statusEl.className = 'stat-value red';
+        tpsEl.textContent = 'Offline'; tpsEl.className = 'stat-value red';
+        if (versionEl) { versionEl.textContent = 'Offline'; versionEl.className = 'stat-value red'; }
+      }
+    })
+    .catch(() => {
+      document.getElementById('player-count').textContent = 'Error';
+      document.getElementById('server-status').textContent = 'Error';
+      document.getElementById('server-tps').textContent = 'Error';
+      if(document.getElementById('server-version')) document.getElementById('server-version').textContent = 'Error';
+    });
+}
+setInterval(updateServerStats, 15000);
+document.addEventListener('DOMContentLoaded', updateServerStats);
+
+/* ============================================
+   TAB NAVIGATION
+============================================ */
+function showPage(page, btn) {
+  document.querySelectorAll('.tab-page').forEach(p => {
+    p.classList.remove('active'); p.style.animation = 'none'; p.offsetHeight; p.style.animation = null; 
+  });
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  const targetPage = document.getElementById('page-' + page);
+  if(targetPage) targetPage.classList.add('active');
+  if (btn) btn.classList.add('active');
+  else {
+    document.querySelectorAll('.nav-btn').forEach(b => {
+      if (b.getAttribute('onclick') && b.getAttribute('onclick').includes(page)) b.classList.add('active');
+    });
+  }
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+/* ============================================
+   COPY IP TOAST
+============================================ */
+function copyIP(ip) {
+  navigator.clipboard.writeText(ip).then(() => { showToast('✨ ' + ip + ' — Copied to Clipboard!');
+  }).catch(() => { showToast('✨ IP: ' + ip); });
+}
+function showToast(msg) {
+  const t = document.getElementById('toast'); t.textContent = msg; t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 3000);
+}
+</script>
 </body>
 </html>
