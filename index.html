@@ -4,314 +4,1229 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>GalaxyMC — Survival Server</title>
-<!-- Favicon -->
 <link rel="icon" type="image/webp" href="https://ik.imagekit.io/td6lavsbp/1458361061257380009.webp">
-<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Press+Start+2P&display=swap" rel="stylesheet">
 <style>
 /* ============================================
-   GALAXYMC — AQUA & GREY PREMIUM THEME
-   Mobile-Optimized & Compact Desktop
+   GALAXY LIQUID GLASS — iOS 18 / S26 THEME
 ============================================ */
-
 :root {
-  /* Core Theme Colors */
-  --theme-bg-dark:   #080c14; 
-  --theme-bg-mid:    #111827; 
-  --theme-bg-light:  #1e293b; 
-  --theme-aqua:      #00e5ff;
-  --theme-aqua-dark: #008ba3;
-  --theme-gold:      #ffd700;
-  --theme-gold-dark: #b8860b;
-  
-  /* Standard MC Colors */
-  --mc-grass:    #4caf50;
-  --mc-grass2:   #2e7d32;
-  --mc-lava:     #ff6600;
-  --mc-redstone: #ff1744;
-  --mc-emerald:  #00e676;
-  --mc-amethyst: #ce93d8;
-  
-  /* Text Colors */
-  --text-main:   #f8fafc;
-  --text-muted:  #94a3b8;
+  --bg-base:        #05080f;
+  --bg-deep:        #030509;
+
+  /* Liquid Glass Layers */
+  --glass-1:        rgba(255, 255, 255, 0.045);
+  --glass-2:        rgba(255, 255, 255, 0.075);
+  --glass-3:        rgba(255, 255, 255, 0.11);
+  --glass-stroke:   rgba(255, 255, 255, 0.10);
+  --glass-stroke-hi:rgba(255, 255, 255, 0.22);
+  --glass-inner:    rgba(255, 255, 255, 0.06);
+
+  /* Accents */
+  --aqua:           #00e5ff;
+  --aqua-soft:      #6ee7ff;
+  --gold:           #ffd700;
+  --gold-soft:      #ffe066;
+  --emerald:        #00e676;
+  --purple:         #c084fc;
+  --pink:           #f472b6;
+  --red:            #ff4d6d;
+  --orange:         #ff9954;
+
+  /* Text */
+  --text:           #ffffff;
+  --text-soft:      rgba(255, 255, 255, 0.75);
+  --text-dim:       rgba(255, 255, 255, 0.5);
+  --text-faint:     rgba(255, 255, 255, 0.35);
+
+  /* Radii — iOS style */
+  --r-sm:  14px;
+  --r-md:  20px;
+  --r-lg:  26px;
+  --r-xl:  34px;
+  --r-pill: 999px;
+
+  /* Shadows */
+  --sh-soft:   0 8px 32px rgba(0, 0, 0, 0.4);
+  --sh-deep:   0 20px 60px rgba(0, 0, 0, 0.6);
+  --sh-glow-a: 0 0 40px rgba(0, 229, 255, 0.25);
+  --sh-glow-g: 0 0 40px rgba(255, 215, 0, 0.25);
+
+  --font-body:  'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-brand: 'Press Start 2P', monospace;
 }
 
-* { margin: 0; padding: 0; box-sizing: border-box; }
-html { scroll-behavior: smooth; }
+* { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+html { scroll-behavior: smooth; -webkit-font-smoothing: antialiased; }
 
 body {
-  font-family: 'Press Start 2P', monospace;
-  background: var(--theme-bg-dark);
-  color: var(--text-main);
-  font-size: 12px; 
-  line-height: 2;
+  font-family: var(--font-body);
+  background: var(--bg-base);
+  color: var(--text);
+  line-height: 1.6;
   overflow-x: hidden;
-  image-rendering: pixelated;
-  background: linear-gradient(-45deg, #05080f, #0a1120, #080c14, #0f172a);
-  background-size: 400% 400%;
-  animation: bgGradient 20s ease infinite;
+  min-height: 100vh;
+  background:
+    radial-gradient(ellipse 80% 60% at 50% -20%, rgba(0, 229, 255, 0.15), transparent 70%),
+    radial-gradient(ellipse 60% 50% at 20% 100%, rgba(192, 132, 252, 0.12), transparent 70%),
+    radial-gradient(ellipse 60% 50% at 80% 80%, rgba(255, 215, 0, 0.08), transparent 70%),
+    linear-gradient(180deg, #05080f 0%, #030509 100%);
+  background-attachment: fixed;
 }
-body.modal-open { overflow: hidden; }
 
-@keyframes bgGradient {
-  0% { background-position: 0% 50%; }
+/* ============================================
+   KEYFRAMES
+============================================ */
+@keyframes glint {
+  0% { background-position: 200% center; }
+  100% { background-position: -200% center; }
+}
+
+@keyframes shine-sweep {
+  0% { left: -100%; }
+  100% { left: 200%; }
+}
+
+@keyframes pulse-ring {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(0, 230, 118, 0.5); }
+  50% { box-shadow: 0 0 0 10px rgba(0, 230, 118, 0); }
+}
+
+@keyframes gradient-flow {
+  0%, 100% { background-position: 0% 50%; }
   50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
+}
+
+@keyframes float-badge {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-3px); }
+}
+
+@keyframes reveal-up {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes float-logo {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+@keyframes card-glint {
+  0% { left: -100%; }
+  100% { left: 200%; }
+}
+
+@keyframes glow-aqua {
+  0%, 100% { box-shadow: 0 0 20px rgba(0, 229, 255, 0.2); }
+  50% { box-shadow: 0 0 40px rgba(0, 229, 255, 0.45); }
+}
+
+@keyframes divider-scan {
+  0% { left: -30%; }
+  100% { left: 130%; }
+}
+
+@keyframes rise-fade {
+  0% { opacity: 0; transform: translateY(15px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes modal-zoom {
+  from { opacity: 0; transform: scale(0.94) translateY(20px); }
+  to { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+@keyframes arrow-bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-5px); }
+}
+
+@keyframes liquid-morph {
+  0%, 100% { border-radius: 26px; }
+  50% { border-radius: 34px; }
 }
 
 /* ============================================
-   ANIMATED CANVAS BACKGROUND
+   SCROLLBAR & CANVAS
 ============================================ */
-#bg-canvas { position: fixed; inset: 0; z-index: 0; pointer-events: none; opacity: 0.6; }
+::-webkit-scrollbar { width: 10px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+  border: 2px solid transparent;
+  background-clip: padding-box;
+}
+::-webkit-scrollbar-thumb:hover { background: rgba(0, 229, 255, 0.3); background-clip: padding-box; }
+
+#bg-canvas { position: fixed; inset: 0; z-index: 0; pointer-events: none; opacity: 0.8; }
 
 /* ============================================
-   SCROLLBAR
+   SCROLL PROGRESS
 ============================================ */
-::-webkit-scrollbar { width: 14px; }
-::-webkit-scrollbar-track { background: var(--theme-bg-dark); }
-::-webkit-scrollbar-thumb { background: var(--theme-bg-light); border: 3px solid var(--theme-bg-dark); }
-::-webkit-scrollbar-thumb:hover { background: var(--theme-aqua-dark); }
+#scroll-progress {
+  position: fixed; top: 0; left: 0; height: 2px; width: 0%;
+  background: linear-gradient(90deg, var(--aqua), var(--purple), var(--gold), var(--aqua));
+  background-size: 300% auto;
+  animation: gradient-flow 4s linear infinite;
+  z-index: 9999;
+  box-shadow: 0 0 20px rgba(0, 229, 255, 0.6);
+  transition: width 0.15s ease;
+}
 
 /* ============================================
-   HEADER / NAV
+   HEADER — Liquid Glass Bar
 ============================================ */
 header {
   position: fixed;
   top: 0; left: 0; right: 0;
   z-index: 200;
-  background: rgba(17, 24, 39, 0.95);
-  backdrop-filter: blur(8px);
-  border-bottom: 4px solid var(--theme-aqua);
-  box-shadow: 0 4px 0 rgba(0,0,0,0.5), 0 8px 30px rgba(0, 229, 255, 0.15);
   padding: 0 32px;
-  height: 70px;
+  height: 76px;
   display: flex;
   align-items: center;
   justify-content: space-between;
+  background: rgba(5, 8, 15, 0.55);
+  backdrop-filter: blur(30px) saturate(180%);
+  -webkit-backdrop-filter: blur(30px) saturate(180%);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5), inset 0 -1px 0 rgba(255, 255, 255, 0.05);
 }
 
-.inline-logo { height: 28px; width: auto; margin-right: 14px; image-rendering: pixelated; filter: drop-shadow(2px 2px 0 #000); }
-.nav-logo { font-size: 16px; color: var(--theme-gold); text-shadow: 2px 2px 0 var(--theme-gold-dark), 4px 4px 0 #000; letter-spacing: 2px; animation: logoPulse 3s ease-in-out infinite; white-space: nowrap; display: flex; align-items: center; }
+.inline-logo {
+  height: 34px;
+  width: auto;
+  margin-right: 14px;
+  image-rendering: pixelated;
+  filter: drop-shadow(0 0 12px rgba(0, 229, 255, 0.5));
+  transition: transform 0.3s;
+}
+.nav-logo:hover .inline-logo { transform: rotate(-6deg) scale(1.1); }
 
-@keyframes logoPulse {
-  0%,100% { text-shadow: 2px 2px 0 var(--theme-gold-dark), 4px 4px 0 #000, 0 0 15px rgba(255,215,0,0.3); }
-  50% { text-shadow: 2px 2px 0 var(--theme-gold-dark), 4px 4px 0 #000, 0 0 25px rgba(0,229,255,0.6); }
+.nav-logo {
+  font-family: var(--font-brand);
+  font-size: 17px;
+  color: #fff;
+  letter-spacing: 2px;
+  display: flex;
+  align-items: center;
+  background: linear-gradient(120deg, #ffffff 0%, var(--aqua) 30%, var(--gold) 60%, #ffffff 100%);
+  background-size: 250% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: glint 5s linear infinite;
+  filter: drop-shadow(0 0 15px rgba(0, 229, 255, 0.3));
 }
 
-nav { display: flex; gap: 8px; align-items: center; }
-.nav-btn { font-family: 'Press Start 2P', monospace; font-size: 10px; color: var(--text-muted); background: var(--theme-bg-mid); border: none; border-top: 2px solid var(--theme-bg-light); border-left: 2px solid var(--theme-bg-light); border-bottom: 2px solid #000; border-right: 2px solid #000; padding: 12px 16px; cursor: pointer; text-transform: uppercase; letter-spacing: 1px; transition: all 0.2s ease; outline: 2px solid #000; flex-shrink: 0; }
-.nav-btn:hover { color: var(--theme-aqua); background: var(--theme-bg-light); transform: translateY(-2px); box-shadow: 0 4px 10px rgba(0, 229, 255, 0.2); }
-.nav-btn.active { color: var(--theme-aqua); background: var(--theme-bg-dark); border-top: 2px solid #000; border-left: 2px solid #000; border-bottom: 2px solid var(--theme-aqua-dark); border-right: 2px solid var(--theme-aqua-dark); box-shadow: inset 0 0 10px rgba(0,0,0,0.5); }
+nav { display: flex; gap: 6px; align-items: center; }
+
+.nav-btn {
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: 13.5px;
+  color: var(--text-soft);
+  background: transparent;
+  border: 1px solid transparent;
+  padding: 10px 18px;
+  cursor: pointer;
+  letter-spacing: 0.3px;
+  transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  border-radius: var(--r-pill);
+  position: relative;
+}
+
+.nav-btn:hover {
+  color: #fff;
+  background: rgba(255, 255, 255, 0.06);
+  border-color: rgba(255, 255, 255, 0.1);
+  transform: translateY(-1px);
+}
+
+.nav-btn.active {
+  color: #fff;
+  background: linear-gradient(135deg, rgba(0, 229, 255, 0.18), rgba(192, 132, 252, 0.18));
+  border-color: rgba(0, 229, 255, 0.35);
+  box-shadow: 0 4px 20px rgba(0, 229, 255, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.15);
+  text-shadow: 0 0 12px rgba(0, 229, 255, 0.5);
+}
 
 /* ============================================
-   MAIN LAYOUT & TABS
+   MAIN LAYOUT
 ============================================ */
-.site-wrapper { position: relative; z-index: 1; padding-top: 70px; min-height: 100vh; }
-.tab-page { display: none; opacity: 0; min-height: calc(100vh - 70px); animation: fadeIn 0.5s forwards; }
+.site-wrapper { position: relative; z-index: 1; padding-top: 76px; min-height: 100vh; }
+.tab-page { display: none; opacity: 0; min-height: calc(100vh - 76px); animation: fadeIn 0.5s forwards; }
 .tab-page.active { display: block; }
 @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
 /* ============================================
-   HERO SECTION
+   HERO
 ============================================ */
-.hero { position: relative; overflow: hidden; padding: 80px 20px 60px; text-align: center; background: linear-gradient(to bottom, rgba(8, 12, 20, 0.7), rgba(8, 12, 20, 0.95)), repeating-linear-gradient(45deg, transparent, transparent 31px, rgba(0, 229, 255, 0.02) 32px); border-bottom: 4px solid #000; }
-.hero-trim { position: absolute; bottom: 0; left: 0; right: 0; height: 16px; background: repeating-linear-gradient(90deg, var(--theme-aqua-dark) 0px, var(--theme-aqua-dark) 16px, var(--theme-aqua) 16px, var(--theme-aqua) 32px); border-top: 4px solid #000; opacity: 0.8; }
-.hero-logo-img { height: 90px; margin-bottom: 20px; animation: floatLogo 4s ease-in-out infinite; filter: drop-shadow(4px 4px 0 #000) drop-shadow(0 0 30px rgba(0, 229, 255, 0.4)); }
-@keyframes floatLogo { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-15px); } }
-.hero-title { font-size: clamp(24px, 5vw, 48px); color: var(--theme-gold); text-shadow: 4px 4px 0 var(--theme-gold-dark), 8px 8px 0 #000; margin-bottom: 12px; letter-spacing: 4px; }
-.hero-sub { font-size: 11px; color: var(--theme-aqua); text-shadow: 2px 2px 0 #000, 0 0 10px rgba(0, 229, 255, 0.5); margin-bottom: 40px; letter-spacing: 2px; text-transform: uppercase; }
-
-/* STATUS CARDS - Desktop & Mobile Grid */
-.status-row { 
-  display: grid; 
-  grid-template-columns: repeat(4, 1fr); 
-  gap: 16px; 
-  max-width: 900px; 
-  margin: 0 auto 40px auto; 
+.hero {
+  position: relative;
+  overflow: hidden;
+  padding: 90px 24px 80px;
+  text-align: center;
 }
-.stat-block { background: linear-gradient(to bottom, var(--theme-bg-light), var(--theme-bg-mid)); border-top: 3px solid rgba(255,255,255,0.1); border-left: 3px solid rgba(255,255,255,0.1); border-bottom: 3px solid #000; border-right: 3px solid #000; outline: 3px solid #000; padding: 16px 20px; text-align: center; transition: transform 0.2s, box-shadow 0.2s; cursor: default; }
-.stat-block:hover { transform: translateY(-4px); border-top-color: var(--theme-aqua); border-left-color: var(--theme-aqua); box-shadow: 0 10px 20px rgba(0, 229, 255, 0.15); }
-.stat-label { font-size: 8px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; display: block; }
-.stat-value { font-size: 14px; color: var(--theme-aqua); text-shadow: 2px 2px 0 #000, 0 0 10px rgba(0,229,255,0.4); }
-.stat-value.green { color: var(--mc-emerald); text-shadow: 2px 2px 0 #000, 0 0 10px rgba(0,230,118,0.4); }
-.stat-value.red { color: var(--mc-redstone); text-shadow: 2px 2px 0 #000, 0 0 10px rgba(255,23,68,0.4); }
 
-.hero-btns { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
+.hero-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 22px;
+  max-width: 950px;
+  margin: 0 auto;
+  position: relative;
+  z-index: 2;
+}
+
+.hero-logo-img {
+  height: 100px;
+  width: auto;
+  margin: 0 auto;
+  display: block;
+  animation: float-logo 5s ease-in-out infinite;
+  filter: drop-shadow(0 0 40px rgba(0, 229, 255, 0.5)) drop-shadow(0 8px 20px rgba(0,0,0,0.6));
+}
+
+.hero-title {
+  font-family: var(--font-brand);
+  font-size: clamp(30px, 6.5vw, 62px);
+  margin: 0 auto;
+  letter-spacing: 4px;
+  display: inline-block;
+  line-height: 1.3;
+  background: linear-gradient(
+    100deg,
+    #ffffff 0%,
+    var(--aqua-soft) 25%,
+    #ffffff 45%,
+    var(--gold-soft) 65%,
+    #ffffff 100%
+  );
+  background-size: 250% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: glint 5s linear infinite;
+  filter: drop-shadow(0 0 30px rgba(0, 229, 255, 0.4));
+}
+
+.hero-sub {
+  font-size: 14.5px;
+  font-weight: 500;
+  color: var(--aqua-soft);
+  margin-bottom: 24px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  min-height: 24px;
+  text-shadow: 0 0 20px rgba(0, 229, 255, 0.5);
+}
+
+.typing-cursor {
+  display: inline-block;
+  width: 8px;
+  height: 14px;
+  background: var(--aqua);
+  margin-left: 5px;
+  animation: blink 0.8s step-end infinite;
+  vertical-align: middle;
+  border-radius: 1px;
+  box-shadow: 0 0 10px var(--aqua);
+}
+
+@keyframes blink { 0%, 50% { opacity: 1; } 51%, 100% { opacity: 0; } }
 
 /* ============================================
-   MC BUTTONS
+   STATUS CARDS — Liquid Glass Tiles
 ============================================ */
-.mc-btn { font-family: 'Press Start 2P', monospace; font-size: 10px; letter-spacing: 1px; padding: 14px 24px; cursor: pointer; text-transform: uppercase; border: none; outline: 3px solid #000; transition: all 0.2s ease; position: relative; color: #fff; text-shadow: 2px 2px 0 #000; box-shadow: 0 6px 0 #000; }
-.mc-btn:active { transform: translateY(4px); box-shadow: 0 2px 0 #000; }
-.mc-btn.aqua { background: linear-gradient(to bottom, #00b8d4, #006064); border-top: 3px solid #00e5ff; border-left: 3px solid #00e5ff; border-bottom: 3px solid #00363a; border-right: 3px solid #00363a; }
-.mc-btn.aqua:hover { filter: brightness(1.2); box-shadow: 0 6px 0 #000, 0 0 20px rgba(0,229,255,0.4); }
-.mc-btn.green { background: linear-gradient(to bottom, #5cb85c, #3d8b3d); border-top: 3px solid #7fd07f; border-left: 3px solid #7fd07f; border-bottom: 3px solid #1a5e1a; border-right: 3px solid #1a5e1a; }
-.mc-btn.green:hover { filter: brightness(1.2); box-shadow: 0 6px 0 #000, 0 0 20px rgba(92,184,92,0.4);}
-.mc-btn.gold { background: linear-gradient(to bottom, #d4a017, #8b6914); border-top: 3px solid #ffd700; border-left: 3px solid #ffd700; border-bottom: 3px solid #5c4510; border-right: 3px solid #5c4510; }
-.mc-btn.gold:hover { filter: brightness(1.2); box-shadow: 0 6px 0 #000, 0 0 20px rgba(255,215,0,0.4);}
-.mc-btn.red { background: linear-gradient(to bottom, #c0392b, #7b241c); border-top: 3px solid #e74c3c; border-left: 3px solid #e74c3c; border-bottom: 3px solid #4a1209; border-right: 3px solid #4a1209; }
-.mc-btn.red:hover { filter: brightness(1.2); box-shadow: 0 6px 0 #000, 0 0 20px rgba(231,76,60,0.4);}
-.mc-btn.purple { background: linear-gradient(to bottom, #9c27b0, #4a148c); border-top: 3px solid #ce93d8; border-left: 3px solid #ce93d8; border-bottom: 3px solid #1a0033; border-right: 3px solid #1a0033; }
-.mc-btn.purple:hover { filter: brightness(1.2); box-shadow: 0 6px 0 #000, 0 0 20px rgba(206,147,216,0.4);}
+.status-row {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 14px;
+  max-width: 950px;
+  margin: 0 auto 40px auto;
+  width: 100%;
+}
+
+.stat-block {
+  background: var(--glass-1);
+  backdrop-filter: blur(24px) saturate(180%);
+  -webkit-backdrop-filter: blur(24px) saturate(180%);
+  border: 1px solid var(--glass-stroke);
+  border-radius: var(--r-md);
+  padding: 22px 16px;
+  text-align: center;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+  box-shadow:
+    var(--sh-soft),
+    inset 0 1px 0 rgba(255, 255, 255, 0.08),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.2);
+}
+
+.stat-block::before {
+  content: '';
+  position: absolute;
+  top: 0; left: -100%;
+  width: 60%; height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.08), transparent);
+  transform: skewX(-20deg);
+  transition: left 0.8s;
+}
+
+.stat-block:hover::before { left: 200%; }
+
+.stat-block:hover {
+  transform: translateY(-4px);
+  background: var(--glass-2);
+  border-color: var(--glass-stroke-hi);
+  box-shadow:
+    var(--sh-deep),
+    0 0 30px rgba(0, 229, 255, 0.15),
+    inset 0 1px 0 rgba(255, 255, 255, 0.12);
+}
+
+.stat-label {
+  font-size: 10.5px;
+  color: var(--text-dim);
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  margin-bottom: 10px;
+  display: block;
+  font-weight: 600;
+}
+
+.stat-value {
+  font-size: 18px;
+  color: #fff;
+  font-weight: 700;
+  text-shadow: 0 0 15px rgba(0, 229, 255, 0.4);
+  letter-spacing: -0.3px;
+}
+
+.stat-value.green {
+  color: var(--emerald);
+  text-shadow: 0 0 15px rgba(0, 230, 118, 0.5);
+  position: relative;
+}
+.stat-value.green::after {
+  content: '';
+  position: absolute;
+  left: -12px;
+  top: 50%;
+  width: 8px;
+  height: 8px;
+  margin-top: -4px;
+  background: var(--emerald);
+  border-radius: 50%;
+  animation: pulse-ring 2s infinite;
+}
+
+.stat-value.red { color: var(--red); text-shadow: 0 0 15px rgba(255, 77, 109, 0.5); }
+.stat-value.aqua { color: var(--aqua); text-shadow: 0 0 15px rgba(0, 229, 255, 0.5); }
 
 /* ============================================
-   PAGE SECTIONS & GRIDS (COMPACT DESKTOP)
+   BUTTONS — Liquid Pill
 ============================================ */
-.page-body { max-width: 1100px; /* Made compact for readability */ margin: 0 auto; padding: 50px 20px 80px; }
-.grid-2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 24px; margin-bottom: 32px; }
+.hero-btns {
+  display: flex;
+  gap: 14px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
 
-/* MC CARD */
-.mc-card { background: linear-gradient(to bottom, var(--theme-bg-light), var(--theme-bg-mid)); border-top: 3px solid rgba(255,255,255,0.1); border-left: 3px solid rgba(255,255,255,0.1); border-bottom: 3px solid #000; border-right: 3px solid #000; outline: 4px solid #000; padding: 28px; transition: transform 0.2s, box-shadow 0.2s; }
-.mc-card:hover { transform: translateY(-4px); box-shadow: 0 12px 24px rgba(0,0,0,0.6); border-top-color: rgba(0, 229, 255, 0.3); border-left-color: rgba(0, 229, 255, 0.3); }
-.card-title { font-size: 13px; color: var(--theme-gold); text-shadow: 2px 2px 0 #000; margin-bottom: 20px; padding-bottom: 14px; border-bottom: 2px solid #000; border-bottom-color: var(--theme-aqua-dark); letter-spacing: 1px; display: flex; align-items: center; gap: 12px; }
-.card-body { font-size: 11px; color: var(--text-muted); line-height: 2.2; }
-.card-body strong { color: var(--text-main); }
-.hl-aqua { color: var(--theme-aqua); text-shadow: 1px 1px 0 #000; }
-.hl-green { color: var(--mc-emerald); text-shadow: 1px 1px 0 #000; }
-.hl-gold { color: var(--theme-gold); text-shadow: 1px 1px 0 #000; }
-.hl-purple { color: var(--mc-amethyst); text-shadow: 1px 1px 0 #000; }
+.mc-btn {
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: 14px;
+  letter-spacing: 0.5px;
+  padding: 15px 30px;
+  cursor: pointer;
+  text-transform: uppercase;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: var(--r-pill);
+  transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  color: #fff;
+  overflow: hidden;
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  box-shadow:
+    0 8px 24px rgba(0, 0, 0, 0.35),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.2);
+}
 
-.feature-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 16px; }
-.feature-box { background: rgba(0, 0, 0, 0.2); padding: 14px; border-left: 3px solid var(--theme-aqua-dark); outline: 1px solid #000; transition: all 0.2s; }
-.feature-box:hover { background: rgba(0, 229, 255, 0.05); border-left-color: var(--theme-aqua); transform: translateX(4px); }
-.feature-sub { font-size: 8px; color: #64748b; margin-top: 8px; display: block; line-height: 1.6; }
+.mc-btn::before {
+  content: '';
+  position: absolute;
+  top: 0; left: -100%;
+  width: 100%; height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.35), transparent);
+  transition: left 0.7s;
+}
 
-.gm-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; }
-.gm-box { padding: 14px 18px; outline: 2px solid #000; transition: transform 0.2s, box-shadow 0.2s; background: rgba(0,0,0,0.3); }
-.gm-box:hover { transform: scale(1.03); box-shadow: 0 8px 16px rgba(0,0,0,0.5); }
-.gm-surv { border-left: 4px solid var(--mc-emerald); }
-.gm-life { border-left: 4px solid var(--mc-redstone); }
-.gm-pvp { border-left: 4px solid var(--mc-lava); }
-.gm-bed { border-left: 4px solid var(--theme-aqua); }
-.gm-title { font-size: 10px; }
+.mc-btn:hover::before { left: 100%; }
+
+.mc-btn:hover {
+  transform: translateY(-3px);
+  border-color: rgba(255, 255, 255, 0.25);
+}
+
+.mc-btn:active { transform: translateY(1px); }
+
+.mc-btn.aqua {
+  background: linear-gradient(135deg, rgba(0, 229, 255, 0.9), rgba(0, 139, 163, 0.9));
+  box-shadow: 0 8px 24px rgba(0, 229, 255, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.3);
+}
+.mc-btn.aqua:hover { box-shadow: 0 12px 32px rgba(0, 229, 255, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.4); }
+
+.mc-btn.green {
+  background: linear-gradient(135deg, rgba(0, 230, 118, 0.9), rgba(45, 138, 78, 0.9));
+  box-shadow: 0 8px 24px rgba(0, 230, 118, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.3);
+}
+
+.mc-btn.gold {
+  background: linear-gradient(135deg, rgba(255, 215, 0, 0.95), rgba(184, 134, 11, 0.95));
+  box-shadow: 0 8px 24px rgba(255, 215, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.3);
+  color: #000;
+  text-shadow: none;
+}
+.mc-btn.gold:hover { box-shadow: 0 12px 32px rgba(255, 215, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.4); }
+
+.mc-btn.red {
+  background: linear-gradient(135deg, rgba(255, 77, 109, 0.9), rgba(123, 36, 28, 0.9));
+}
+
+.mc-btn.purple {
+  background: linear-gradient(135deg, rgba(192, 132, 252, 0.9), rgba(74, 20, 140, 0.9));
+}
+
+.mc-btn.discord {
+  background: linear-gradient(135deg, rgba(88, 101, 242, 0.95), rgba(71, 82, 196, 0.95));
+  box-shadow: 0 8px 24px rgba(88, 101, 242, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.3);
+}
 
 /* ============================================
-   SHOP / STORE / VOTE GRID
+   LIQUID GLASS CARDS
 ============================================ */
-.shop-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 20px; }
-.shop-card { background: linear-gradient(to bottom, var(--theme-bg-mid), var(--theme-bg-dark)); border-top: 3px solid rgba(255,255,255,0.1); border-left: 3px solid rgba(255,255,255,0.1); border-bottom: 3px solid #000; border-right: 3px solid #000; outline: 3px solid #000; padding: 24px 20px; text-align: center; transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); display: flex; flex-direction: column; }
-.shop-card:hover { transform: translateY(-8px) scale(1.02); border-top-color: var(--theme-aqua); box-shadow: 0 15px 30px rgba(0,0,0,0.6), 0 0 15px rgba(0,229,255,0.2); }
-.shop-icon { font-size: 36px; margin-bottom: 14px; display: block; filter: drop-shadow(2px 2px 0 #000); }
-.shop-name { font-size: 11px; color: var(--theme-gold); text-shadow: 2px 2px 0 #000; margin-bottom: 10px; letter-spacing: 1px;}
-.shop-desc { font-size: 9px; color: var(--text-muted); line-height: 2; margin-bottom: 20px; flex-grow: 1; }
+.glass-card {
+  background: var(--glass-1);
+  backdrop-filter: blur(30px) saturate(180%);
+  -webkit-backdrop-filter: blur(30px) saturate(180%);
+  border: 1px solid var(--glass-stroke);
+  border-radius: var(--r-lg);
+  padding: 34px;
+  box-shadow:
+    var(--sh-soft),
+    inset 0 1px 0 rgba(255, 255, 255, 0.08),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.15);
+  transition: all 0.45s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+.glass-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: -100%;
+  width: 60%; height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.06), transparent);
+  transform: skewX(-20deg);
+}
+
+.glass-card:hover {
+  transform: translateY(-6px);
+  background: var(--glass-2);
+  border-color: var(--glass-stroke-hi);
+  box-shadow:
+    var(--sh-deep),
+    0 0 40px rgba(0, 229, 255, 0.12),
+    inset 0 1px 0 rgba(255, 255, 255, 0.12);
+}
+
+.glass-card:hover::before { animation: shine-sweep 0.9s; }
 
 /* ============================================
-   MODAL / POPUP STYLES
+   SECTION TITLES
 ============================================ */
-.modal-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0, 0, 0, 0.85); backdrop-filter: blur(5px); z-index: 999; display: flex; align-items: center; justify-content: center; opacity: 0; pointer-events: none; transition: opacity 0.3s ease; padding: 20px; }
+.section-title {
+  font-family: var(--font-brand);
+  font-size: 15px;
+  color: #fff;
+  margin-bottom: 24px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  letter-spacing: 1px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  background: linear-gradient(100deg, #fff 0%, var(--aqua-soft) 40%, var(--gold-soft) 70%, #fff 100%);
+  background-size: 250% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: glint 6s linear infinite;
+}
+
+.section-title::before,
+.section-title::after {
+  content: '';
+  height: 1px;
+  flex: 1;
+  background: linear-gradient(90deg, transparent, rgba(0, 229, 255, 0.4), transparent);
+}
+
+/* ============================================
+   PAGE SECTIONS
+============================================ */
+.page-body { max-width: 1200px; margin: 0 auto; padding: 60px 24px 100px; }
+.grid-2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(380px, 1fr)); gap: 28px; margin-bottom: 40px; }
+
+.card-body { font-size: 14px; color: var(--text-soft); line-height: 1.9; }
+.card-body strong { color: var(--text); font-weight: 600; }
+.hl-aqua { color: var(--aqua); text-shadow: 0 0 12px rgba(0, 229, 255, 0.4); }
+.hl-green { color: var(--emerald); text-shadow: 0 0 12px rgba(0, 230, 118, 0.4); }
+.hl-gold { color: var(--gold); text-shadow: 0 0 12px rgba(255, 215, 0, 0.4); }
+.hl-purple { color: var(--purple); text-shadow: 0 0 12px rgba(192, 132, 252, 0.4); }
+
+/* ============================================
+   FEATURE GRID
+============================================ */
+.feature-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 14px; }
+
+.feature-box {
+  background: rgba(255, 255, 255, 0.025);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: var(--r-sm);
+  padding: 18px;
+  transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  opacity: 0;
+  animation: rise-fade 0.5s ease forwards;
+  font-size: 13px;
+  color: #fff;
+  font-weight: 500;
+}
+
+.feature-box:hover {
+  background: rgba(0, 229, 255, 0.06);
+  border-color: rgba(0, 229, 255, 0.3);
+  transform: translateX(6px);
+  box-shadow: 0 8px 24px rgba(0, 229, 255, 0.15);
+}
+
+.feature-sub {
+  font-size: 11.5px;
+  color: var(--text-faint);
+  margin-top: 8px;
+  display: block;
+  line-height: 1.6;
+  font-weight: 400;
+}
+
+/* ============================================
+   GAMEMODE BOXES
+============================================ */
+.gm-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px; }
+
+.gm-box {
+  padding: 20px 22px;
+  border-radius: var(--r-md);
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+  font-size: 13px;
+}
+
+.gm-box::after {
+  content: '';
+  position: absolute;
+  top: 0; left: -100%;
+  width: 100%; height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.05), transparent);
+  transition: left 0.8s;
+}
+
+.gm-box:hover::after { left: 100%; }
+
+.gm-box:hover {
+  transform: translateY(-3px);
+  border-color: rgba(255, 255, 255, 0.15);
+  background: rgba(255, 255, 255, 0.055);
+  box-shadow: var(--sh-soft);
+}
+
+.gm-surv { box-shadow: inset 4px 0 0 var(--emerald); }
+.gm-life { box-shadow: inset 4px 0 0 var(--red); }
+.gm-pvp  { box-shadow: inset 4px 0 0 var(--orange); }
+.gm-bed  { box-shadow: inset 4px 0 0 var(--aqua); }
+
+.gm-title { font-size: 13.5px; font-weight: 700; }
+
+/* ============================================
+   SHOP CARDS
+============================================ */
+.shop-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 22px; }
+
+.shop-card {
+  background: var(--glass-1);
+  backdrop-filter: blur(28px) saturate(180%);
+  -webkit-backdrop-filter: blur(28px) saturate(180%);
+  border: 1px solid var(--glass-stroke);
+  border-radius: var(--r-lg);
+  padding: 34px 26px;
+  text-align: center;
+  transition: all 0.45s cubic-bezier(0.4, 0, 0.2, 1);
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  overflow: hidden;
+  box-shadow:
+    var(--sh-soft),
+    inset 0 1px 0 rgba(255, 255, 255, 0.08),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.15);
+}
+
+.shop-card::after {
+  content: '';
+  position: absolute;
+  top: 0; left: -100%;
+  width: 50%; height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+  transform: skewX(-20deg);
+}
+
+.shop-card:hover::after { animation: shine-sweep 0.9s; }
+
+.shop-card:hover {
+  transform: translateY(-10px) scale(1.02);
+  background: var(--glass-2);
+  border-color: var(--glass-stroke-hi);
+  box-shadow:
+    var(--sh-deep),
+    0 0 40px rgba(0, 229, 255, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.15);
+}
+
+.shop-icon {
+  font-size: 52px;
+  margin-bottom: 20px;
+  display: block;
+  filter: drop-shadow(0 0 15px rgba(0, 229, 255, 0.4));
+  transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.shop-card:hover .shop-icon { transform: scale(1.2) rotate(-8deg); }
+
+.shop-name {
+  font-family: var(--font-brand);
+  font-size: 14px;
+  color: #fff;
+  margin-bottom: 14px;
+  letter-spacing: 1.5px;
+  background: linear-gradient(100deg, #fff 0%, var(--gold-soft) 50%, #fff 100%);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: glint 5s linear infinite;
+}
+
+.shop-desc {
+  font-size: 12.5px;
+  color: var(--text-dim);
+  line-height: 1.7;
+  margin-bottom: 24px;
+  flex-grow: 1;
+  font-weight: 400;
+}
+
+/* ============================================
+   MODAL
+============================================ */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(20px) saturate(120%);
+  -webkit-backdrop-filter: blur(20px) saturate(120%);
+  z-index: 999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.35s ease;
+  padding: 20px;
+}
+
 .modal-overlay.active { opacity: 1; pointer-events: auto; }
-.modal-content { background: linear-gradient(to bottom, #1e293b, #0f172a); border: 4px solid var(--theme-aqua); box-shadow: 0 0 40px rgba(0, 229, 255, 0.2), inset 0 0 20px rgba(0,0,0,0.8); width: 100%; max-width: 800px; max-height: 90vh; overflow-y: auto; position: relative; transform: translateY(20px); transition: transform 0.3s ease; padding: 0; }
-.modal-overlay.active .modal-content { transform: translateY(0); }
-.modal-header { background: #080c14; padding: 20px; border-bottom: 3px solid var(--theme-aqua-dark); display: flex; justify-content: space-between; align-items: center; }
-.modal-title { font-size: 14px; color: var(--theme-gold); text-shadow: 2px 2px 0 #000; }
-.close-btn { font-size: 24px; color: var(--theme-red); cursor: pointer; text-shadow: 2px 2px 0 #000; transition: color 0.2s; }
-.close-btn:hover { color: #ff1744; }
-.modal-body { padding: 24px; text-align: center; }
-.modal-kit-img { width: 100%; max-width: 400px; display: block; margin: 0 auto 24px auto; border: 3px solid #334155; border-radius: 4px; box-shadow: 0 8px 25px rgba(0,0,0,0.5); image-rendering: pixelated; }
-.modal-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-bottom: 24px; text-align: left; }
+
+.modal-content {
+  background: linear-gradient(180deg, rgba(20, 26, 40, 0.95), rgba(8, 12, 20, 0.98));
+  backdrop-filter: blur(30px) saturate(180%);
+  -webkit-backdrop-filter: blur(30px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: var(--r-xl);
+  box-shadow:
+    0 40px 100px rgba(0, 0, 0, 0.8),
+    0 0 60px rgba(0, 229, 255, 0.15),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  width: 100%;
+  max-width: 850px;
+  max-height: 90vh;
+  overflow-y: auto;
+  position: relative;
+  transform: translateY(20px);
+  transition: transform 0.35s ease;
+}
+
+.modal-overlay.active .modal-content {
+  transform: translateY(0);
+  animation: modal-zoom 0.45s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.modal-header {
+  padding: 26px 32px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.modal-title {
+  font-family: var(--font-brand);
+  font-size: 15px;
+  background: linear-gradient(100deg, #fff, var(--gold-soft), #fff);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: glint 5s linear infinite;
+}
+
+.close-btn {
+  font-size: 26px;
+  color: var(--text-soft);
+  cursor: pointer;
+  transition: all 0.3s;
+  width: 38px;
+  height: 38px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  line-height: 1;
+}
+
+.close-btn:hover {
+  color: #fff;
+  background: rgba(255, 77, 109, 0.2);
+  border-color: rgba(255, 77, 109, 0.4);
+  transform: rotate(90deg);
+}
+
+.modal-body { padding: 32px; text-align: center; }
+
+.modal-kit-img {
+  width: 100%;
+  max-width: 460px;
+  display: block;
+  margin: 0 auto 28px auto;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: var(--r-md);
+  box-shadow: 0 12px 40px rgba(0,0,0,0.5), 0 0 40px rgba(0, 229, 255, 0.15);
+  image-rendering: pixelated;
+  animation: float-logo 5s ease-in-out infinite;
+}
+
+.modal-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; margin-bottom: 28px; text-align: left; }
 @media (max-width: 600px) { .modal-grid { grid-template-columns: 1fr; } }
+
 .rank-list { list-style: none; padding: 0; margin: 0; }
-.rank-list li { font-size: 9px; color: var(--text-muted); margin-bottom: 12px; padding-left: 20px; position: relative; line-height: 1.8; }
-.rank-list li::before { content: '•'; position: absolute; left: 0; color: var(--theme-aqua); font-size: 14px; }
-.rank-list code { background: rgba(0,0,0,0.4); padding: 4px 6px; color: #a78bfa; border: 1px solid #334155; font-family: monospace; }
-.modal-footer { background: rgba(0,0,0,0.3); padding: 20px 24px; border-top: 2px solid #334155; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; }
-.price-tag { font-size: 10px; color: var(--text-main); line-height: 2; text-align: left; }
-.price-tag span { color: var(--mc-emerald); font-size: 11px; }
+
+.rank-list li {
+  font-size: 13px;
+  color: var(--text-soft);
+  margin-bottom: 13px;
+  padding-left: 24px;
+  position: relative;
+  line-height: 1.7;
+  animation: reveal-up 0.5s ease backwards;
+  font-weight: 400;
+}
+
+.rank-list li::before {
+  content: '✦';
+  position: absolute;
+  left: 0;
+  color: var(--aqua);
+  font-size: 12px;
+  top: 2px;
+  text-shadow: 0 0 8px var(--aqua);
+}
+
+.rank-list code {
+  background: rgba(0, 229, 255, 0.1);
+  padding: 3px 8px;
+  color: var(--aqua-soft);
+  border: 1px solid rgba(0, 229, 255, 0.2);
+  border-radius: 6px;
+  font-family: 'SF Mono', monospace;
+  font-size: 12px;
+}
+
+.modal-footer {
+  padding: 22px 32px;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 16px;
+  background: rgba(0, 0, 0, 0.2);
+}
+
+.price-tag {
+  font-size: 14px;
+  color: var(--text);
+  line-height: 1.9;
+  text-align: left;
+  font-weight: 500;
+}
+
+.price-tag span {
+  color: var(--emerald);
+  font-size: 16px;
+  font-weight: 700;
+  text-shadow: 0 0 12px rgba(0, 230, 118, 0.5);
+}
 
 /* ============================================
-   SECTION DIVIDER & PAGE BANNER
+   DIVIDER
 ============================================ */
-.mc-divider { height: 6px; background: var(--theme-aqua-dark); border-top: 2px solid #000; border-bottom: 2px solid #000; margin: 0; box-shadow: 0 0 10px rgba(0,229,255,0.2); }
-.page-banner { background: linear-gradient(to right, rgba(8,12,20,0.9), rgba(17,24,39,0.7), rgba(8,12,20,0.9)), repeating-linear-gradient(45deg, rgba(0,229,255,0.03) 0px, rgba(0,229,255,0.03) 4px, transparent 4px, transparent 32px); border-bottom: 4px solid #000; border-top: 4px solid #000; padding: 32px 20px; text-align: center; margin-bottom: 0; }
-.page-banner h2 { font-size: 20px; color: var(--theme-aqua); text-shadow: 3px 3px 0 #000; letter-spacing: 4px; margin-bottom: 10px;}
-.page-banner p { font-size: 9px; color: var(--text-muted); letter-spacing: 1px; }
+.mc-divider {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+  margin: 0;
+  position: relative;
+  overflow: hidden;
+}
+
+.mc-divider::after {
+  content: '';
+  position: absolute;
+  top: 0; left: -30%;
+  width: 30%; height: 100%;
+  background: linear-gradient(90deg, transparent, var(--aqua), transparent);
+  animation: divider-scan 5s linear infinite;
+}
+
+.page-banner {
+  padding: 80px 24px 60px;
+  text-align: center;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.page-banner h2 {
+  font-family: var(--font-brand);
+  font-size: 26px;
+  background: linear-gradient(100deg, #fff 0%, var(--aqua-soft) 40%, var(--gold-soft) 70%, #fff 100%);
+  background-size: 250% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  letter-spacing: 4px;
+  margin-bottom: 14px;
+  animation: glint 5s linear infinite;
+}
+
+.page-banner p { font-size: 14px; color: var(--text-dim); letter-spacing: 0.5px; }
 
 /* ============================================
-   MISC UTILITIES
+   UTILITIES
 ============================================ */
 .mb24 { margin-bottom: 24px; }
 .mt24 { margin-top: 24px; }
-.badge { display: inline-block; font-size: 8px; padding: 6px 10px; outline: 2px solid #000; text-shadow: 1px 1px 0 #000; letter-spacing: 1px; }
-.badge.green { background: var(--mc-grass2); color: #fff; }
-.badge.blue { background: var(--theme-aqua-dark); color: #fff; }
-.pinned-note { border-left: 4px solid var(--theme-gold); padding: 14px 16px; margin-bottom: 16px; background: rgba(255,215,0,0.05); font-size: 10px; }
-.pinned-note.aqua-border { border-left-color: var(--theme-aqua); background: rgba(0,229,255,0.05); }
-.rules-list { list-style-type: none; padding: 0; margin: 0; line-height: 2.8; font-size: 10px; }
-.rules-list li::before { content: "» "; color: var(--theme-aqua); font-size: 12px; }
+
+.badge {
+  display: inline-block;
+  font-size: 10px;
+  font-weight: 700;
+  padding: 5px 12px;
+  border-radius: var(--r-pill);
+  letter-spacing: 0.8px;
+  animation: float-badge 3s ease-in-out infinite;
+  text-transform: uppercase;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.badge.green {
+  background: linear-gradient(135deg, rgba(0, 230, 118, 0.9), rgba(45, 138, 78, 0.9));
+  color: #000;
+  box-shadow: 0 0 20px rgba(0, 230, 118, 0.5);
+}
+
+.badge.blue {
+  background: linear-gradient(135deg, rgba(0, 229, 255, 0.9), rgba(0, 139, 163, 0.9));
+  color: #000;
+  box-shadow: 0 0 20px rgba(0, 229, 255, 0.5);
+}
+
+.pinned-note {
+  border-left: 3px solid var(--gold);
+  padding: 16px 20px;
+  margin-bottom: 14px;
+  background: rgba(255, 215, 0, 0.04);
+  font-size: 13.5px;
+  border-radius: 0 var(--r-sm) var(--r-sm) 0;
+  transition: all 0.3s;
+  color: var(--text-soft);
+}
+
+.pinned-note:hover {
+  background: rgba(255, 215, 0, 0.09);
+  transform: translateX(5px);
+  box-shadow: 0 0 25px rgba(255, 215, 0, 0.15);
+}
+
+.pinned-note.aqua-border {
+  border-left-color: var(--aqua);
+  background: rgba(0, 229, 255, 0.04);
+}
+
+.pinned-note.aqua-border:hover {
+  background: rgba(0, 229, 255, 0.09);
+  box-shadow: 0 0 25px rgba(0, 229, 255, 0.15);
+}
+
+.rules-list { list-style: none; padding: 0; margin: 0; font-size: 13.5px; color: var(--text-soft); }
+.rules-list li {
+  transition: all 0.25s;
+  position: relative;
+  padding-left: 22px;
+  margin-bottom: 12px;
+  line-height: 1.7;
+}
+.rules-list li::before {
+  content: "✦";
+  color: var(--aqua);
+  font-size: 11px;
+  position: absolute;
+  left: 0;
+  top: 3px;
+  text-shadow: 0 0 8px var(--aqua);
+}
+.rules-list li:hover { transform: translateX(5px); color: #fff; }
+.rules-list li:hover::before { color: var(--gold); text-shadow: 0 0 8px var(--gold); }
 
 /* ============================================
    FOOTER
 ============================================ */
-footer { position: relative; z-index: 1; background: #05080f; border-top: 4px solid var(--theme-aqua); padding: 50px 24px 32px; }
-.footer-inner { max-width: 1100px; margin: 0 auto; display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 40px; margin-bottom: 40px; }
-.footer-logo { font-size: 16px; color: var(--theme-gold); text-shadow: 2px 2px 0 var(--theme-gold-dark), 4px 4px 0 #000; margin-bottom: 16px; letter-spacing: 2px; display: flex; align-items: center; }
-.footer-desc { font-size: 9px; color: #64748b; line-height: 2.2; max-width: 280px; }
-.footer-heading { font-size: 10px; color: var(--theme-aqua); text-shadow: 2px 2px 0 #000; margin-bottom: 16px; letter-spacing: 1px; }
+footer {
+  position: relative;
+  z-index: 1;
+  background: rgba(2, 4, 8, 0.6);
+  backdrop-filter: blur(30px) saturate(180%);
+  -webkit-backdrop-filter: blur(30px) saturate(180%);
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  padding: 60px 24px 40px;
+}
+
+.footer-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1fr;
+  gap: 48px;
+  margin-bottom: 48px;
+}
+
+.footer-logo {
+  font-family: var(--font-brand);
+  font-size: 17px;
+  background: linear-gradient(100deg, #fff 0%, var(--aqua-soft) 50%, #fff 100%);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-bottom: 18px;
+  letter-spacing: 2px;
+  display: flex;
+  align-items: center;
+  animation: glint 5s linear infinite;
+}
+
+.footer-desc { font-size: 12.5px; color: var(--text-faint); line-height: 1.9; max-width: 300px; }
+
+.footer-heading {
+  font-size: 12px;
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 20px;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+  opacity: 0.9;
+}
+
 .footer-links { list-style: none; }
-.footer-links li { margin-bottom: 12px; }
-.footer-links a { font-size: 9px; color: #94a3b8; text-decoration: none; cursor: pointer; transition: color 0.2s; letter-spacing: 1px; }
-.footer-links a:hover { color: var(--theme-gold); text-shadow: 1px 1px 0 #000;}
-.footer-bottom { max-width: 1100px; margin: 0 auto; padding-top: 20px; border-top: 2px solid #111827; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; }
-.footer-copy, .footer-ip { font-size: 8px; color: #475569; letter-spacing: 1px; }
+.footer-links li { margin-bottom: 13px; }
+
+.footer-links a {
+  font-size: 13px;
+  color: var(--text-dim);
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 0.25s;
+  display: inline-block;
+  font-weight: 400;
+}
+
+.footer-links a:hover {
+  color: var(--aqua);
+  text-shadow: 0 0 12px rgba(0, 229, 255, 0.6);
+  padding-left: 6px;
+}
+
+.footer-bottom {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding-top: 24px;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.footer-copy, .footer-ip { font-size: 11.5px; color: var(--text-faint); letter-spacing: 0.3px; }
+
+/* ============================================
+   BACK TO TOP
+============================================ */
+#back-to-top {
+  position: fixed;
+  bottom: 28px;
+  right: 28px;
+  width: 52px;
+  height: 52px;
+  background: var(--glass-2);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border: 1px solid var(--glass-stroke-hi);
+  border-radius: 50%;
+  color: #fff;
+  font-size: 16px;
+  cursor: pointer;
+  z-index: 500;
+  opacity: 0;
+  pointer-events: none;
+  transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: var(--sh-soft), inset 0 1px 0 rgba(255, 255, 255, 0.15);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#back-to-top.show { opacity: 1; pointer-events: auto; }
+
+#back-to-top:hover {
+  transform: translateY(-4px);
+  background: var(--glass-3);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.5), 0 0 30px rgba(0, 229, 255, 0.3);
+  border-color: var(--aqua);
+}
 
 /* ============================================
    TOAST
 ============================================ */
-.toast { position: fixed; bottom: 40px; left: 50%; transform: translateX(-50%) translateY(20px); background: var(--theme-bg-light); border: 2px solid var(--theme-aqua); color: var(--text-main); font-size: 10px; letter-spacing: 1px; padding: 14px 28px; z-index: 9999; opacity: 0; transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55); white-space: nowrap; box-shadow: 0 10px 30px rgba(0,0,0,0.8); pointer-events: none; }
+.toast {
+  position: fixed;
+  bottom: 40px;
+  left: 50%;
+  transform: translateX(-50%) translateY(20px);
+  background: rgba(20, 26, 40, 0.85);
+  backdrop-filter: blur(30px) saturate(180%);
+  -webkit-backdrop-filter: blur(30px) saturate(180%);
+  border: 1px solid rgba(0, 229, 255, 0.3);
+  border-radius: var(--r-pill);
+  color: #fff;
+  font-size: 13.5px;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+  padding: 16px 32px;
+  z-index: 9999;
+  opacity: 0;
+  transition: all 0.45s cubic-bezier(0.34, 1.56, 0.64, 1);
+  white-space: nowrap;
+  box-shadow:
+    0 15px 40px rgba(0, 0, 0, 0.6),
+    0 0 30px rgba(0, 229, 255, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.15);
+  pointer-events: none;
+}
+
 .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
 
 /* ============================================
-   MOBILE OPTIMIZATION (THE MAGIC FIX)
+   SCROLL REVEAL
 ============================================ */
-@media (max-width: 800px) {
-  /* 2x2 Grid for status cards on tablet/mobile */
-  .status-row { grid-template-columns: repeat(2, 1fr); gap: 12px; }
+.reveal { opacity: 0; transform: translateY(30px); transition: opacity 0.8s ease, transform 0.8s ease; }
+.reveal.visible { opacity: 1; transform: translateY(0); }
+
+/* ============================================
+   RESPONSIVE
+============================================ */
+@media (max-width: 1024px) {
+  .status-row { grid-template-columns: repeat(2, 1fr); }
   .grid-2 { grid-template-columns: 1fr; }
-  .footer-inner { grid-template-columns: 1fr 1fr; gap: 24px; }
+  .footer-inner { grid-template-columns: 1fr 1fr; gap: 32px; }
 }
 
 @media (max-width: 600px) {
-  /* Restructure Header for Mobile */
-  header { 
-    flex-direction: column; 
-    height: auto; 
-    padding: 12px 0 0 0; 
-    gap: 12px; 
-  }
-  .nav-logo { margin: 0 auto; font-size: 14px; }
-  nav { 
-    width: 100%; 
-    overflow-x: auto; 
-    padding: 0 16px 12px 16px; 
-    justify-content: flex-start; 
-  }
-  /* Hide scrollbar for a clean look */
+  header { flex-direction: column; height: auto; padding: 14px 0 0 0; gap: 14px; }
+  .nav-logo { margin: 0 auto; font-size: 15px; }
+  nav { width: 100%; overflow-x: auto; padding: 0 16px 14px 16px; justify-content: flex-start; }
   nav::-webkit-scrollbar { display: none; }
-  
-  /* Adjust wrapper for taller header */
-  .site-wrapper { padding-top: 96px; } 
-  
-  .hero { padding: 50px 16px 40px; }
-  .hero-logo-img { height: 70px; }
-  .hero-title { font-size: 22px; margin-bottom: 8px; }
-  .hero-sub { font-size: 9px; margin-bottom: 30px; }
-  
-  .stat-block { padding: 12px 10px; min-width: auto; }
-  .stat-label { font-size: 7px; }
-  .stat-value { font-size: 12px; }
-  
-  .page-body { padding: 30px 16px 60px; }
-  .mc-card { padding: 20px; }
-  
+  .nav-btn { font-size: 12.5px; padding: 9px 16px; flex-shrink: 0; }
+  .site-wrapper { padding-top: 106px; }
+  .hero { padding: 40px 18px 50px; }
+  .hero-logo-img { height: 72px; }
+  .hero-title { font-size: 26px; letter-spacing: 2px; }
+  .hero-sub { font-size: 11.5px; letter-spacing: 1.5px; }
+  .hero-btns { gap: 10px; }
+  .mc-btn { font-size: 12.5px; padding: 13px 22px; }
+  .stat-block { padding: 16px 12px; }
+  .stat-label { font-size: 9.5px; }
+  .stat-value { font-size: 15px; }
+  .page-body { padding: 40px 18px 80px; }
+  .glass-card { padding: 26px 20px; }
+  .section-title { font-size: 13px; }
+  .shop-card { padding: 28px 22px; }
+  .shop-icon { font-size: 44px; }
   .footer-inner { grid-template-columns: 1fr; text-align: center; }
   .footer-logo { justify-content: center; }
   .footer-desc { margin: 0 auto; }
   .footer-bottom { flex-direction: column; text-align: center; }
+  #back-to-top { bottom: 18px; right: 18px; width: 46px; height: 46px; }
+  .modal-header { padding: 20px 22px; }
+  .modal-body { padding: 22px; }
+  .modal-footer { padding: 18px 22px; }
 }
 </style>
 </head>
 <body>
 
+<div id="scroll-progress"></div>
 <canvas id="bg-canvas"></canvas>
 
 <header>
@@ -320,11 +1235,11 @@ footer { position: relative; z-index: 1; background: #05080f; border-top: 4px so
     GalaxyMC
   </div>
   <nav>
-    <button class="nav-btn active" onclick="showPage('dashboard', this)">🏠 Home</button>
-    <button class="nav-btn" onclick="showPage('news', this)">📢 News</button>
-    <button class="nav-btn" onclick="showPage('store', this)">🛒 Store</button>
-    <button class="nav-btn" onclick="showPage('vote', this)">🗳️ Vote</button>
-    <button class="nav-btn" onclick="showPage('rules', this)">📜 Rules</button>
+    <button class="nav-btn active" onclick="showPage('dashboard', this)">Home</button>
+    <button class="nav-btn" onclick="showPage('news', this)">News</button>
+    <button class="nav-btn" onclick="showPage('store', this)">Store</button>
+    <button class="nav-btn" onclick="showPage('vote', this)">Vote</button>
+    <button class="nav-btn" onclick="showPage('rules', this)">Rules</button>
   </nav>
 </header>
 
@@ -333,43 +1248,45 @@ footer { position: relative; z-index: 1; background: #05080f; border-top: 4px so
   <!-- HOME TAB -->
   <div id="page-dashboard" class="tab-page active">
     <div class="hero">
-      <img src="https://ik.imagekit.io/td6lavsbp/1458361061257380009.webp" alt="GalaxyMC Logo" class="hero-logo-img">
-      <h1 class="hero-title">✦ GALAXYMC ✦</h1>
-      <p class="hero-sub">🚀 India's #1 Minecraft Server 🚀</p>
+      <div class="hero-content">
+        <img src="https://ik.imagekit.io/td6lavsbp/1458361061257380009.webp" alt="GalaxyMC Logo" class="hero-logo-img">
+        <h1 class="hero-title">GALAXYMC</h1>
+        <div style="width: 60%; max-width: 420px; height: 2px; margin: 12px auto 28px auto; background: linear-gradient(90deg, transparent, var(--aqua), var(--gold), var(--aqua), transparent); box-shadow: 0 0 20px rgba(0, 229, 255, 0.6); border-radius: 2px;"></div>
+        <p class="hero-sub"><span id="typingText"></span><span class="typing-cursor"></span></p>
 
-      <div class="status-row">
-        <div class="stat-block">
-          <span class="stat-label">Server Status</span>
-          <span class="stat-value" id="server-status">Loading...</span>
+        <div class="status-row reveal">
+          <div class="stat-block">
+            <span class="stat-label">Status</span>
+            <span class="stat-value" id="server-status">Loading...</span>
+          </div>
+          <div class="stat-block">
+            <span class="stat-label">Players</span>
+            <span class="stat-value" id="player-count">Loading...</span>
+          </div>
+          <div class="stat-block">
+            <span class="stat-label">Version</span>
+            <span class="stat-value" id="server-version">Loading...</span>
+          </div>
+          <div class="stat-block">
+            <span class="stat-label">TPS</span>
+            <span class="stat-value" id="server-tps">Loading...</span>
+          </div>
         </div>
-        <div class="stat-block">
-          <span class="stat-label">Players Online</span>
-          <span class="stat-value" id="player-count">Loading...</span>
-        </div>
-        <div class="stat-block">
-          <span class="stat-label">Version</span>
-          <span class="stat-value" id="server-version">Loading...</span>
-        </div>
-        <div class="stat-block">
-          <span class="stat-label">Server TPS</span>
-          <span class="stat-value" id="server-tps">Loading...</span>
+
+        <div class="hero-btns reveal">
+          <button class="mc-btn aqua" onclick="copyIP('play.galaxymcpe.fun:19132')">📋 Copy IP</button>
+          <button class="mc-btn gold" onclick="showPage('store', document.querySelector('[onclick*=store]'))">🛒 Buy Ranks</button>
+          <button class="mc-btn discord" onclick="window.open('https://discord.galaxymcpe.fun','_blank')">💬 Discord</button>
         </div>
       </div>
-
-      <div class="hero-btns">
-        <button class="mc-btn aqua" onclick="copyIP('play.galaxymcpe.fun:19132')">📋 COPY IP</button>
-        <button class="mc-btn gold" onclick="showPage('store', document.querySelector('[onclick*=store]'))">🛒 Buy Ranks</button>
-        <button class="mc-btn" style="background:#5865F2; border-color:#4752C4;" onclick="window.open('https://discord.galaxymcpe.fun','_blank')">💬 Discord</button>
-      </div>
-      <div class="hero-trim"></div>
     </div>
 
     <div class="mc-divider"></div>
 
     <div class="page-body">
       <div class="grid-2">
-        <div class="mc-card">
-          <div class="card-title">🌌 About GalaxyMC</div>
+        <div class="glass-card reveal">
+          <div class="section-title">About GalaxyMC</div>
           <div class="card-body">
             Welcome to <span class="hl-aqua">GalaxyMC</span> — India's premium public Minecraft server.<br><br>
             Built with 2+ years of Minecraft experience, we deliver a <span class="hl-green">lag-free</span>, <span class="hl-aqua">custom</span>, and <span class="hl-gold">competitive</span> experience.<br><br>
@@ -377,52 +1294,50 @@ footer { position: relative; z-index: 1; background: #05080f; border-top: 4px so
           </div>
         </div>
 
-        <div class="mc-card">
-          <div class="card-title">⭐ Quick Connect</div>
+        <div class="glass-card reveal">
+          <div class="section-title">Quick Connect</div>
           <div class="card-body">
             <span class="hl-aqua">🔗 Bedrock IP:</span><br>
-            &nbsp;&nbsp;<span class="hl-gold" style="cursor:pointer" onclick="copyIP('play.galaxymcpe.fun:19132')">play.galaxymcpe.fun</span><br>
-            &nbsp;&nbsp;Port: <span class="hl-green">19132</span><br><br>
+            <span class="hl-gold" style="cursor:pointer" onclick="copyIP('play.galaxymcpe.fun:19132')">play.galaxymcpe.fun</span><br>
+            Port: <span class="hl-green">19132</span><br><br>
             <span class="hl-purple">💬 Discord:</span><br>
-            &nbsp;&nbsp;<span class="hl-gold" style="cursor:pointer" onclick="window.open('https://discord.galaxymcpe.fun','_blank')">discord.galaxymcpe.fun</span>
+            <span class="hl-gold" style="cursor:pointer" onclick="window.open('https://discord.galaxymcpe.fun','_blank')">discord.galaxymcpe.fun</span>
           </div>
         </div>
       </div>
 
-      <div class="mc-card mb24">
-        <div class="card-title">✨ Server Features</div>
-        <div class="card-body feature-grid">
-          <div class="feature-box">💻 &nbsp;<span class="hl-aqua">Cross-Play Support</span><span class="feature-sub">Java + Bedrock + Cracked + Premium</span></div>
-          <div class="feature-box">⏳ &nbsp;<span class="hl-green">24/7 Online</span><span class="feature-sub">Server is always up and running</span></div>
-          <div class="feature-box">🗳️ &nbsp;<span class="hl-gold">Voting & Free Ranks</span><span class="feature-sub">Free rankup system by doing votes</span></div>
-          <div class="feature-box">🏡 &nbsp;<span class="hl-green">Land Claim & Eco</span><span class="feature-sub">Protect builds and trade with players</span></div>
-          <div class="feature-box">⚔️ &nbsp;<span class="hl-aqua">Arena & Warps</span><span class="feature-sub">Fast travel and PvP arenas</span></div>
-          <div class="feature-box">🛡️ &nbsp;<span class="hl-green">Lag-Free Play</span><span class="feature-sub">Smooth experience with low ping</span></div>
-          <div class="feature-box">🌍 &nbsp;<span class="hl-gold">Custom World Gen</span><span class="feature-sub">Beautiful terrain and structures</span></div>
-          <div class="feature-box">👮 &nbsp;<span class="hl-aqua">Active Staff</span><span class="feature-sub">Active support and no hackers</span></div>
+      <div class="glass-card mb24 reveal">
+        <div class="section-title">Server Features</div>
+        <div class="feature-grid">
+          <div class="feature-box">💻 <span class="hl-aqua">Cross-Play Support</span><span class="feature-sub">Java + Bedrock + Cracked + Premium</span></div>
+          <div class="feature-box">⏳ <span class="hl-green">24/7 Online</span><span class="feature-sub">Server is always up and running</span></div>
+          <div class="feature-box">🗳️ <span class="hl-gold">Voting & Free Ranks</span><span class="feature-sub">Free rankup system by doing votes</span></div>
+          <div class="feature-box">🏡 <span class="hl-green">Land Claim & Eco</span><span class="feature-sub">Protect builds and trade with players</span></div>
+          <div class="feature-box">⚔️ <span class="hl-aqua">Arena & Warps</span><span class="feature-sub">Fast travel and PvP arenas</span></div>
+          <div class="feature-box">🛡️ <span class="hl-green">Lag-Free Play</span><span class="feature-sub">Smooth experience with low ping</span></div>
+          <div class="feature-box">🌍 <span class="hl-gold">Custom World Gen</span><span class="feature-sub">Beautiful terrain and structures</span></div>
+          <div class="feature-box">👮 <span class="hl-aqua">Active Staff</span><span class="feature-sub">Active support and no hackers</span></div>
         </div>
       </div>
 
-      <div class="grid-2">
-        <div class="mc-card">
-          <div class="card-title">🎮 Gamemodes</div>
-          <div class="card-body gm-grid">
-            <div class="gm-box gm-surv">
-              <span class="hl-green gm-title">⚔️ Survival</span> &nbsp;<span class="badge green">ACTIVE</span><br>
-              <span class="feature-sub">Custom world gen, rare ores, brutal mobs</span>
-            </div>
-            <div class="gm-box gm-life">
-              <span class="hl-purple gm-title">❤️ Lifesteal</span> &nbsp;<span class="badge blue">SOON</span><br>
-              <span class="feature-sub">Steal hearts on kill, lose hearts on death</span>
-            </div>
-            <div class="gm-box gm-pvp">
-              <span class="hl-gold gm-title">🔥 PvP Practice</span> &nbsp;<span class="badge blue">SOON</span><br>
-              <span class="feature-sub">Action-packed player vs player combat</span>
-            </div>
-            <div class="gm-box gm-bed">
-              <span class="hl-aqua gm-title">🛏️ Bedwars</span> &nbsp;<span class="badge blue">SOON</span><br>
-              <span class="feature-sub">Defend your bed and destroy others</span>
-            </div>
+      <div class="glass-card reveal">
+        <div class="section-title">Gamemodes</div>
+        <div class="gm-grid">
+          <div class="gm-box gm-surv">
+            <span class="hl-green gm-title">⚔️ Survival</span> <span class="badge green">ACTIVE</span><br>
+            <span class="feature-sub">Custom world gen, rare ores, brutal mobs</span>
+          </div>
+          <div class="gm-box gm-life">
+            <span class="hl-purple gm-title">❤️ Lifesteal</span> <span class="badge blue">SOON</span><br>
+            <span class="feature-sub">Steal hearts on kill, lose hearts on death</span>
+          </div>
+          <div class="gm-box gm-pvp">
+            <span class="hl-gold gm-title">🔥 PvP Practice</span> <span class="badge blue">SOON</span><br>
+            <span class="feature-sub">Action-packed player vs player combat</span>
+          </div>
+          <div class="gm-box gm-bed">
+            <span class="hl-aqua gm-title">🛏️ Bedwars</span> <span class="badge blue">SOON</span><br>
+            <span class="feature-sub">Defend your bed and destroy others</span>
           </div>
         </div>
       </div>
@@ -432,21 +1347,21 @@ footer { position: relative; z-index: 1; background: #05080f; border-top: 4px so
   <!-- NEWS TAB -->
   <div id="page-news" class="tab-page">
     <div class="page-banner">
-      <h2>📢 ANNOUNCEMENTS</h2>
+      <h2>ANNOUNCEMENTS</h2>
       <p>Latest news, updates and events from GalaxyMC</p>
     </div>
     <div class="mc-divider"></div>
     <div class="page-body">
-      <div style="max-width: 700px; margin: 0 auto;">
-        <div class="mc-card">
-          <div class="card-title">📌 Pinned Announcements</div>
+      <div style="max-width: 800px; margin: 0 auto;">
+        <div class="glass-card reveal">
+          <div class="section-title">Pinned Announcements</div>
           <div class="card-body">
             <div class="pinned-note">
-              <span class="hl-gold">Server IP Update</span><br><br>
+              <span class="hl-gold">Server IP Update</span><br>
               play.galaxymcpe.fun is the official IP. Port: 19132
             </div>
             <div class="pinned-note aqua-border">
-              <span class="hl-aqua">Discord is mandatory</span><br><br>
+              <span class="hl-aqua">Discord is mandatory</span><br>
               Join Discord for events, support, and purchasing ranks via tickets.
             </div>
           </div>
@@ -458,54 +1373,49 @@ footer { position: relative; z-index: 1; background: #05080f; border-top: 4px so
   <!-- STORE TAB -->
   <div id="page-store" class="tab-page">
     <div class="page-banner">
-      <h2>🛒 RANK STORE</h2>
+      <h2>RANK STORE</h2>
       <p>Support the server — unlock exclusive perks!</p>
     </div>
     <div class="mc-divider"></div>
     <div class="page-body">
-      <div class="mc-card mb24" style="border-top-color:var(--mc-emerald); border-left-color:var(--mc-emerald);">
-        <div class="card-title">ℹ️ How To Purchase</div>
+      <div class="glass-card mb24 reveal" style="border-color: rgba(0, 230, 118, 0.3);">
+        <div class="section-title" style="background: linear-gradient(100deg, #fff 0%, var(--emerald) 50%, #fff 100%); background-size: 250% auto; -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;">How To Purchase</div>
         <div class="card-body">
           All purchases go directly toward server development and maintenance. Ranks are <span class="hl-green">NOT pay-to-win</span>.<br><br>
           <span class="hl-gold">⚠️ PURCHASE INSTRUCTIONS:</span> To buy a rank, please join our Discord server at <b>discord.galaxymcpe.fun</b> and create a <b>Higher-Up Support Ticket</b>. Our team will assist you with the payment and activate your perks!
         </div>
       </div>
 
-      <!-- RANKS GRID -->
       <div class="shop-grid">
-        <div class="shop-card">
+        <div class="shop-card reveal">
           <span class="shop-icon">🛡️</span>
           <div class="shop-name">ELITE</div>
           <div class="shop-desc">Basic starting rank with homes, vault space, and glow!</div>
-          <button class="mc-btn aqua" style="font-size:9px;padding:12px 16px;" onclick="openRankModal('elite')">More</button>
+          <button class="mc-btn aqua" onclick="openRankModal('elite')">View Rank</button>
         </div>
-
-        <div class="shop-card">
+        <div class="shop-card reveal">
           <span class="shop-icon">⚔️</span>
           <div class="shop-name">ELDER</div>
           <div class="shop-desc">Step up your game with more warps, colors, and money.</div>
-          <button class="mc-btn green" style="font-size:9px;padding:12px 16px;" onclick="openRankModal('elder')">More</button>
+          <button class="mc-btn green" onclick="openRankModal('elder')">View Rank</button>
         </div>
-
-        <div class="shop-card">
+        <div class="shop-card reveal">
           <span class="shop-icon">👑</span>
           <div class="shop-name">NOBLE</div>
           <div class="shop-desc">Unlock advanced commands like /fly and /rtp!</div>
-          <button class="mc-btn gold" style="font-size:9px;padding:12px 16px;" onclick="openRankModal('noble')">More</button>
+          <button class="mc-btn gold" onclick="openRankModal('noble')">View Rank</button>
         </div>
-
-        <div class="shop-card">
+        <div class="shop-card reveal">
           <span class="shop-icon">🌋</span>
           <div class="shop-name">LEGEND</div>
           <div class="shop-desc">Insane perks including /nick, speed multipliers, and huge claims.</div>
-          <button class="mc-btn red" style="font-size:9px;padding:12px 16px;" onclick="openRankModal('legend')">More</button>
+          <button class="mc-btn red" onclick="openRankModal('legend')">View Rank</button>
         </div>
-
-        <div class="shop-card">
+        <div class="shop-card reveal">
           <span class="shop-icon">🌌</span>
           <div class="shop-name">GALAXY</div>
           <div class="shop-desc">The ultimate status. All commands, all glows, max everything.</div>
-          <button class="mc-btn purple" style="font-size:9px;padding:12px 16px;" onclick="openRankModal('galaxy')">More</button>
+          <button class="mc-btn purple" onclick="openRankModal('galaxy')">View Rank</button>
         </div>
       </div>
     </div>
@@ -514,48 +1424,48 @@ footer { position: relative; z-index: 1; background: #05080f; border-top: 4px so
   <!-- VOTE TAB -->
   <div id="page-vote" class="tab-page">
     <div class="page-banner">
-      <h2>🗳️ VOTE FOR US</h2>
+      <h2>VOTE FOR US</h2>
       <p>Support GalaxyMC and earn free in-game rewards every day!</p>
     </div>
     <div class="mc-divider"></div>
     <div class="page-body">
-      <div class="mc-card mb24" style="border-top-color:var(--theme-aqua); border-left-color:var(--theme-aqua);">
-        <div class="card-title">🎁 Voting Rewards</div>
+      <div class="glass-card mb24 reveal" style="border-color: rgba(0, 229, 255, 0.3);">
+        <div class="section-title">Voting Rewards</div>
         <div class="card-body">
           Vote on all links daily to receive <span class="hl-gold">Vote Keys, In-game Money, and exclusive items</span>. Make sure to enter your exact Minecraft Gamertag when voting!
         </div>
       </div>
 
       <div class="shop-grid">
-        <div class="shop-card">
+        <div class="shop-card reveal">
           <span class="shop-icon">🌟</span>
-          <div class="shop-name">VOTE LINK 1</div>
+          <div class="shop-name">VOTE #1</div>
           <div class="shop-desc">Vote on Site #1 to claim your daily rewards.</div>
-          <button class="mc-btn aqua mt24" style="font-size:9px;padding:12px 16px;" onclick="window.open('https://vote.galaxymcpe.fun/1','_blank')">Vote Now</button>
+          <button class="mc-btn aqua mt24" onclick="window.open('https://vote.galaxymcpe.fun/1','_blank')">Vote Now</button>
         </div>
-        <div class="shop-card">
+        <div class="shop-card reveal">
           <span class="shop-icon">⭐</span>
-          <div class="shop-name">VOTE LINK 2</div>
+          <div class="shop-name">VOTE #2</div>
           <div class="shop-desc">Vote on Site #2 to claim your daily rewards.</div>
-          <button class="mc-btn green mt24" style="font-size:9px;padding:12px 16px;" onclick="window.open('https://vote.galaxymcpe.fun/2','_blank')">Vote Now</button>
+          <button class="mc-btn green mt24" onclick="window.open('https://vote.galaxymcpe.fun/2','_blank')">Vote Now</button>
         </div>
-        <div class="shop-card">
+        <div class="shop-card reveal">
           <span class="shop-icon">✨</span>
-          <div class="shop-name">VOTE LINK 3</div>
+          <div class="shop-name">VOTE #3</div>
           <div class="shop-desc">Vote on Site #3 to claim your daily rewards.</div>
-          <button class="mc-btn gold mt24" style="font-size:9px;padding:12px 16px;" onclick="window.open('https://vote.galaxymcpe.fun/3','_blank')">Vote Now</button>
+          <button class="mc-btn gold mt24" onclick="window.open('https://vote.galaxymcpe.fun/3','_blank')">Vote Now</button>
         </div>
-        <div class="shop-card">
+        <div class="shop-card reveal">
           <span class="shop-icon">💫</span>
-          <div class="shop-name">VOTE LINK 4</div>
+          <div class="shop-name">VOTE #4</div>
           <div class="shop-desc">Vote on Site #4 to claim your daily rewards.</div>
-          <button class="mc-btn red mt24" style="font-size:9px;padding:12px 16px;" onclick="window.open('https://vote.galaxymcpe.fun/4','_blank')">Vote Now</button>
+          <button class="mc-btn red mt24" onclick="window.open('https://vote.galaxymcpe.fun/4','_blank')">Vote Now</button>
         </div>
-        <div class="shop-card">
+        <div class="shop-card reveal">
           <span class="shop-icon">☄️</span>
-          <div class="shop-name">VOTE LINK 5</div>
+          <div class="shop-name">VOTE #5</div>
           <div class="shop-desc">Vote on Site #5 to claim your daily rewards.</div>
-          <button class="mc-btn purple mt24" style="font-size:9px;padding:12px 16px;" onclick="window.open('https://vote.galaxymcpe.fun/5','_blank')">Vote Now</button>
+          <button class="mc-btn purple mt24" onclick="window.open('https://vote.galaxymcpe.fun/5','_blank')">Vote Now</button>
         </div>
       </div>
     </div>
@@ -564,15 +1474,15 @@ footer { position: relative; z-index: 1; background: #05080f; border-top: 4px so
   <!-- RULES TAB -->
   <div id="page-rules" class="tab-page">
     <div class="page-banner">
-      <h2>📜 SERVER RULES</h2>
+      <h2>SERVER RULES</h2>
       <p>To keep our galaxy running smoothly, follow these rules and USE COMMON SENSE.</p>
     </div>
     <div class="mc-divider"></div>
     <div class="page-body">
       <div class="grid-2">
         <div>
-          <div class="mc-card mb24" style="border-top-color:#ce93d8;border-left-color:#ce93d8;">
-            <div class="card-title" style="color:var(--mc-amethyst);">💬 Discord Rules</div>
+          <div class="glass-card mb24 reveal" style="border-color: rgba(192, 132, 252, 0.3);">
+            <div class="section-title" style="background: linear-gradient(100deg, #fff 0%, var(--purple) 50%, #fff 100%); background-size: 250% auto; -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;">Discord Rules</div>
             <div class="card-body">
               <ul class="rules-list">
                 <li><b>Treat everyone with respect</b> – No hate, bullying, or drama.</li>
@@ -586,8 +1496,8 @@ footer { position: relative; z-index: 1; background: #05080f; border-top: 4px so
           </div>
         </div>
         <div>
-          <div class="mc-card mb24" style="border-top-color:var(--theme-aqua);border-left-color:var(--theme-aqua);">
-            <div class="card-title" style="color:var(--theme-aqua);">⛏️ Minecraft Rules</div>
+          <div class="glass-card mb24 reveal" style="border-color: rgba(0, 229, 255, 0.3);">
+            <div class="section-title">Minecraft Rules</div>
             <div class="card-body">
               <ul class="rules-list">
                 <li><b>No hacks, cheats, or auto-clickers</b> – Play fair.</li>
@@ -599,7 +1509,7 @@ footer { position: relative; z-index: 1; background: #05080f; border-top: 4px so
               </ul>
             </div>
           </div>
-          <div class="mc-card" style="background:rgba(255,255,255,0.02);">
+          <div class="glass-card reveal" style="background: rgba(255,255,255,0.02);">
             <div class="card-body" style="text-align:center;">
               ⚠️ Need help or want to report an issue?<br><br>
               <span class="hl-aqua">Open a ticket in #🎟・ticket</span>. We're here to help!
@@ -616,13 +1526,13 @@ footer { position: relative; z-index: 1; background: #05080f; border-top: 4px so
   <div class="footer-inner">
     <div>
       <div class="footer-logo">
-        <img src="https://ik.imagekit.io/td6lavsbp/1458361061257380009.webp" alt="GalaxyMC Logo" class="inline-logo">
+        <img src="https://ik.imagekit.io/td6lavsbp/1458361061257380009.webp" alt="GalaxyMC Logo" class="inline-logo" style="height: 28px;">
         GalaxyMC
       </div>
       <div class="footer-desc">India's premium Minecraft server. Built with 2+ years of MC experience. Season 2 is live.</div>
     </div>
     <div>
-      <div class="footer-heading">🎮 Server</div>
+      <div class="footer-heading">Server</div>
       <ul class="footer-links">
         <li><a onclick="showPage('dashboard', null)">Dashboard</a></li>
         <li><a onclick="showPage('news', null)">News</a></li>
@@ -631,14 +1541,14 @@ footer { position: relative; z-index: 1; background: #05080f; border-top: 4px so
       </ul>
     </div>
     <div>
-      <div class="footer-heading">🔗 Connect</div>
+      <div class="footer-heading">Connect</div>
       <ul class="footer-links">
         <li><a href="https://discord.galaxymcpe.fun" target="_blank">Discord Server</a></li>
         <li><a href="https://discord.galaxymcpe.fun" target="_blank">Report Bug (Tickets)</a></li>
       </ul>
     </div>
     <div>
-      <div class="footer-heading">📋 Server Info</div>
+      <div class="footer-heading">Server Info</div>
       <ul class="footer-links">
         <li><a onclick="copyIP('play.galaxymcpe.fun:19132')">play.galaxymcpe.fun</a></li>
         <li><a>Port: 19132</a></li>
@@ -651,6 +1561,8 @@ footer { position: relative; z-index: 1; background: #05080f; border-top: 4px so
   </div>
 </footer>
 
+<button id="back-to-top" onclick="window.scrollTo({top:0,behavior:'smooth'})">▲</button>
+
 <div class="toast" id="toast">📋 Copied!</div>
 
 <!-- RANK MODAL -->
@@ -661,32 +1573,28 @@ footer { position: relative; z-index: 1; background: #05080f; border-top: 4px so
       <div class="close-btn" onclick="closeRankModal(true)">&times;</div>
     </div>
     <div class="modal-body">
-      <!-- Image for the Kit -->
       <img id="modalImage" src="" alt="Kit Preview" class="modal-kit-img" style="display:none;">
-
       <div class="modal-grid">
-        <!-- Commands -->
         <div>
-          <h3 style="color:var(--theme-aqua); font-size:12px; margin-bottom:16px;">📝 Commands</h3>
+          <h3 style="color: var(--aqua); font-size:14px; margin-bottom:20px; font-family: var(--font-brand);">Commands</h3>
           <ul class="rank-list" id="modalCmds"></ul>
         </div>
-        <!-- Perks -->
         <div>
-          <h3 style="color:var(--theme-gold); font-size:12px; margin-bottom:16px;">✨ Perks</h3>
+          <h3 style="color: var(--gold); font-size:14px; margin-bottom:20px; font-family: var(--font-brand);">Perks</h3>
           <ul class="rank-list" id="modalPerks"></ul>
         </div>
       </div>
     </div>
     <div class="modal-footer">
       <div class="price-tag" id="modalPrice"></div>
-      <button class="mc-btn green" style="padding:12px 24px;" onclick="window.open('https://discord.galaxymcpe.fun','_blank')">🛒 Buy via Ticket</button>
+      <button class="mc-btn green" onclick="window.open('https://discord.galaxymcpe.fun','_blank')">🛒 Buy via Ticket</button>
     </div>
   </div>
 </div>
 
 <script>
 /* ============================================
-   RANK DATA OBJECT
+   RANK DATA (Lifetime removed from Galaxy)
 ============================================ */
 const rankData = {
   elite: {
@@ -722,46 +1630,24 @@ const rankData = {
     image: "https://ik.imagekit.io/td6lavsbp/image-6.png",
     cmds: ["Access To <code>/craft</code>", "Access To <code>/anvil</code>", "Access To <code>/sit</code>", "Access To <code>/nick</code>", "Access To <code>/glow</code>", "Access To <code>/crawl</code>", "Access To <code>/walk with 2X speed</code>", "Access To <code>/fly with 2X speed</code>", "Access To <code>/hat</code>", "Access To <code>/grindstone</code>", "Access To <code>/smithingtable</code>", "Access To <code>/up</code> & <code>/down</code>", "Access To <code>/back</code> & <code>/dback</code>", "Access To <code>/RTP no cooldown</code>", "Access To <code>/enderchest</code>", "Access To <code>/ptime</code> & <code>/pweather</code>", "Access To <code>/pp gui</code>"],
     perks: ["Galaxy Prefix", "Galaxy Kit", "30X Homes", "30X Player Vault", "30X Player Warps", "All Glows", "All Chat Colours", "15,000 Claim Blocks", "500,000 in-game Money"],
-    price: "1 Month - <span>@699₹</span><br>3 Month - <span>@1890₹</span> (save 10%)<br>Seasonal - <span>@3,500₹</span> (6 Months)<br>Lifetime - <span>@6,000₹</span>"
+    price: "1 Month - <span>@699₹</span><br>3 Month - <span>@1890₹</span> (save 10%)<br>Seasonal - <span>@3,500₹</span> (6 Months)"
   }
 };
 
 function openRankModal(rankKey) {
   const data = rankData[rankKey];
   if(!data) return;
-
   document.getElementById('modalTitle').innerHTML = data.title;
-  
-  // Set and Show Image
   const imgElement = document.getElementById('modalImage');
-  if (data.image) {
-    imgElement.src = data.image;
-    imgElement.style.display = 'block';
-  } else {
-    imgElement.style.display = 'none';
-  }
-  
-  // Populate Commands
+  if (data.image) { imgElement.src = data.image; imgElement.style.display = 'block'; }
+  else { imgElement.style.display = 'none'; }
   const cmdsList = document.getElementById('modalCmds');
   cmdsList.innerHTML = '';
-  data.cmds.forEach(cmd => {
-    let li = document.createElement('li');
-    li.innerHTML = cmd;
-    cmdsList.appendChild(li);
-  });
-
-  // Populate Perks
+  data.cmds.forEach(cmd => { let li = document.createElement('li'); li.innerHTML = cmd; cmdsList.appendChild(li); });
   const perksList = document.getElementById('modalPerks');
   perksList.innerHTML = '';
-  data.perks.forEach(perk => {
-    let li = document.createElement('li');
-    li.innerHTML = perk;
-    perksList.appendChild(li);
-  });
-
+  data.perks.forEach(perk => { let li = document.createElement('li'); li.innerHTML = perk; perksList.appendChild(li); });
   document.getElementById('modalPrice').innerHTML = data.price;
-
-  // Show Modal & Lock Scroll
   document.getElementById('rankModalOverlay').classList.add('active');
   document.body.classList.add('modal-open');
 }
@@ -772,7 +1658,72 @@ function closeRankModal(force = false) {
 }
 
 /* ============================================
-   AQUA & GOLD STARS / PARTICLES LOGIC
+   TYPING EFFECT
+============================================ */
+(function() {
+  const el = document.getElementById('typingText');
+  if(!el) return;
+  const messages = [
+    "🚀 India's #1 Minecraft Server 🚀",
+    "Cross-Play · Java + Bedrock · Cracked + Premium",
+    "Join play.galaxymcpe.fun Now!",
+    "No Pay-to-Win · Pure Gameplay"
+  ];
+  let msgIdx = 0, charIdx = 0, deleting = false;
+
+  function tick() {
+    const current = messages[msgIdx];
+    if(!deleting) {
+      el.textContent = current.substring(0, charIdx + 1);
+      charIdx++;
+      if(charIdx === current.length) { deleting = true; setTimeout(tick, 2000); return; }
+      setTimeout(tick, 60);
+    } else {
+      el.textContent = current.substring(0, charIdx - 1);
+      charIdx--;
+      if(charIdx === 0) { deleting = false; msgIdx = (msgIdx + 1) % messages.length; }
+      setTimeout(tick, 30);
+    }
+  }
+  tick();
+})();
+
+/* ============================================
+   SCROLL REVEAL
+============================================ */
+(function() {
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if(entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.1 });
+
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+})();
+
+/* ============================================
+   SCROLL PROGRESS + BACK TO TOP
+============================================ */
+(function() {
+  const progressBar = document.getElementById('scroll-progress');
+  const backToTop = document.getElementById('back-to-top');
+
+  window.addEventListener('scroll', () => {
+    const scrollTop = window.scrollY;
+    const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+    const progress = (scrollTop / docHeight) * 100;
+    progressBar.style.width = progress + '%';
+
+    if(scrollTop > 400) backToTop.classList.add('show');
+    else backToTop.classList.remove('show');
+  });
+})();
+
+/* ============================================
+   CANVAS STARFIELD
 ============================================ */
 const canvas = document.getElementById('bg-canvas');
 const ctx = canvas.getContext('2d');
@@ -780,13 +1731,13 @@ const ctx = canvas.getContext('2d');
 function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
 resize(); window.addEventListener('resize', resize);
 
-const STARS = Array.from({length: 120}, () => ({
+const STARS = Array.from({length: 130}, () => ({
   x: Math.random(), y: Math.random(), r: Math.random() * 2 + 0.5, a: Math.random(),
   spd: Math.random() * 0.003 + 0.001, ph: Math.random() * Math.PI * 2,
   color: Math.random() > 0.5 ? 'rgba(0, 229, 255,' : 'rgba(255, 215, 0,'
 }));
 
-const PIXEL_STARS = Array.from({length: 15}, () => ({
+const PIXEL_STARS = Array.from({length: 20}, () => ({
   x: Math.random(), y: Math.random(), size: Math.floor(Math.random() * 2 + 1) * 2,
   color: ['#00e5ff','#ffd700','#ffffff'][Math.floor(Math.random()*3)],
   blink: Math.random() * 0.002 + 0.001, ph: Math.random() * Math.PI * 2
@@ -795,15 +1746,13 @@ const PIXEL_STARS = Array.from({length: 15}, () => ({
 const CLICK_PARTICLES = [];
 
 window.addEventListener('click', (e) => {
-  // Don't spawn particles if clicking inside modal content
   if(e.target.closest('.modal-content')) return;
-  
-  const particleCount = Math.floor(Math.random() * 6) + 12;
+  const particleCount = 14;
   for (let i = 0; i < particleCount; i++) {
     CLICK_PARTICLES.push({
       x: e.clientX, y: e.clientY, vx: (Math.random() - 0.5) * 10, vy: (Math.random() - 0.5) * 10,
       size: Math.floor(Math.random() * 3 + 1) * 2, life: 1.0,
-      color: ['#00e5ff', '#ffd700', '#ffffff'][Math.floor(Math.random() * 3)]
+      color: ['#00e5ff', '#ffd700', '#c084fc', '#ffffff'][Math.floor(Math.random() * 4)]
     });
   }
 });
@@ -811,31 +1760,44 @@ window.addEventListener('click', (e) => {
 let t = 0;
 function draw() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
+
   STARS.forEach(s => {
     const a = (Math.sin(t * s.spd + s.ph) + 1) / 2 * 0.6 + 0.1;
-    ctx.beginPath(); ctx.arc(s.x * canvas.width, s.y * canvas.height, s.r, 0, Math.PI * 2);
-    ctx.fillStyle = s.color + a + ')'; ctx.shadowBlur = 10; ctx.shadowColor = s.color + '1)';
-    ctx.fill(); ctx.shadowBlur = 0;
+    ctx.beginPath();
+    ctx.arc(s.x * canvas.width, s.y * canvas.height, s.r, 0, Math.PI * 2);
+    ctx.fillStyle = s.color + a + ')';
+    ctx.shadowBlur = 12;
+    ctx.shadowColor = s.color + '1)';
+    ctx.fill();
+    ctx.shadowBlur = 0;
   });
+
   PIXEL_STARS.forEach(s => {
     const a = (Math.sin(t * s.blink + s.ph) + 1) / 2 * 0.8 + 0.2;
-    ctx.globalAlpha = a; ctx.fillStyle = s.color;
-    ctx.fillRect(s.x * canvas.width, s.y * canvas.height, s.size, s.size); ctx.globalAlpha = 1;
+    ctx.globalAlpha = a;
+    ctx.fillStyle = s.color;
+    ctx.fillRect(s.x * canvas.width, s.y * canvas.height, s.size, s.size);
+    ctx.globalAlpha = 1;
   });
+
   for (let i = CLICK_PARTICLES.length - 1; i >= 0; i--) {
     let p = CLICK_PARTICLES[i];
-    p.x += p.vx; p.y += p.vy; p.vy += 0.3; p.life -= 0.02; 
-    if (p.life <= 0) { CLICK_PARTICLES.splice(i, 1); } else {
-      ctx.globalAlpha = p.life; ctx.fillStyle = p.color;
+    p.x += p.vx; p.y += p.vy; p.vy += 0.3; p.life -= 0.02;
+    if (p.life <= 0) { CLICK_PARTICLES.splice(i, 1); }
+    else {
+      ctx.globalAlpha = p.life;
+      ctx.fillStyle = p.color;
       ctx.fillRect(p.x, p.y, p.size, p.size);
     }
   }
-  ctx.globalAlpha = 1; t += 1; requestAnimationFrame(draw);
+  ctx.globalAlpha = 1;
+  t += 1;
+  requestAnimationFrame(draw);
 }
 draw();
 
 /* ============================================
-   LIVE PLAYER COUNT (BEDROCK API)
+   LIVE SERVER STATS
 ============================================ */
 function updateServerStats() {
   fetch('https://api.mcsrvstat.us/bedrock/2/play.galaxymcpe.fun')
@@ -845,7 +1807,6 @@ function updateServerStats() {
       const statusEl = document.getElementById('server-status');
       const tpsEl = document.getElementById('server-tps');
       const versionEl = document.getElementById('server-version');
-
       if (data.online) {
         countEl.textContent = `${data.players.online}/${data.players.max}`;
         statusEl.textContent = '🟢 ONLINE'; statusEl.className = 'stat-value green';
@@ -873,7 +1834,7 @@ document.addEventListener('DOMContentLoaded', updateServerStats);
 ============================================ */
 function showPage(page, btn) {
   document.querySelectorAll('.tab-page').forEach(p => {
-    p.classList.remove('active'); p.style.animation = 'none'; p.offsetHeight; p.style.animation = null; 
+    p.classList.remove('active'); p.style.animation = 'none'; p.offsetHeight; p.style.animation = null;
   });
   document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
   const targetPage = document.getElementById('page-' + page);
@@ -888,10 +1849,10 @@ function showPage(page, btn) {
 }
 
 /* ============================================
-   COPY IP TOAST
+   COPY IP
 ============================================ */
 function copyIP(ip) {
-  navigator.clipboard.writeText(ip).then(() => { showToast('✨ ' + ip + ' — Copied to Clipboard!');
+  navigator.clipboard.writeText(ip).then(() => { showToast('✨ ' + ip + ' — Copied!');
   }).catch(() => { showToast('✨ IP: ' + ip); });
 }
 function showToast(msg) {
