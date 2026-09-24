@@ -37,6 +37,11 @@
   --sh-deep:   0 20px 60px rgba(0, 0, 0, 0.6);
   --font-body:  'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
   --font-brand: 'Press Start 2P', monospace;
+  
+  /* Neural Time Glow - dynamic */
+  --neural-glow-1: rgba(0, 229, 255, 0.15);
+  --neural-glow-2: rgba(192, 132, 252, 0.12);
+  --neural-glow-3: rgba(255, 215, 0, 0.08);
 }
 
 * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
@@ -50,14 +55,18 @@ body {
   overflow-x: hidden;
   min-height: 100vh;
   background:
-    radial-gradient(ellipse 80% 60% at 50% -20%, rgba(0, 229, 255, 0.15), transparent 70%),
-    radial-gradient(ellipse 60% 50% at 20% 100%, rgba(192, 132, 252, 0.12), transparent 70%),
-    radial-gradient(ellipse 60% 50% at 80% 80%, rgba(255, 215, 0, 0.08), transparent 70%),
+    radial-gradient(ellipse 80% 60% at 50% -20%, var(--neural-glow-1), transparent 70%),
+    radial-gradient(ellipse 60% 50% at 20% 100%, var(--neural-glow-2), transparent 70%),
+    radial-gradient(ellipse 60% 50% at 80% 80%, var(--neural-glow-3), transparent 70%),
     linear-gradient(180deg, #05080f 0%, #030509 100%);
   background-attachment: fixed;
+  transition: background 3s ease;
 }
 body.modal-open { overflow: hidden; }
 
+/* ============================================
+   KEYFRAMES
+============================================ */
 @keyframes glint { 0% { background-position: 200% center; } 100% { background-position: -200% center; } }
 @keyframes shine-sweep { 0% { left: -100%; } 100% { left: 200%; } }
 @keyframes gradient-flow { 0%, 100% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } }
@@ -69,6 +78,14 @@ body.modal-open { overflow: hidden; }
 @keyframes modal-zoom { from { opacity: 0; transform: scale(0.94) translateY(20px); } to { opacity: 1; transform: scale(1) translateY(0); } }
 @keyframes blink { 0%, 50% { opacity: 1; } 51%, 100% { opacity: 0; } }
 @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes liquid-border {
+  0% { background-position: 0% 50%; }
+  100% { background-position: 200% 50%; }
+}
+@keyframes neural-pulse {
+  0%, 100% { opacity: 0.4; }
+  50% { opacity: 0.8; }
+}
 
 ::-webkit-scrollbar { width: 10px; }
 ::-webkit-scrollbar-track { background: transparent; }
@@ -87,6 +104,9 @@ body.modal-open { overflow: hidden; }
   transition: width 0.15s ease;
 }
 
+/* ============================================
+   HEADER
+============================================ */
 header {
   position: fixed;
   top: 0; left: 0; right: 0;
@@ -152,10 +172,16 @@ nav { display: flex; gap: 6px; align-items: center; }
   text-shadow: 0 0 12px rgba(0, 229, 255, 0.5);
 }
 
+/* ============================================
+   MAIN LAYOUT
+============================================ */
 .site-wrapper { position: relative; z-index: 1; padding-top: 76px; min-height: 100vh; }
 .tab-page { display: none; opacity: 0; min-height: calc(100vh - 76px); animation: fadeIn 0.5s forwards; }
 .tab-page.active { display: block; }
 
+/* ============================================
+   HERO
+============================================ */
 .hero { position: relative; overflow: hidden; padding: 90px 24px 80px; text-align: center; }
 .hero-content { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 22px; max-width: 950px; margin: 0 auto; position: relative; z-index: 2; }
 .hero-logo-img {
@@ -200,7 +226,7 @@ nav { display: flex; gap: 6px; align-items: center; }
 }
 
 /* ============================================
-   STATUS CARDS — All same color (green/red)
+   STATUS CARDS — w/ 3D Tilt
 ============================================ */
 .status-row {
   display: grid;
@@ -209,6 +235,7 @@ nav { display: flex; gap: 6px; align-items: center; }
   max-width: 950px;
   margin: 0 auto 40px auto;
   width: 100%;
+  perspective: 1000px;
 }
 .stat-block {
   background: var(--glass-1);
@@ -222,6 +249,8 @@ nav { display: flex; gap: 6px; align-items: center; }
   position: relative;
   overflow: hidden;
   box-shadow: var(--sh-soft), inset 0 1px 0 rgba(255, 255, 255, 0.08), inset 0 -1px 0 rgba(0, 0, 0, 0.2);
+  transform-style: preserve-3d;
+  will-change: transform;
 }
 .stat-block::before {
   content: '';
@@ -231,10 +260,10 @@ nav { display: flex; gap: 6px; align-items: center; }
   background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.08), transparent);
   transform: skewX(-20deg);
   transition: left 0.8s;
+  pointer-events: none;
 }
 .stat-block:hover::before { left: 200%; }
 .stat-block:hover {
-  transform: translateY(-4px);
   background: var(--glass-2);
   border-color: var(--glass-stroke-hi);
   box-shadow: var(--sh-deep), 0 0 30px rgba(0, 229, 255, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.12);
@@ -267,6 +296,9 @@ nav { display: flex; gap: 6px; align-items: center; }
   text-shadow: 0 0 15px rgba(255, 77, 109, 0.6), 0 0 25px rgba(255, 77, 109, 0.3);
 }
 
+/* ============================================
+   BUTTONS — Magnetic
+============================================ */
 .hero-btns { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
 .mc-btn {
   font-family: var(--font-body);
@@ -278,13 +310,14 @@ nav { display: flex; gap: 6px; align-items: center; }
   text-transform: uppercase;
   border: 1px solid rgba(255, 255, 255, 0.12);
   border-radius: var(--r-pill);
-  transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.35s, border-color 0.35s;
   position: relative;
   color: #fff;
   overflow: hidden;
   backdrop-filter: blur(20px) saturate(180%);
   -webkit-backdrop-filter: blur(20px) saturate(180%);
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.2), inset 0 -1px 0 rgba(0, 0, 0, 0.2);
+  will-change: transform;
 }
 .mc-btn::before {
   content: '';
@@ -295,8 +328,8 @@ nav { display: flex; gap: 6px; align-items: center; }
   transition: left 0.7s;
 }
 .mc-btn:hover::before { left: 100%; }
-.mc-btn:hover { transform: translateY(-3px); border-color: rgba(255, 255, 255, 0.25); }
-.mc-btn:active { transform: translateY(1px); }
+.mc-btn:hover { border-color: rgba(255, 255, 255, 0.25); }
+.mc-btn:active { transform: scale(0.98); }
 
 .mc-btn.aqua { background: linear-gradient(135deg, rgba(0, 229, 255, 0.9), rgba(0, 139, 163, 0.9)); box-shadow: 0 8px 24px rgba(0, 229, 255, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.3); }
 .mc-btn.aqua:hover { box-shadow: 0 12px 32px rgba(0, 229, 255, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.4); }
@@ -307,6 +340,9 @@ nav { display: flex; gap: 6px; align-items: center; }
 .mc-btn.purple { background: linear-gradient(135deg, rgba(192, 132, 252, 0.9), rgba(74, 20, 140, 0.9)); }
 .mc-btn.discord { background: linear-gradient(135deg, rgba(88, 101, 242, 0.95), rgba(71, 82, 196, 0.95)); box-shadow: 0 8px 24px rgba(88, 101, 242, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.3); }
 
+/* ============================================
+   GLASS CARDS — w/ Liquid Metal Border
+============================================ */
 .glass-card {
   background: var(--glass-1);
   backdrop-filter: blur(30px) saturate(180%);
@@ -315,9 +351,11 @@ nav { display: flex; gap: 6px; align-items: center; }
   border-radius: var(--r-lg);
   padding: 34px;
   box-shadow: var(--sh-soft), inset 0 1px 0 rgba(255, 255, 255, 0.08), inset 0 -1px 0 rgba(0, 0, 0, 0.15);
-  transition: all 0.45s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.5s, border-color 0.5s;
   position: relative;
   overflow: hidden;
+  transform-style: preserve-3d;
+  will-change: transform;
 }
 .glass-card::before {
   content: '';
@@ -326,14 +364,34 @@ nav { display: flex; gap: 6px; align-items: center; }
   width: 60%; height: 100%;
   background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.06), transparent);
   transform: skewX(-20deg);
+  pointer-events: none;
 }
 .glass-card:hover {
-  transform: translateY(-6px);
   background: var(--glass-2);
   border-color: var(--glass-stroke-hi);
   box-shadow: var(--sh-deep), 0 0 40px rgba(0, 229, 255, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.12);
 }
 .glass-card:hover::before { animation: shine-sweep 0.9s; }
+
+/* Liquid metal top border for cards with .lm class */
+.glass-card.lm::after {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, 
+    transparent 0%, 
+    var(--aqua) 20%, 
+    var(--gold) 40%, 
+    var(--purple) 60%, 
+    var(--aqua) 80%, 
+    transparent 100%
+  );
+  background-size: 200% 100%;
+  animation: liquid-border 4s linear infinite;
+  opacity: 0.7;
+  pointer-events: none;
+}
 
 .section-title {
   font-family: var(--font-brand);
@@ -407,7 +465,7 @@ nav { display: flex; gap: 6px; align-items: center; }
 .gm-bed  { box-shadow: inset 4px 0 0 var(--aqua); }
 .gm-title { font-size: 13.5px; font-weight: 700; }
 
-.shop-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 22px; }
+.shop-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 22px; perspective: 1200px; }
 .shop-card {
   background: var(--glass-1);
   backdrop-filter: blur(28px) saturate(180%);
@@ -416,16 +474,18 @@ nav { display: flex; gap: 6px; align-items: center; }
   border-radius: var(--r-lg);
   padding: 34px 26px;
   text-align: center;
-  transition: all 0.45s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.5s, border-color 0.5s;
   display: flex;
   flex-direction: column;
   position: relative;
   overflow: hidden;
   box-shadow: var(--sh-soft), inset 0 1px 0 rgba(255, 255, 255, 0.08), inset 0 -1px 0 rgba(0, 0, 0, 0.15);
+  transform-style: preserve-3d;
+  will-change: transform;
 }
-.shop-card::after { content: ''; position: absolute; top: 0; left: -100%; width: 50%; height: 100%; background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent); transform: skewX(-20deg); }
+.shop-card::after { content: ''; position: absolute; top: 0; left: -100%; width: 50%; height: 100%; background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent); transform: skewX(-20deg); pointer-events: none; }
 .shop-card:hover::after { animation: shine-sweep 0.9s; }
-.shop-card:hover { transform: translateY(-10px) scale(1.02); background: var(--glass-2); border-color: var(--glass-stroke-hi); box-shadow: var(--sh-deep), 0 0 40px rgba(0, 229, 255, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.15); }
+.shop-card:hover { background: var(--glass-2); border-color: var(--glass-stroke-hi); box-shadow: var(--sh-deep), 0 0 40px rgba(0, 229, 255, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.15); }
 .shop-icon { font-size: 52px; margin-bottom: 20px; display: block; filter: drop-shadow(0 0 15px rgba(0, 229, 255, 0.4)); transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1); }
 .shop-card:hover .shop-icon { transform: scale(1.2) rotate(-8deg); }
 .shop-name {
@@ -633,6 +693,11 @@ footer { position: relative; z-index: 1; background: rgba(2, 4, 8, 0.6); backdro
   .modal-body { padding: 22px; }
   .modal-footer { padding: 18px 22px; }
 }
+
+/* Disable tilt on touch devices */
+@media (hover: none) {
+  .stat-block, .glass-card, .shop-card { transform: none !important; }
+}
 </style>
 </head>
 <body>
@@ -665,28 +730,28 @@ footer { position: relative; z-index: 1; background: rgba(2, 4, 8, 0.6); backdro
         <p class="hero-sub"><span id="typingText"></span><span class="typing-cursor"></span></p>
 
         <div class="status-row reveal">
-          <div class="stat-block">
+          <div class="stat-block tilt">
             <span class="stat-label">Status</span>
             <span class="stat-value" id="server-status">Loading...</span>
           </div>
-          <div class="stat-block">
+          <div class="stat-block tilt">
             <span class="stat-label">Players</span>
             <span class="stat-value" id="player-count">Loading...</span>
           </div>
-          <div class="stat-block">
+          <div class="stat-block tilt">
             <span class="stat-label">Version</span>
             <span class="stat-value" id="server-version">Loading...</span>
           </div>
-          <div class="stat-block">
+          <div class="stat-block tilt">
             <span class="stat-label">TPS</span>
             <span class="stat-value" id="server-tps">Loading...</span>
           </div>
         </div>
 
         <div class="hero-btns reveal">
-          <button class="mc-btn aqua" onclick="copyIP('play.galaxymcpe.fun:19132')">📋 Copy IP</button>
-          <button class="mc-btn gold" onclick="showPage('store', document.querySelector('[onclick*=store]'))">🛒 Buy Ranks</button>
-          <button class="mc-btn discord" onclick="window.open('https://discord.galaxymcpe.fun','_blank')">💬 Discord</button>
+          <button class="mc-btn aqua magnetic" onclick="copyIP('play.galaxymcpe.fun:19132')">📋 Copy IP</button>
+          <button class="mc-btn gold magnetic" onclick="showPage('store', document.querySelector('[onclick*=store]'))">🛒 Buy Ranks</button>
+          <button class="mc-btn discord magnetic" onclick="window.open('https://discord.galaxymcpe.fun','_blank')">💬 Discord</button>
         </div>
       </div>
     </div>
@@ -695,7 +760,7 @@ footer { position: relative; z-index: 1; background: rgba(2, 4, 8, 0.6); backdro
 
     <div class="page-body">
       <div class="grid-2">
-        <div class="glass-card reveal">
+        <div class="glass-card lm reveal tilt">
           <div class="section-title">About GalaxyMC</div>
           <div class="card-body">
             Welcome to <span class="hl-aqua">GalaxyMC</span> — India's premium public Minecraft server.<br><br>
@@ -704,7 +769,7 @@ footer { position: relative; z-index: 1; background: rgba(2, 4, 8, 0.6); backdro
           </div>
         </div>
 
-        <div class="glass-card reveal">
+        <div class="glass-card lm reveal tilt">
           <div class="section-title">Quick Connect</div>
           <div class="card-body">
             <span class="hl-aqua">🔗 Bedrock IP:</span><br>
@@ -716,7 +781,7 @@ footer { position: relative; z-index: 1; background: rgba(2, 4, 8, 0.6); backdro
         </div>
       </div>
 
-      <div class="glass-card mb24 reveal">
+      <div class="glass-card lm mb24 reveal tilt">
         <div class="section-title">Server Features</div>
         <div class="feature-grid">
           <div class="feature-box">💻 <span class="hl-aqua">Cross-Play Support</span><span class="feature-sub">Java + Bedrock + Cracked + Premium</span></div>
@@ -730,7 +795,7 @@ footer { position: relative; z-index: 1; background: rgba(2, 4, 8, 0.6); backdro
         </div>
       </div>
 
-      <div class="glass-card reveal">
+      <div class="glass-card lm reveal tilt">
         <div class="section-title">Gamemodes</div>
         <div class="gm-grid">
           <div class="gm-box gm-surv">
@@ -762,7 +827,7 @@ footer { position: relative; z-index: 1; background: rgba(2, 4, 8, 0.6); backdro
     <div class="mc-divider"></div>
     <div class="page-body">
       <div style="max-width: 800px; margin: 0 auto;">
-        <div class="glass-card reveal">
+        <div class="glass-card lm reveal tilt">
           <div class="section-title">Pinned Announcements</div>
           <div class="card-body">
             <div class="pinned-note">
@@ -786,7 +851,7 @@ footer { position: relative; z-index: 1; background: rgba(2, 4, 8, 0.6); backdro
     </div>
     <div class="mc-divider"></div>
     <div class="page-body">
-      <div class="glass-card mb24 reveal" style="border-color: rgba(0, 230, 118, 0.3);">
+      <div class="glass-card lm mb24 reveal tilt" style="border-color: rgba(0, 230, 118, 0.3);">
         <div class="section-title" style="background: linear-gradient(100deg, #fff 0%, var(--emerald) 50%, #fff 100%); background-size: 250% auto; -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;">How To Purchase</div>
         <div class="card-body">
           All purchases go directly toward server development and maintenance. Ranks are <span class="hl-green">NOT pay-to-win</span>.<br><br>
@@ -795,35 +860,35 @@ footer { position: relative; z-index: 1; background: rgba(2, 4, 8, 0.6); backdro
       </div>
 
       <div class="shop-grid">
-        <div class="shop-card reveal">
+        <div class="shop-card tilt reveal">
           <span class="shop-icon">🛡️</span>
           <div class="shop-name">ELITE</div>
           <div class="shop-desc">Basic starting rank with homes, vault space, and glow!</div>
-          <button class="mc-btn aqua" onclick="openRankModal('elite')">View Rank</button>
+          <button class="mc-btn aqua magnetic" onclick="openRankModal('elite')">View Rank</button>
         </div>
-        <div class="shop-card reveal">
+        <div class="shop-card tilt reveal">
           <span class="shop-icon">⚔️</span>
           <div class="shop-name">ELDER</div>
           <div class="shop-desc">Step up your game with more warps, colors, and money.</div>
-          <button class="mc-btn green" onclick="openRankModal('elder')">View Rank</button>
+          <button class="mc-btn green magnetic" onclick="openRankModal('elder')">View Rank</button>
         </div>
-        <div class="shop-card reveal">
+        <div class="shop-card tilt reveal">
           <span class="shop-icon">👑</span>
           <div class="shop-name">NOBLE</div>
           <div class="shop-desc">Unlock advanced commands like /fly and /rtp!</div>
-          <button class="mc-btn gold" onclick="openRankModal('noble')">View Rank</button>
+          <button class="mc-btn gold magnetic" onclick="openRankModal('noble')">View Rank</button>
         </div>
-        <div class="shop-card reveal">
+        <div class="shop-card tilt reveal">
           <span class="shop-icon">🌋</span>
           <div class="shop-name">LEGEND</div>
           <div class="shop-desc">Insane perks including /nick, speed multipliers, and huge claims.</div>
-          <button class="mc-btn red" onclick="openRankModal('legend')">View Rank</button>
+          <button class="mc-btn red magnetic" onclick="openRankModal('legend')">View Rank</button>
         </div>
-        <div class="shop-card reveal">
+        <div class="shop-card tilt reveal">
           <span class="shop-icon">🌌</span>
           <div class="shop-name">GALAXY</div>
           <div class="shop-desc">The ultimate status. All commands, all glows, max everything.</div>
-          <button class="mc-btn purple" onclick="openRankModal('galaxy')">View Rank</button>
+          <button class="mc-btn purple magnetic" onclick="openRankModal('galaxy')">View Rank</button>
         </div>
       </div>
     </div>
@@ -836,7 +901,7 @@ footer { position: relative; z-index: 1; background: rgba(2, 4, 8, 0.6); backdro
     </div>
     <div class="mc-divider"></div>
     <div class="page-body">
-      <div class="glass-card mb24 reveal" style="border-color: rgba(0, 229, 255, 0.3);">
+      <div class="glass-card lm mb24 reveal tilt" style="border-color: rgba(0, 229, 255, 0.3);">
         <div class="section-title">Voting Rewards</div>
         <div class="card-body">
           Vote on all links daily to receive <span class="hl-gold">Vote Keys, In-game Money, and exclusive items</span>. Make sure to enter your exact Minecraft Gamertag when voting!
@@ -844,35 +909,35 @@ footer { position: relative; z-index: 1; background: rgba(2, 4, 8, 0.6); backdro
       </div>
 
       <div class="shop-grid">
-        <div class="shop-card reveal">
+        <div class="shop-card tilt reveal">
           <span class="shop-icon">🌟</span>
           <div class="shop-name">VOTE #1</div>
           <div class="shop-desc">Vote on Site #1 to claim your daily rewards.</div>
-          <button class="mc-btn aqua mt24" onclick="window.open('https://vote.galaxymcpe.fun/1','_blank')">Vote Now</button>
+          <button class="mc-btn aqua magnetic mt24" onclick="window.open('https://vote.galaxymcpe.fun/1','_blank')">Vote Now</button>
         </div>
-        <div class="shop-card reveal">
+        <div class="shop-card tilt reveal">
           <span class="shop-icon">⭐</span>
           <div class="shop-name">VOTE #2</div>
           <div class="shop-desc">Vote on Site #2 to claim your daily rewards.</div>
-          <button class="mc-btn green mt24" onclick="window.open('https://vote.galaxymcpe.fun/2','_blank')">Vote Now</button>
+          <button class="mc-btn green magnetic mt24" onclick="window.open('https://vote.galaxymcpe.fun/2','_blank')">Vote Now</button>
         </div>
-        <div class="shop-card reveal">
+        <div class="shop-card tilt reveal">
           <span class="shop-icon">✨</span>
           <div class="shop-name">VOTE #3</div>
           <div class="shop-desc">Vote on Site #3 to claim your daily rewards.</div>
-          <button class="mc-btn gold mt24" onclick="window.open('https://vote.galaxymcpe.fun/3','_blank')">Vote Now</button>
+          <button class="mc-btn gold magnetic mt24" onclick="window.open('https://vote.galaxymcpe.fun/3','_blank')">Vote Now</button>
         </div>
-        <div class="shop-card reveal">
+        <div class="shop-card tilt reveal">
           <span class="shop-icon">💫</span>
           <div class="shop-name">VOTE #4</div>
           <div class="shop-desc">Vote on Site #4 to claim your daily rewards.</div>
-          <button class="mc-btn red mt24" onclick="window.open('https://vote.galaxymcpe.fun/4','_blank')">Vote Now</button>
+          <button class="mc-btn red magnetic mt24" onclick="window.open('https://vote.galaxymcpe.fun/4','_blank')">Vote Now</button>
         </div>
-        <div class="shop-card reveal">
+        <div class="shop-card tilt reveal">
           <span class="shop-icon">☄️</span>
           <div class="shop-name">VOTE #5</div>
           <div class="shop-desc">Vote on Site #5 to claim your daily rewards.</div>
-          <button class="mc-btn purple mt24" onclick="window.open('https://vote.galaxymcpe.fun/5','_blank')">Vote Now</button>
+          <button class="mc-btn purple magnetic mt24" onclick="window.open('https://vote.galaxymcpe.fun/5','_blank')">Vote Now</button>
         </div>
       </div>
     </div>
@@ -887,7 +952,7 @@ footer { position: relative; z-index: 1; background: rgba(2, 4, 8, 0.6); backdro
     <div class="page-body">
       <div class="grid-2">
         <div>
-          <div class="glass-card mb24 reveal" style="border-color: rgba(192, 132, 252, 0.3);">
+          <div class="glass-card lm mb24 reveal tilt" style="border-color: rgba(192, 132, 252, 0.3);">
             <div class="section-title" style="background: linear-gradient(100deg, #fff 0%, var(--purple) 50%, #fff 100%); background-size: 250% auto; -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;">Discord Rules</div>
             <div class="card-body">
               <ul class="rules-list">
@@ -902,7 +967,7 @@ footer { position: relative; z-index: 1; background: rgba(2, 4, 8, 0.6); backdro
           </div>
         </div>
         <div>
-          <div class="glass-card mb24 reveal" style="border-color: rgba(0, 229, 255, 0.3);">
+          <div class="glass-card lm mb24 reveal tilt" style="border-color: rgba(0, 229, 255, 0.3);">
             <div class="section-title">Minecraft Rules</div>
             <div class="card-body">
               <ul class="rules-list">
@@ -915,7 +980,7 @@ footer { position: relative; z-index: 1; background: rgba(2, 4, 8, 0.6); backdro
               </ul>
             </div>
           </div>
-          <div class="glass-card reveal" style="background: rgba(255,255,255,0.02);">
+          <div class="glass-card lm reveal tilt" style="background: rgba(255,255,255,0.02);">
             <div class="card-body" style="text-align:center;">
               ⚠️ Need help or want to report an issue?<br><br>
               <span class="hl-aqua">Open a ticket in #🎟・ticket</span>. We're here to help!
@@ -992,12 +1057,15 @@ footer { position: relative; z-index: 1; background: rgba(2, 4, 8, 0.6); backdro
     </div>
     <div class="modal-footer">
       <div class="price-tag" id="modalPrice"></div>
-      <button class="mc-btn green" onclick="window.open('https://discord.galaxymcpe.fun','_blank')">🛒 Buy via Ticket</button>
+      <button class="mc-btn green magnetic" onclick="window.open('https://discord.galaxymcpe.fun','_blank')">🛒 Buy via Ticket</button>
     </div>
   </div>
 </div>
 
 <script>
+/* ============================================
+   RANK DATA
+============================================ */
 const rankData = {
   elite: {
     title: "🛡️ ELITE RANK",
@@ -1037,6 +1105,7 @@ const rankData = {
 };
 
 function openRankModal(rankKey) {
+  haptic(15);
   const data = rankData[rankKey];
   if(!data) return;
   document.getElementById('modalTitle').innerHTML = data.title;
@@ -1059,6 +1128,122 @@ function closeRankModal(force = false) {
   document.body.classList.remove('modal-open');
 }
 
+/* ============================================
+   FUTURE: HAPTIC FEEDBACK
+============================================ */
+function haptic(ms = 10) {
+  if(navigator.vibrate) navigator.vibrate(ms);
+}
+
+/* ============================================
+   FUTURE: 3D PARALLAX TILT
+============================================ */
+(function() {
+  if(window.matchMedia('(hover: none)').matches) return;
+  const tiltElements = document.querySelectorAll('.tilt');
+  
+  tiltElements.forEach(el => {
+    let rect = null;
+    let rafId = null;
+    
+    el.addEventListener('mouseenter', () => {
+      rect = el.getBoundingClientRect();
+    });
+    
+    el.addEventListener('mousemove', (e) => {
+      if(!rect) rect = el.getBoundingClientRect();
+      if(rafId) cancelAnimationFrame(rafId);
+      
+      rafId = requestAnimationFrame(() => {
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        const centerX = rect.width / 2;
+        const centerY = rect.height / 2;
+        const rotateX = ((y - centerY) / centerY) * -6;
+        const rotateY = ((x - centerX) / centerX) * 6;
+        
+        el.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-4px) scale(1.015)`;
+      });
+    });
+    
+    el.addEventListener('mouseleave', () => {
+      if(rafId) cancelAnimationFrame(rafId);
+      el.style.transform = '';
+      rect = null;
+    });
+  });
+})();
+
+/* ============================================
+   FUTURE: MAGNETIC BUTTONS
+============================================ */
+(function() {
+  if(window.matchMedia('(hover: none)').matches) return;
+  const magnets = document.querySelectorAll('.magnetic');
+  
+  magnets.forEach(btn => {
+    let rafId = null;
+    
+    btn.addEventListener('mousemove', (e) => {
+      const rect = btn.getBoundingClientRect();
+      const x = e.clientX - rect.left - rect.width / 2;
+      const y = e.clientY - rect.top - rect.height / 2;
+      const strength = 0.35;
+      
+      if(rafId) cancelAnimationFrame(rafId);
+      rafId = requestAnimationFrame(() => {
+        btn.style.transform = `translate(${x * strength}px, ${y * strength - 3}px) scale(1.05)`;
+      });
+    });
+    
+    btn.addEventListener('mouseleave', () => {
+      if(rafId) cancelAnimationFrame(rafId);
+      btn.style.transform = '';
+    });
+    
+    btn.addEventListener('click', () => haptic(12));
+  });
+})();
+
+/* ============================================
+   FUTURE: NEURAL TIME GLOW
+============================================ */
+(function() {
+  function applyTimeGlow() {
+    const hour = new Date().getHours();
+    const root = document.documentElement;
+    
+    if(hour >= 5 && hour < 12) {
+      // Morning - Cyan/Aqua
+      root.style.setProperty('--neural-glow-1', 'rgba(0, 229, 255, 0.18)');
+      root.style.setProperty('--neural-glow-2', 'rgba(110, 231, 255, 0.10)');
+      root.style.setProperty('--neural-glow-3', 'rgba(255, 215, 0, 0.06)');
+    } else if(hour >= 12 && hour < 17) {
+      // Afternoon - Gold/Warm
+      root.style.setProperty('--neural-glow-1', 'rgba(255, 215, 0, 0.14)');
+      root.style.setProperty('--neural-glow-2', 'rgba(255, 153, 84, 0.10)');
+      root.style.setProperty('--neural-glow-3', 'rgba(0, 229, 255, 0.08)');
+    } else if(hour >= 17 && hour < 21) {
+      // Evening - Purple/Pink sunset
+      root.style.setProperty('--neural-glow-1', 'rgba(192, 132, 252, 0.16)');
+      root.style.setProperty('--neural-glow-2', 'rgba(244, 114, 182, 0.12)');
+      root.style.setProperty('--neural-glow-3', 'rgba(255, 215, 0, 0.08)');
+    } else {
+      // Night - Deep blue/Purple
+      root.style.setProperty('--neural-glow-1', 'rgba(0, 100, 255, 0.14)');
+      root.style.setProperty('--neural-glow-2', 'rgba(120, 80, 220, 0.12)');
+      root.style.setProperty('--neural-glow-3', 'rgba(0, 229, 255, 0.06)');
+    }
+  }
+  
+  applyTimeGlow();
+  // Update every 30 minutes
+  setInterval(applyTimeGlow, 30 * 60 * 1000);
+})();
+
+/* ============================================
+   TYPING EFFECT
+============================================ */
 (function() {
   const el = document.getElementById('typingText');
   if(!el) return;
@@ -1087,6 +1272,9 @@ function closeRankModal(force = false) {
   tick();
 })();
 
+/* ============================================
+   SCROLL REVEAL
+============================================ */
 (function() {
   const observer = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
@@ -1099,6 +1287,9 @@ function closeRankModal(force = false) {
   document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 })();
 
+/* ============================================
+   SCROLL PROGRESS + BACK TO TOP
+============================================ */
 (function() {
   const progressBar = document.getElementById('scroll-progress');
   const backToTop = document.getElementById('back-to-top');
@@ -1112,6 +1303,9 @@ function closeRankModal(force = false) {
   });
 })();
 
+/* ============================================
+   CANVAS STARFIELD
+============================================ */
 const canvas = document.getElementById('bg-canvas');
 const ctx = canvas.getContext('2d');
 function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
@@ -1178,7 +1372,7 @@ function draw() {
 draw();
 
 /* ============================================
-   LIVE SERVER STATS — All cards same color
+   SERVER STATS
 ============================================ */
 function updateServerStats() {
   fetch('https://api.mcsrvstat.us/bedrock/2/play.galaxymcpe.fun')
@@ -1227,7 +1421,11 @@ function updateServerStats() {
 setInterval(updateServerStats, 15000);
 document.addEventListener('DOMContentLoaded', updateServerStats);
 
+/* ============================================
+   TAB NAVIGATION
+============================================ */
 function showPage(page, btn) {
+  haptic(8);
   document.querySelectorAll('.tab-page').forEach(p => {
     p.classList.remove('active'); p.style.animation = 'none'; p.offsetHeight; p.style.animation = null;
   });
@@ -1243,7 +1441,11 @@ function showPage(page, btn) {
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
+/* ============================================
+   COPY IP
+============================================ */
 function copyIP(ip) {
+  haptic(12);
   navigator.clipboard.writeText(ip).then(() => { showToast('✨ ' + ip + ' — Copied!');
   }).catch(() => { showToast('✨ IP: ' + ip); });
 }
