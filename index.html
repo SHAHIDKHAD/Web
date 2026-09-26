@@ -1372,53 +1372,87 @@ function draw() {
 draw();
 
 /* ============================================
-   SERVER STATS
+   SERVER STATS (FIXED)
 ============================================ */
-function updateServerStats() {
-  fetch('https://api.mcsrvstat.us/bedrock/2/play.galaxymcpe.fun')
-    .then(response => response.json())
-    .then(data => {
-      const countEl = document.getElementById('player-count');
-      const statusEl = document.getElementById('server-status');
-      const tpsEl = document.getElementById('server-tps');
-      const versionEl = document.getElementById('server-version');
-      
-      if (data.online) {
-        countEl.textContent = `${data.players.online}/${data.players.max}`;
-        countEl.className = 'stat-value green';
-        statusEl.textContent = 'ONLINE'; 
-        statusEl.className = 'stat-value green';
-        if (versionEl) { 
-          versionEl.textContent = data.version || 'Online'; 
-          versionEl.className = 'stat-value green'; 
-        }
-        tpsEl.textContent = '20.0'; 
-        tpsEl.className = 'stat-value green';
-      } else {
-        countEl.textContent = 'Offline'; 
-        countEl.className = 'stat-value red';
-        statusEl.textContent = 'OFFLINE'; 
-        statusEl.className = 'stat-value red';
-        tpsEl.textContent = 'Offline'; 
-        tpsEl.className = 'stat-value red';
-        if (versionEl) { 
-          versionEl.textContent = 'Offline'; 
-          versionEl.className = 'stat-value red'; 
-        }
-      }
+const SERVER_HOST = 'play.galaxymcpe.fun';
+const SERVER_PORT = '19132';
+
+function fetchWithTimeout(url, ms = 8000) {
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), ms);
+  return fetch(url, { signal: controller.signal, cache: 'no-store' })
+    .then(res => {
+      if (!res.ok) throw new Error('HTTP ' + res.status);
+      return res.json();
     })
-    .catch(() => {
-      const countEl = document.getElementById('player-count');
-      const statusEl = document.getElementById('server-status');
-      const tpsEl = document.getElementById('server-tps');
-      const versionEl = document.getElementById('server-version');
-      countEl.textContent = 'Error'; countEl.className = 'stat-value red';
-      statusEl.textContent = 'Error'; statusEl.className = 'stat-value red';
-      tpsEl.textContent = 'Error'; tpsEl.className = 'stat-value red';
-      if(versionEl) { versionEl.textContent = 'Error'; versionEl.className = 'stat-value red'; }
-    });
+    .finally(() => clearTimeout(timer));
 }
+
+function setStats(state, players, max, version) {
+  const countEl   = document.getElementById('player-count');
+  const statusEl  = document.getElementById('server-status');
+  const tpsEl     = document.getElementById('server-tps');
+  const versionEl = document.getElementById('server-version');
+
+  if (state === 'online') {
+    if (countEl)   { countEl.textContent   = `${players}/${max}`; countEl.className   = 'stat-value green'; }
+    if (statusEl)  { statusEl.textContent  = 'ONLINE';            statusEl.className  = 'stat-value green'; }
+    if (tpsEl)     { tpsEl.textContent     = '20.0';              tpsEl.className     = 'stat-value green'; }
+    if (versionEl) { versionEl.textContent = version || 'Online'; versionEl.className = 'stat-value green'; }
+  } else if (state === 'offline') {
+    if (countEl)   { countEl.textContent   = 'Offline'; countEl.className   = 'stat-value red'; }
+    if (statusEl)  { statusEl.textContent  = 'OFFLINE'; statusEl.className  = 'stat-value red'; }
+    if (tpsEl)     { tpsEl.textContent     = 'Offline'; tpsEl.className     = 'stat-value red'; }
+    if (versionEl) { versionEl.textContent = 'Offline'; versionEl.className = 'stat-value red'; }
+  } else {
+    if (countEl)   { countEl.textContent   = 'Error'; countEl.className   = 'stat-value red'; }
+    if (statusEl)  { statusEl.textContent  = 'Error'; statusEl.className  = 'stat-value red'; }
+    if (tpsEl)     { tpsEl.textContent     = 'Error'; tpsEl.className     = 'stat-value red'; }
+    if (versionEl) { versionEl.textContent = 'Error'; versionEl.className = 'stat-value red'; }
+  }
+}
+
+function updateServerStats() {
+  const stamp = Date.now();
+
+  // API #1 — mcsrvstat.us
+  const fromMcSrvStat = () =>
+    fetchWithTimeout(`https://api.mcsrvstat.us/bedrock/2/${SERVER_HOST}:${SERVER_PORT}?t=${stamp}`)
+      .then(d => {
+        if (!d || typeof d.online === 'undefined') throw new Error('bad response');
+        return {
+          online: !!d.online,
+          players: (d.players && d.players.online) || 0,
+          max: (d.players && d.players.max) || 0,
+          version: (typeof d.version === 'string' ? d.version : 'Online')
+        };
+      });
+
+  // API #2 — mcstatus.io (backup)
+  const fromMcStatus = () =>
+    fetchWithTimeout(`https://api.mcstatus.io/v2/status/bedrock/${SERVER_HOST}:${SERVER_PORT}?t=${stamp}`)
+      .then(d => {
+        if (!d || typeof d.online === 'undefined') throw new Error('bad response');
+        return {
+          online: !!d.online,
+          players: (d.players && d.players.online) || 0,
+          max: (d.players && d.players.max) || 0,
+          version: (d.version && d.version.name) || 'Online'
+        };
+      });
+
+  Promise.allSettled([fromMcSrvStat(), fromMcStatus()]).then(results => {
+    const ok = results.filter(r => r.status === 'fulfilled').map(r => r.value);
+
+    if (!ok.length) { setStats('error'); return; }        // dono API fail
+    const live = ok.find(r => r.online);
+    if (live) setStats('online', live.players, live.max, live.version);
+    else      setStats('offline');                         // server genuinely band hai
+  });
+}
+
 setInterval(updateServerStats, 15000);
+updateServerStats();
 document.addEventListener('DOMContentLoaded', updateServerStats);
 
 /* ============================================
