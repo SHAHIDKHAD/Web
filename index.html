@@ -366,6 +366,26 @@ nav { display: flex; gap: 6px; align-items: center; }
   pointer-events: none;
 }
 
+.help-card {
+  cursor: pointer;
+  transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1),
+              box-shadow 0.35s,
+              border-color 0.35s,
+              background 0.35s;
+}
+.help-card:hover {
+  background: rgba(0, 229, 255, 0.06) !important;
+  border-color: rgba(0, 229, 255, 0.35);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6), 0 0 40px rgba(0, 229, 255, 0.25);
+}
+.help-card:hover .hl-aqua {
+  color: #fff;
+  text-shadow: 0 0 20px rgba(0, 229, 255, 0.9);
+}
+.help-card:active {
+  transform: scale(0.99);
+}
+
 .section-title {
   font-family: var(--font-brand);
   font-size: 15px;
@@ -796,11 +816,10 @@ footer { position: relative; z-index: 1; background: rgba(2, 4, 8, 0.6); backdro
         <div class="feature-grid">
           <div class="feature-box">💻 <span class="hl-aqua">Cross-Play Support</span><span class="feature-sub">Java + Bedrock + Cracked + Premium</span></div>
           <div class="feature-box">⏳ <span class="hl-green">24/7 Online</span><span class="feature-sub">Server is always up and running</span></div>
-          <div class="feature-box">🗳️ <span class="hl-gold">Voting & Free Ranks</span><span class="feature-sub">Free rankup system by doing votes</span></div>
+          <div class="feature-box">🗳️ <span class="hl-gold">Voting System</span><span class="feature-sub">Earn money, keys & many more rewards</span></div>
           <div class="feature-box">🏡 <span class="hl-green">Land Claim & Eco</span><span class="feature-sub">Protect builds and trade with players</span></div>
           <div class="feature-box">⚔️ <span class="hl-aqua">Arena & Warps</span><span class="feature-sub">Fast travel and PvP arenas</span></div>
           <div class="feature-box">🛡️ <span class="hl-green">Lag-Free Play</span><span class="feature-sub">Smooth experience with low ping</span></div>
-          <div class="feature-box">🌍 <span class="hl-gold">Custom World Gen</span><span class="feature-sub">Beautiful terrain and structures</span></div>
           <div class="feature-box">👮 <span class="hl-aqua">Active Staff</span><span class="feature-sub">Active support and no hackers</span></div>
         </div>
       </div>
@@ -990,7 +1009,7 @@ footer { position: relative; z-index: 1; background: rgba(2, 4, 8, 0.6); backdro
               </ul>
             </div>
           </div>
-          <div class="glass-card lm reveal tilt" style="background: rgba(255,255,255,0.02);">
+          <div class="glass-card lm reveal tilt help-card" onclick="window.open('https://dc.galaxymcpe.fun','_blank')" style="background: rgba(255,255,255,0.02);">
             <div class="card-body" style="text-align:center;">
               ⚠️ Need help or want to report an issue?<br><br>
               <span class="hl-aqua">Open a ticket in #🎟・ticket</span>. We're here to help!
