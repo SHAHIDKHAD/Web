@@ -37,8 +37,8 @@
   --sh-deep:   0 20px 60px rgba(0, 0, 0, 0.6);
   --font-body:  'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
   --font-brand: 'Press Start 2P', monospace;
-  
-  /* Neural Time Glow - dynamic */
+  --ip-gold:       #FFF800;
+  --ip-gold-soft:  #FFFEDF;
   --neural-glow-1: rgba(0, 229, 255, 0.15);
   --neural-glow-2: rgba(192, 132, 252, 0.12);
   --neural-glow-3: rgba(255, 215, 0, 0.08);
@@ -64,9 +64,6 @@ body {
 }
 body.modal-open { overflow: hidden; }
 
-/* ============================================
-   KEYFRAMES
-============================================ */
 @keyframes glint { 0% { background-position: 200% center; } 100% { background-position: -200% center; } }
 @keyframes shine-sweep { 0% { left: -100%; } 100% { left: 200%; } }
 @keyframes gradient-flow { 0%, 100% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } }
@@ -78,14 +75,9 @@ body.modal-open { overflow: hidden; }
 @keyframes modal-zoom { from { opacity: 0; transform: scale(0.94) translateY(20px); } to { opacity: 1; transform: scale(1) translateY(0); } }
 @keyframes blink { 0%, 50% { opacity: 1; } 51%, 100% { opacity: 0; } }
 @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-@keyframes liquid-border {
-  0% { background-position: 0% 50%; }
-  100% { background-position: 200% 50%; }
-}
-@keyframes neural-pulse {
-  0%, 100% { opacity: 0.4; }
-  50% { opacity: 0.8; }
-}
+@keyframes liquid-border { 0% { background-position: 0% 50%; } 100% { background-position: 200% 50%; } }
+@keyframes neural-pulse { 0%, 100% { opacity: 0.4; } 50% { opacity: 0.8; } }
+@keyframes ip-shimmer { 0% { background-position: 200% center; } 100% { background-position: -200% center; } }
 
 ::-webkit-scrollbar { width: 10px; }
 ::-webkit-scrollbar-track { background: transparent; }
@@ -104,9 +96,6 @@ body.modal-open { overflow: hidden; }
   transition: width 0.15s ease;
 }
 
-/* ============================================
-   HEADER
-============================================ */
 header {
   position: fixed;
   top: 0; left: 0; right: 0;
@@ -172,16 +161,10 @@ nav { display: flex; gap: 6px; align-items: center; }
   text-shadow: 0 0 12px rgba(0, 229, 255, 0.5);
 }
 
-/* ============================================
-   MAIN LAYOUT
-============================================ */
 .site-wrapper { position: relative; z-index: 1; padding-top: 76px; min-height: 100vh; }
 .tab-page { display: none; opacity: 0; min-height: calc(100vh - 76px); animation: fadeIn 0.5s forwards; }
 .tab-page.active { display: block; }
 
-/* ============================================
-   HERO
-============================================ */
 .hero { position: relative; overflow: hidden; padding: 90px 24px 80px; text-align: center; }
 .hero-content { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 22px; max-width: 950px; margin: 0 auto; position: relative; z-index: 2; }
 .hero-logo-img {
@@ -196,7 +179,7 @@ nav { display: flex; gap: 6px; align-items: center; }
   letter-spacing: 4px;
   display: inline-block;
   line-height: 1.3;
-  background: linear-gradient(100deg, #ffffff 0%, var(--aqua-soft) 25%, #ffffff 45%, var(--gold-soft) 65%, #ffffff 100%);
+  background: linear-gradient(100deg, #ffffff 0%, var(--aqua-soft) 25%, #ffffff 45%, var(--ip-gold) 65%, #ffffff 100%);
   background-size: 250% auto;
   -webkit-background-clip: text;
   background-clip: text;
@@ -225,9 +208,6 @@ nav { display: flex; gap: 6px; align-items: center; }
   box-shadow: 0 0 10px var(--aqua);
 }
 
-/* ============================================
-   STATUS CARDS — w/ 3D Tilt
-============================================ */
 .status-row {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -296,9 +276,6 @@ nav { display: flex; gap: 6px; align-items: center; }
   text-shadow: 0 0 15px rgba(255, 77, 109, 0.6), 0 0 25px rgba(255, 77, 109, 0.3);
 }
 
-/* ============================================
-   BUTTONS — Magnetic
-============================================ */
 .hero-btns { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
 .mc-btn {
   font-family: var(--font-body);
@@ -340,9 +317,6 @@ nav { display: flex; gap: 6px; align-items: center; }
 .mc-btn.purple { background: linear-gradient(135deg, rgba(192, 132, 252, 0.9), rgba(74, 20, 140, 0.9)); }
 .mc-btn.discord { background: linear-gradient(135deg, rgba(88, 101, 242, 0.95), rgba(71, 82, 196, 0.95)); box-shadow: 0 8px 24px rgba(88, 101, 242, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.3); }
 
-/* ============================================
-   GLASS CARDS — w/ Liquid Metal Border
-============================================ */
 .glass-card {
   background: var(--glass-1);
   backdrop-filter: blur(30px) saturate(180%);
@@ -373,18 +347,17 @@ nav { display: flex; gap: 6px; align-items: center; }
 }
 .glass-card:hover::before { animation: shine-sweep 0.9s; }
 
-/* Liquid metal top border for cards with .lm class */
 .glass-card.lm::after {
   content: '';
   position: absolute;
   top: 0; left: 0; right: 0;
   height: 2px;
-  background: linear-gradient(90deg, 
-    transparent 0%, 
-    var(--aqua) 20%, 
-    var(--gold) 40%, 
-    var(--purple) 60%, 
-    var(--aqua) 80%, 
+  background: linear-gradient(90deg,
+    transparent 0%,
+    var(--aqua) 20%,
+    var(--gold) 40%,
+    var(--purple) 60%,
+    var(--aqua) 80%,
     transparent 100%
   );
   background-size: 200% 100%;
@@ -429,6 +402,11 @@ nav { display: flex; gap: 6px; align-items: center; }
 .hl-gold { color: var(--gold); text-shadow: 0 0 12px rgba(255, 215, 0, 0.4); }
 .hl-purple { color: var(--purple); text-shadow: 0 0 12px rgba(192, 132, 252, 0.4); }
 
+.hl-ip {
+  color: var(--ip-gold);
+  text-shadow: 0 0 14px rgba(255, 248, 0, 0.55), 0 0 28px rgba(255, 248, 0, 0.25);
+}
+
 .feature-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 14px; }
 .feature-box {
   background: rgba(255, 255, 255, 0.025);
@@ -467,6 +445,8 @@ nav { display: flex; gap: 6px; align-items: center; }
 
 .shop-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 22px; perspective: 1200px; }
 .shop-card {
+  --rank-accent: var(--aqua);
+  --rank-glow: rgba(0, 229, 255, 0.2);
   background: var(--glass-1);
   backdrop-filter: blur(28px) saturate(180%);
   -webkit-backdrop-filter: blur(28px) saturate(180%);
@@ -483,10 +463,31 @@ nav { display: flex; gap: 6px; align-items: center; }
   transform-style: preserve-3d;
   will-change: transform;
 }
+.shop-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, transparent, var(--rank-accent) 20%, #fff 50%, var(--rank-accent) 80%, transparent);
+  background-size: 200% 100%;
+  animation: liquid-border 3s linear infinite;
+  opacity: 0.9;
+  pointer-events: none;
+}
 .shop-card::after { content: ''; position: absolute; top: 0; left: -100%; width: 50%; height: 100%; background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent); transform: skewX(-20deg); pointer-events: none; }
 .shop-card:hover::after { animation: shine-sweep 0.9s; }
-.shop-card:hover { background: var(--glass-2); border-color: var(--glass-stroke-hi); box-shadow: var(--sh-deep), 0 0 40px rgba(0, 229, 255, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.15); }
-.shop-icon { font-size: 52px; margin-bottom: 20px; display: block; filter: drop-shadow(0 0 15px rgba(0, 229, 255, 0.4)); transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1); }
+.shop-card:hover {
+  background: var(--glass-2);
+  border-color: var(--glass-stroke-hi);
+  box-shadow: var(--sh-deep), 0 0 40px var(--rank-glow), inset 0 1px 0 rgba(255, 255, 255, 0.15);
+}
+.shop-icon {
+  font-size: 52px;
+  margin-bottom: 20px;
+  display: block;
+  filter: drop-shadow(0 0 15px var(--rank-glow));
+  transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
 .shop-card:hover .shop-icon { transform: scale(1.2) rotate(-8deg); }
 .shop-name {
   font-family: var(--font-brand);
@@ -494,24 +495,34 @@ nav { display: flex; gap: 6px; align-items: center; }
   color: #fff;
   margin-bottom: 14px;
   letter-spacing: 1.5px;
-  background: linear-gradient(100deg, #fff 0%, var(--gold-soft) 50%, #fff 100%);
-  background-size: 200% auto;
+  background: linear-gradient(100deg, #fff 0%, var(--rank-accent) 45%, #fff 55%, var(--rank-accent) 100%);
+  background-size: 250% auto;
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
-  animation: glint 5s linear infinite;
+  animation: glint 4s linear infinite;
 }
 .shop-desc { font-size: 12.5px; color: var(--text-dim); line-height: 1.7; margin-bottom: 24px; flex-grow: 1; font-weight: 400; }
+
+.shop-card.rank-elite  { --rank-accent: #FFC107; --rank-glow: rgba(255, 193, 7, 0.35); }
+.shop-card.rank-elder  { --rank-accent: #B57BFF; --rank-glow: rgba(181, 123, 255, 0.35); }
+.shop-card.rank-noble  { --rank-accent: #22C55E; --rank-glow: rgba(34, 197, 94, 0.35); }
+.shop-card.rank-legend { --rank-accent: #DC2626; --rank-glow: rgba(220, 38, 38, 0.35); }
+.shop-card.rank-galaxy { --rank-accent: #9B30FF; --rank-glow: rgba(155, 48, 255, 0.4); }
+.shop-card.rank-voter  { --rank-accent: #22C55E; --rank-glow: rgba(34, 197, 94, 0.35); }
+.shop-card.rank-media  { --rank-accent: #EF4444; --rank-glow: rgba(239, 68, 68, 0.35); }
 
 .modal-overlay { position: fixed; inset: 0; background: rgba(0, 0, 0, 0.7); backdrop-filter: blur(20px) saturate(120%); -webkit-backdrop-filter: blur(20px) saturate(120%); z-index: 999; display: flex; align-items: center; justify-content: center; opacity: 0; pointer-events: none; transition: opacity 0.35s ease; padding: 20px; }
 .modal-overlay.active { opacity: 1; pointer-events: auto; }
 .modal-content {
+  --modal-accent: var(--gold-soft);
+  --modal-glow: rgba(255, 215, 0, 0.2);
   background: linear-gradient(180deg, rgba(20, 26, 40, 0.95), rgba(8, 12, 20, 0.98));
   backdrop-filter: blur(30px) saturate(180%);
   -webkit-backdrop-filter: blur(30px) saturate(180%);
   border: 1px solid rgba(255, 255, 255, 0.12);
   border-radius: var(--r-xl);
-  box-shadow: 0 40px 100px rgba(0, 0, 0, 0.8), 0 0 60px rgba(0, 229, 255, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  box-shadow: 0 40px 100px rgba(0, 0, 0, 0.8), 0 0 60px var(--modal-glow), inset 0 1px 0 rgba(255, 255, 255, 0.1);
   width: 100%;
   max-width: 850px;
   max-height: 90vh;
@@ -525,23 +536,23 @@ nav { display: flex; gap: 6px; align-items: center; }
 .modal-title {
   font-family: var(--font-brand);
   font-size: 15px;
-  background: linear-gradient(100deg, #fff, var(--gold-soft), #fff);
-  background-size: 200% auto;
+  background: linear-gradient(100deg, #fff 0%, var(--modal-accent) 45%, #fff 55%, var(--modal-accent) 100%);
+  background-size: 250% auto;
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
-  animation: glint 5s linear infinite;
+  animation: glint 4s linear infinite;
 }
 .close-btn { font-size: 26px; color: var(--text-soft); cursor: pointer; transition: all 0.3s; width: 38px; height: 38px; display: flex; align-items: center; justify-content: center; border-radius: 50%; background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.08); line-height: 1; }
 .close-btn:hover { color: #fff; background: rgba(255, 77, 109, 0.2); border-color: rgba(255, 77, 109, 0.4); transform: rotate(90deg); }
 .modal-body { padding: 32px; text-align: center; }
-.modal-kit-img { width: 100%; max-width: 460px; display: block; margin: 0 auto 28px auto; border: 1px solid rgba(255, 255, 255, 0.1); border-radius: var(--r-md); box-shadow: 0 12px 40px rgba(0,0,0,0.5), 0 0 40px rgba(0, 229, 255, 0.15); image-rendering: pixelated; animation: float-logo 5s ease-in-out infinite; }
+.modal-kit-img { width: 100%; max-width: 460px; display: block; margin: 0 auto 28px auto; border: 1px solid rgba(255, 255, 255, 0.1); border-radius: var(--r-md); box-shadow: 0 12px 40px rgba(0,0,0,0.5), 0 0 40px var(--modal-glow); image-rendering: pixelated; animation: float-logo 5s ease-in-out infinite; }
 .modal-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; margin-bottom: 28px; text-align: left; }
 @media (max-width: 600px) { .modal-grid { grid-template-columns: 1fr; } }
 .rank-list { list-style: none; padding: 0; margin: 0; }
 .rank-list li { font-size: 13px; color: var(--text-soft); margin-bottom: 13px; padding-left: 24px; position: relative; line-height: 1.7; animation: reveal-up 0.5s ease backwards; font-weight: 400; }
-.rank-list li::before { content: '✦'; position: absolute; left: 0; color: var(--aqua); font-size: 12px; top: 2px; text-shadow: 0 0 8px var(--aqua); }
-.rank-list code { background: rgba(0, 229, 255, 0.1); padding: 3px 8px; color: var(--aqua-soft); border: 1px solid rgba(0, 229, 255, 0.2); border-radius: 6px; font-family: 'SF Mono', monospace; font-size: 12px; }
+.rank-list li::before { content: '✦'; position: absolute; left: 0; color: var(--modal-accent); font-size: 12px; top: 2px; text-shadow: 0 0 8px var(--modal-accent); }
+.rank-list code { background: rgba(255, 255, 255, 0.06); padding: 3px 8px; color: var(--modal-accent); border: 1px solid rgba(255, 255, 255, 0.14); border-radius: 6px; font-family: 'SF Mono', monospace; font-size: 12px; }
 .modal-footer { padding: 22px 32px; border-top: 1px solid rgba(255, 255, 255, 0.08); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; background: rgba(0, 0, 0, 0.2); }
 .price-tag { font-size: 14px; color: var(--text); line-height: 1.9; text-align: left; font-weight: 500; }
 .price-tag span { color: var(--emerald); font-size: 16px; font-weight: 700; text-shadow: 0 0 12px rgba(0, 230, 118, 0.5); }
@@ -694,7 +705,6 @@ footer { position: relative; z-index: 1; background: rgba(2, 4, 8, 0.6); backdro
   .modal-footer { padding: 18px 22px; }
 }
 
-/* Disable tilt on touch devices */
 @media (hover: none) {
   .stat-block, .glass-card, .shop-card { transform: none !important; }
 }
@@ -726,7 +736,7 @@ footer { position: relative; z-index: 1; background: rgba(2, 4, 8, 0.6); backdro
       <div class="hero-content">
         <img src="https://ik.imagekit.io/td6lavsbp/1458361061257380009.webp" alt="GalaxyMC Logo" class="hero-logo-img">
         <h1 class="hero-title">GALAXYMC</h1>
-        <div style="width: 60%; max-width: 420px; height: 2px; margin: 12px auto 28px auto; background: linear-gradient(90deg, transparent, var(--aqua), var(--gold), var(--aqua), transparent); box-shadow: 0 0 20px rgba(0, 229, 255, 0.6); border-radius: 2px;"></div>
+        <div style="width: 60%; max-width: 420px; height: 2px; margin: 12px auto 28px auto; background: linear-gradient(90deg, transparent, var(--aqua), var(--ip-gold), var(--aqua), transparent); box-shadow: 0 0 20px rgba(0, 229, 255, 0.6); border-radius: 2px;"></div>
         <p class="hero-sub"><span id="typingText"></span><span class="typing-cursor"></span></p>
 
         <div class="status-row reveal">
@@ -751,7 +761,7 @@ footer { position: relative; z-index: 1; background: rgba(2, 4, 8, 0.6); backdro
         <div class="hero-btns reveal">
           <button class="mc-btn aqua magnetic" onclick="copyIP('play.galaxymcpe.fun:19132')">📋 Copy IP</button>
           <button class="mc-btn gold magnetic" onclick="showPage('store', document.querySelector('[onclick*=store]'))">🛒 Buy Ranks</button>
-          <button class="mc-btn discord magnetic" onclick="window.open('https://discord.galaxymcpe.fun','_blank')">💬 Discord</button>
+          <button class="mc-btn discord magnetic" onclick="window.open('https://dc.galaxymcpe.fun','_blank')">💬 Discord</button>
         </div>
       </div>
     </div>
@@ -773,10 +783,10 @@ footer { position: relative; z-index: 1; background: rgba(2, 4, 8, 0.6); backdro
           <div class="section-title">Quick Connect</div>
           <div class="card-body">
             <span class="hl-aqua">🔗 Bedrock IP:</span><br>
-            <span class="hl-gold" style="cursor:pointer" onclick="copyIP('play.galaxymcpe.fun:19132')">play.galaxymcpe.fun</span><br>
+            <span class="hl-ip" style="cursor:pointer" onclick="copyIP('play.galaxymcpe.fun:19132')">play.galaxymcpe.fun</span><br>
             Port: <span class="hl-green">19132</span><br><br>
             <span class="hl-purple">💬 Discord:</span><br>
-            <span class="hl-gold" style="cursor:pointer" onclick="window.open('https://discord.galaxymcpe.fun','_blank')">discord.galaxymcpe.fun</span>
+            <span class="hl-ip" style="cursor:pointer" onclick="window.open('https://dc.galaxymcpe.fun','_blank')">dc.galaxymcpe.fun</span>
           </div>
         </div>
       </div>
@@ -851,40 +861,40 @@ footer { position: relative; z-index: 1; background: rgba(2, 4, 8, 0.6); backdro
     </div>
     <div class="mc-divider"></div>
     <div class="page-body">
-      <div class="glass-card lm mb24 reveal tilt" style="border-color: rgba(0, 230, 118, 0.3);">
-        <div class="section-title" style="background: linear-gradient(100deg, #fff 0%, var(--emerald) 50%, #fff 100%); background-size: 250% auto; -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;">How To Purchase</div>
+      <div class="glass-card lm mb24 reveal tilt" style="border-color: rgba(34, 197, 94, 0.3);">
+        <div class="section-title" style="background: linear-gradient(100deg, #fff 0%, #22C55E 50%, #fff 100%); background-size: 250% auto; -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;">How To Purchase</div>
         <div class="card-body">
           All purchases go directly toward server development and maintenance. Ranks are <span class="hl-green">NOT pay-to-win</span>.<br><br>
-          <span class="hl-gold">⚠️ PURCHASE INSTRUCTIONS:</span> To buy a rank, please join our Discord server at <b>discord.galaxymcpe.fun</b> and create a <b>Higher-Up Support Ticket</b>. Our team will assist you with the payment and activate your perks!
+          <span class="hl-gold">⚠️ PURCHASE INSTRUCTIONS:</span> To buy a rank, please join our Discord server at <b>dc.galaxymcpe.fun</b> and create a <b>Higher-Up Support Ticket</b>. Our team will assist you with the payment and activate your perks!
         </div>
       </div>
 
       <div class="shop-grid">
-        <div class="shop-card tilt reveal">
+        <div class="shop-card rank-elite tilt reveal">
           <span class="shop-icon">🛡️</span>
           <div class="shop-name">ELITE</div>
           <div class="shop-desc">Basic starting rank with homes, vault space, and glow!</div>
-          <button class="mc-btn aqua magnetic" onclick="openRankModal('elite')">View Rank</button>
+          <button class="mc-btn gold magnetic" onclick="openRankModal('elite')">View Rank</button>
         </div>
-        <div class="shop-card tilt reveal">
+        <div class="shop-card rank-elder tilt reveal">
           <span class="shop-icon">⚔️</span>
           <div class="shop-name">ELDER</div>
           <div class="shop-desc">Step up your game with more warps, colors, and money.</div>
-          <button class="mc-btn green magnetic" onclick="openRankModal('elder')">View Rank</button>
+          <button class="mc-btn purple magnetic" onclick="openRankModal('elder')">View Rank</button>
         </div>
-        <div class="shop-card tilt reveal">
+        <div class="shop-card rank-noble tilt reveal">
           <span class="shop-icon">👑</span>
           <div class="shop-name">NOBLE</div>
           <div class="shop-desc">Unlock advanced commands like /fly and /rtp!</div>
-          <button class="mc-btn gold magnetic" onclick="openRankModal('noble')">View Rank</button>
+          <button class="mc-btn green magnetic" onclick="openRankModal('noble')">View Rank</button>
         </div>
-        <div class="shop-card tilt reveal">
+        <div class="shop-card rank-legend tilt reveal">
           <span class="shop-icon">🌋</span>
           <div class="shop-name">LEGEND</div>
           <div class="shop-desc">Insane perks including /nick, speed multipliers, and huge claims.</div>
           <button class="mc-btn red magnetic" onclick="openRankModal('legend')">View Rank</button>
         </div>
-        <div class="shop-card tilt reveal">
+        <div class="shop-card rank-galaxy tilt reveal">
           <span class="shop-icon">🌌</span>
           <div class="shop-name">GALAXY</div>
           <div class="shop-desc">The ultimate status. All commands, all glows, max everything.</div>
@@ -909,31 +919,31 @@ footer { position: relative; z-index: 1; background: rgba(2, 4, 8, 0.6); backdro
       </div>
 
       <div class="shop-grid">
-        <div class="shop-card tilt reveal">
+        <div class="shop-card rank-voter tilt reveal">
           <span class="shop-icon">🌟</span>
           <div class="shop-name">VOTE #1</div>
           <div class="shop-desc">Vote on Site #1 to claim your daily rewards.</div>
           <button class="mc-btn aqua magnetic mt24" onclick="window.open('https://vote.galaxymcpe.fun/1','_blank')">Vote Now</button>
         </div>
-        <div class="shop-card tilt reveal">
+        <div class="shop-card rank-voter tilt reveal">
           <span class="shop-icon">⭐</span>
           <div class="shop-name">VOTE #2</div>
           <div class="shop-desc">Vote on Site #2 to claim your daily rewards.</div>
           <button class="mc-btn green magnetic mt24" onclick="window.open('https://vote.galaxymcpe.fun/2','_blank')">Vote Now</button>
         </div>
-        <div class="shop-card tilt reveal">
+        <div class="shop-card rank-elite tilt reveal">
           <span class="shop-icon">✨</span>
           <div class="shop-name">VOTE #3</div>
           <div class="shop-desc">Vote on Site #3 to claim your daily rewards.</div>
           <button class="mc-btn gold magnetic mt24" onclick="window.open('https://vote.galaxymcpe.fun/3','_blank')">Vote Now</button>
         </div>
-        <div class="shop-card tilt reveal">
+        <div class="shop-card rank-media tilt reveal">
           <span class="shop-icon">💫</span>
           <div class="shop-name">VOTE #4</div>
           <div class="shop-desc">Vote on Site #4 to claim your daily rewards.</div>
           <button class="mc-btn red magnetic mt24" onclick="window.open('https://vote.galaxymcpe.fun/4','_blank')">Vote Now</button>
         </div>
-        <div class="shop-card tilt reveal">
+        <div class="shop-card rank-galaxy tilt reveal">
           <span class="shop-icon">☄️</span>
           <div class="shop-name">VOTE #5</div>
           <div class="shop-desc">Vote on Site #5 to claim your daily rewards.</div>
@@ -952,8 +962,8 @@ footer { position: relative; z-index: 1; background: rgba(2, 4, 8, 0.6); backdro
     <div class="page-body">
       <div class="grid-2">
         <div>
-          <div class="glass-card lm mb24 reveal tilt" style="border-color: rgba(192, 132, 252, 0.3);">
-            <div class="section-title" style="background: linear-gradient(100deg, #fff 0%, var(--purple) 50%, #fff 100%); background-size: 250% auto; -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;">Discord Rules</div>
+          <div class="glass-card lm mb24 reveal tilt" style="border-color: rgba(155, 48, 255, 0.3);">
+            <div class="section-title" style="background: linear-gradient(100deg, #fff 0%, #9B30FF 50%, #fff 100%); background-size: 250% auto; -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;">Discord Rules</div>
             <div class="card-body">
               <ul class="rules-list">
                 <li><b>Treat everyone with respect</b> – No hate, bullying, or drama.</li>
@@ -1014,14 +1024,14 @@ footer { position: relative; z-index: 1; background: rgba(2, 4, 8, 0.6); backdro
     <div>
       <div class="footer-heading">Connect</div>
       <ul class="footer-links">
-        <li><a href="https://discord.galaxymcpe.fun" target="_blank">Discord Server</a></li>
-        <li><a href="https://discord.galaxymcpe.fun" target="_blank">Report Bug (Tickets)</a></li>
+        <li><a href="https://dc.galaxymcpe.fun" target="_blank">Discord Server</a></li>
+        <li><a href="https://dc.galaxymcpe.fun" target="_blank">Report Bug (Tickets)</a></li>
       </ul>
     </div>
     <div>
       <div class="footer-heading">Server Info</div>
       <ul class="footer-links">
-        <li><a onclick="copyIP('play.galaxymcpe.fun:19132')">play.galaxymcpe.fun</a></li>
+        <li><a onclick="copyIP('play.galaxymcpe.fun:19132')" class="hl-ip">play.galaxymcpe.fun</a></li>
         <li><a>Port: 19132</a></li>
       </ul>
     </div>
@@ -1046,30 +1056,29 @@ footer { position: relative; z-index: 1; background: rgba(2, 4, 8, 0.6); backdro
       <img id="modalImage" src="" alt="Kit Preview" class="modal-kit-img" style="display:none;">
       <div class="modal-grid">
         <div>
-          <h3 style="color: var(--aqua); font-size:14px; margin-bottom:20px; font-family: var(--font-brand);">Commands</h3>
+          <h3 style="color: var(--modal-accent); font-size:14px; margin-bottom:20px; font-family: var(--font-brand);">Commands</h3>
           <ul class="rank-list" id="modalCmds"></ul>
         </div>
         <div>
-          <h3 style="color: var(--gold); font-size:14px; margin-bottom:20px; font-family: var(--font-brand);">Perks</h3>
+          <h3 style="color: var(--modal-accent); font-size:14px; margin-bottom:20px; font-family: var(--font-brand);">Perks</h3>
           <ul class="rank-list" id="modalPerks"></ul>
         </div>
       </div>
     </div>
     <div class="modal-footer">
       <div class="price-tag" id="modalPrice"></div>
-      <button class="mc-btn green magnetic" onclick="window.open('https://discord.galaxymcpe.fun','_blank')">🛒 Buy via Ticket</button>
+      <button class="mc-btn green magnetic" onclick="window.open('https://dc.galaxymcpe.fun','_blank')">🛒 Buy via Ticket</button>
     </div>
   </div>
 </div>
 
 <script>
-/* ============================================
-   RANK DATA
-============================================ */
 const rankData = {
   elite: {
     title: "🛡️ ELITE RANK",
     image: "https://ik.imagekit.io/td6lavsbp/image-3.png",
+    accent: "#FFC107",
+    glow: "rgba(255, 193, 7, 0.35)",
     cmds: ["Access To <code>/back</code>", "Access To <code>/dback</code>", "Access To <code>/enderchest (3 line)</code>"],
     perks: ["Elite Prefix", "Elite Kit", "3X Homes", "3X Player Vault", "1X Glow", "1X Chat Colour", "2,000 Claim Blocks", "50,000 In-game Money"],
     price: "1 Month - <span>@99₹</span><br>3 Month - <span>@280₹</span> (save 6%)"
@@ -1077,6 +1086,8 @@ const rankData = {
   elder: {
     title: "⚔️ ELDER RANK",
     image: "https://ik.imagekit.io/td6lavsbp/image-2.png",
+    accent: "#B57BFF",
+    glow: "rgba(181, 123, 255, 0.35)",
     cmds: ["Access To <code>/craft</code>", "Access To <code>/back</code>", "Access To <code>/dback</code>", "Access To <code>/enderchest (4 rows)</code>", "Access To <code>/ptime</code> (change personal time)"],
     perks: ["Elder Prefix", "Elder Kit", "5x Homes", "5x Player Vault", "5x Player Warps", "2 Glows", "2 Chat Colours", "4,000 Claim Blocks", "100,000 In-game Money"],
     price: "1 Month - <span>@199₹</span><br>3 Month - <span>@565₹</span> (save 6%)"
@@ -1084,6 +1095,8 @@ const rankData = {
   noble: {
     title: "👑 NOBLE RANK",
     image: "https://ik.imagekit.io/td6lavsbp/image-1.png",
+    accent: "#22C55E",
+    glow: "rgba(34, 197, 94, 0.35)",
     cmds: ["Access To <code>/craft</code>", "Access To <code>/anvil</code>", "Access To <code>/sit</code>", "Access To <code>/back</code>", "Access To <code>/dback</code>", "Access To <code>/fly</code>", "Access To <code>/rtp</code> (overworld + nether)", "Access To <code>/enderchest 5 rows</code>", "Access To <code>/ptime</code>", "Access To <code>/pweather</code>", "Access To <code>/pp gui</code> (Custom particles)"],
     perks: ["Noble Prefix", "Nobel Kit", "10x Homes", "10x Player Vault", "10x Player Warps", "3x Glows", "3x Chat Colours", "8,000 Claim Blocks", "150,000 in-game money"],
     price: "1 Month - <span>@399₹</span><br>3 Month - <span>@1080₹</span> (save 10%)"
@@ -1091,6 +1104,8 @@ const rankData = {
   legend: {
     title: "🌋 LEGEND RANK",
     image: "https://ik.imagekit.io/td6lavsbp/image-4.png",
+    accent: "#DC2626",
+    glow: "rgba(220, 38, 38, 0.35)",
     cmds: ["Access To <code>/craft</code>", "Access To <code>/anvil</code>", "Access To <code>/sit</code>", "Access To <code>/nick</code>", "Access To <code>/walk x1.5</code>", "Access To <code>/fly x1.5</code>", "Access To <code>/back</code>", "Access To <code>/dback</code>", "Access To <code>/up</code>", "Access To <code>/down</code>", "Access To <code>/RTP in all dimensions</code>", "Access To <code>/crawl</code>", "Access To <code>/grindstone</code>", "Access To <code>/enderchest 5lrows</code>", "Access To <code>/ptime</code> & <code>/pweather</code>", "Access To <code>/pp gui</code>"],
     perks: ["Legend Prefix", "Legend Kit", "20x Homes", "20x Player Vault", "20x Player Warps", "4x Glows", "4x Chat Colours", "10,000 Claim Blocks", "250,000 in-game Money"],
     price: "1 Month - <span>@499₹</span><br>3 Month - <span>@1350₹</span> (save 10%)"
@@ -1098,6 +1113,8 @@ const rankData = {
   galaxy: {
     title: "🌌 GALAXY RANK",
     image: "https://ik.imagekit.io/td6lavsbp/image-6.png",
+    accent: "#9B30FF",
+    glow: "rgba(155, 48, 255, 0.4)",
     cmds: ["Access To <code>/craft</code>", "Access To <code>/anvil</code>", "Access To <code>/sit</code>", "Access To <code>/nick</code>", "Access To <code>/glow</code>", "Access To <code>/crawl</code>", "Access To <code>/walk with 2X speed</code>", "Access To <code>/fly with 2X speed</code>", "Access To <code>/hat</code>", "Access To <code>/grindstone</code>", "Access To <code>/smithingtable</code>", "Access To <code>/up</code> & <code>/down</code>", "Access To <code>/back</code> & <code>/dback</code>", "Access To <code>/RTP no cooldown</code>", "Access To <code>/enderchest</code>", "Access To <code>/ptime</code> & <code>/pweather</code>", "Access To <code>/pp gui</code>"],
     perks: ["Galaxy Prefix", "Galaxy Kit", "30X Homes", "30X Player Vault", "30X Player Warps", "All Glows", "All Chat Colours", "15,000 Claim Blocks", "500,000 in-game Money"],
     price: "1 Month - <span>@699₹</span><br>3 Month - <span>@1890₹</span> (save 10%)<br>Seasonal - <span>@3,500₹</span> (6 Months)"
@@ -1108,16 +1125,34 @@ function openRankModal(rankKey) {
   haptic(15);
   const data = rankData[rankKey];
   if(!data) return;
+
+  const modalContent = document.querySelector('.modal-content');
+  if (data.accent) modalContent.style.setProperty('--modal-accent', data.accent);
+  if (data.glow)   modalContent.style.setProperty('--modal-glow', data.glow);
+
   document.getElementById('modalTitle').innerHTML = data.title;
   const imgElement = document.getElementById('modalImage');
   if (data.image) { imgElement.src = data.image; imgElement.style.display = 'block'; }
   else { imgElement.style.display = 'none'; }
+
   const cmdsList = document.getElementById('modalCmds');
   cmdsList.innerHTML = '';
-  data.cmds.forEach(cmd => { let li = document.createElement('li'); li.innerHTML = cmd; cmdsList.appendChild(li); });
+  data.cmds.forEach((cmd, i) => {
+    let li = document.createElement('li');
+    li.innerHTML = cmd;
+    li.style.animationDelay = (i * 0.03) + 's';
+    cmdsList.appendChild(li);
+  });
+
   const perksList = document.getElementById('modalPerks');
   perksList.innerHTML = '';
-  data.perks.forEach(perk => { let li = document.createElement('li'); li.innerHTML = perk; perksList.appendChild(li); });
+  data.perks.forEach((perk, i) => {
+    let li = document.createElement('li');
+    li.innerHTML = perk;
+    li.style.animationDelay = (i * 0.03) + 's';
+    perksList.appendChild(li);
+  });
+
   document.getElementById('modalPrice').innerHTML = data.price;
   document.getElementById('rankModalOverlay').classList.add('active');
   document.body.classList.add('modal-open');
@@ -1128,32 +1163,20 @@ function closeRankModal(force = false) {
   document.body.classList.remove('modal-open');
 }
 
-/* ============================================
-   FUTURE: HAPTIC FEEDBACK
-============================================ */
 function haptic(ms = 10) {
   if(navigator.vibrate) navigator.vibrate(ms);
 }
 
-/* ============================================
-   FUTURE: 3D PARALLAX TILT
-============================================ */
 (function() {
   if(window.matchMedia('(hover: none)').matches) return;
   const tiltElements = document.querySelectorAll('.tilt');
-  
   tiltElements.forEach(el => {
     let rect = null;
     let rafId = null;
-    
-    el.addEventListener('mouseenter', () => {
-      rect = el.getBoundingClientRect();
-    });
-    
+    el.addEventListener('mouseenter', () => { rect = el.getBoundingClientRect(); });
     el.addEventListener('mousemove', (e) => {
       if(!rect) rect = el.getBoundingClientRect();
       if(rafId) cancelAnimationFrame(rafId);
-      
       rafId = requestAnimationFrame(() => {
         const x = e.clientX - rect.left;
         const y = e.clientY - rect.top;
@@ -1161,11 +1184,9 @@ function haptic(ms = 10) {
         const centerY = rect.height / 2;
         const rotateX = ((y - centerY) / centerY) * -6;
         const rotateY = ((x - centerX) / centerX) * 6;
-        
         el.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-4px) scale(1.015)`;
       });
     });
-    
     el.addEventListener('mouseleave', () => {
       if(rafId) cancelAnimationFrame(rafId);
       el.style.transform = '';
@@ -1174,76 +1195,55 @@ function haptic(ms = 10) {
   });
 })();
 
-/* ============================================
-   FUTURE: MAGNETIC BUTTONS
-============================================ */
 (function() {
   if(window.matchMedia('(hover: none)').matches) return;
   const magnets = document.querySelectorAll('.magnetic');
-  
   magnets.forEach(btn => {
     let rafId = null;
-    
     btn.addEventListener('mousemove', (e) => {
       const rect = btn.getBoundingClientRect();
       const x = e.clientX - rect.left - rect.width / 2;
       const y = e.clientY - rect.top - rect.height / 2;
       const strength = 0.35;
-      
       if(rafId) cancelAnimationFrame(rafId);
       rafId = requestAnimationFrame(() => {
         btn.style.transform = `translate(${x * strength}px, ${y * strength - 3}px) scale(1.05)`;
       });
     });
-    
     btn.addEventListener('mouseleave', () => {
       if(rafId) cancelAnimationFrame(rafId);
       btn.style.transform = '';
     });
-    
     btn.addEventListener('click', () => haptic(12));
   });
 })();
 
-/* ============================================
-   FUTURE: NEURAL TIME GLOW
-============================================ */
 (function() {
   function applyTimeGlow() {
     const hour = new Date().getHours();
     const root = document.documentElement;
-    
     if(hour >= 5 && hour < 12) {
-      // Morning - Cyan/Aqua
       root.style.setProperty('--neural-glow-1', 'rgba(0, 229, 255, 0.18)');
       root.style.setProperty('--neural-glow-2', 'rgba(110, 231, 255, 0.10)');
       root.style.setProperty('--neural-glow-3', 'rgba(255, 215, 0, 0.06)');
     } else if(hour >= 12 && hour < 17) {
-      // Afternoon - Gold/Warm
       root.style.setProperty('--neural-glow-1', 'rgba(255, 215, 0, 0.14)');
       root.style.setProperty('--neural-glow-2', 'rgba(255, 153, 84, 0.10)');
       root.style.setProperty('--neural-glow-3', 'rgba(0, 229, 255, 0.08)');
     } else if(hour >= 17 && hour < 21) {
-      // Evening - Purple/Pink sunset
       root.style.setProperty('--neural-glow-1', 'rgba(192, 132, 252, 0.16)');
       root.style.setProperty('--neural-glow-2', 'rgba(244, 114, 182, 0.12)');
       root.style.setProperty('--neural-glow-3', 'rgba(255, 215, 0, 0.08)');
     } else {
-      // Night - Deep blue/Purple
       root.style.setProperty('--neural-glow-1', 'rgba(0, 100, 255, 0.14)');
       root.style.setProperty('--neural-glow-2', 'rgba(120, 80, 220, 0.12)');
       root.style.setProperty('--neural-glow-3', 'rgba(0, 229, 255, 0.06)');
     }
   }
-  
   applyTimeGlow();
-  // Update every 30 minutes
   setInterval(applyTimeGlow, 30 * 60 * 1000);
 })();
 
-/* ============================================
-   TYPING EFFECT
-============================================ */
 (function() {
   const el = document.getElementById('typingText');
   if(!el) return;
@@ -1254,7 +1254,6 @@ function haptic(ms = 10) {
     "No Pay-to-Win · Pure Gameplay"
   ];
   let msgIdx = 0, charIdx = 0, deleting = false;
-
   function tick() {
     const current = messages[msgIdx];
     if(!deleting) {
@@ -1272,9 +1271,6 @@ function haptic(ms = 10) {
   tick();
 })();
 
-/* ============================================
-   SCROLL REVEAL
-============================================ */
 (function() {
   const observer = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
@@ -1287,9 +1283,6 @@ function haptic(ms = 10) {
   document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 })();
 
-/* ============================================
-   SCROLL PROGRESS + BACK TO TOP
-============================================ */
 (function() {
   const progressBar = document.getElementById('scroll-progress');
   const backToTop = document.getElementById('back-to-top');
@@ -1303,9 +1296,6 @@ function haptic(ms = 10) {
   });
 })();
 
-/* ============================================
-   CANVAS STARFIELD
-============================================ */
 const canvas = document.getElementById('bg-canvas');
 const ctx = canvas.getContext('2d');
 function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
@@ -1371,9 +1361,6 @@ function draw() {
 }
 draw();
 
-/* ============================================
-   SERVER STATS (FIXED)
-============================================ */
 const SERVER_HOST = 'play.galaxymcpe.fun';
 const SERVER_PORT = '19132';
 
@@ -1414,8 +1401,6 @@ function setStats(state, players, max, version) {
 
 function updateServerStats() {
   const stamp = Date.now();
-
-  // API #1 — mcsrvstat.us
   const fromMcSrvStat = () =>
     fetchWithTimeout(`https://api.mcsrvstat.us/bedrock/2/${SERVER_HOST}:${SERVER_PORT}?t=${stamp}`)
       .then(d => {
@@ -1427,8 +1412,6 @@ function updateServerStats() {
           version: (typeof d.version === 'string' ? d.version : 'Online')
         };
       });
-
-  // API #2 — mcstatus.io (backup)
   const fromMcStatus = () =>
     fetchWithTimeout(`https://api.mcstatus.io/v2/status/bedrock/${SERVER_HOST}:${SERVER_PORT}?t=${stamp}`)
       .then(d => {
@@ -1440,14 +1423,12 @@ function updateServerStats() {
           version: (d.version && d.version.name) || 'Online'
         };
       });
-
   Promise.allSettled([fromMcSrvStat(), fromMcStatus()]).then(results => {
     const ok = results.filter(r => r.status === 'fulfilled').map(r => r.value);
-
-    if (!ok.length) { setStats('error'); return; }        // dono API fail
+    if (!ok.length) { setStats('error'); return; }
     const live = ok.find(r => r.online);
     if (live) setStats('online', live.players, live.max, live.version);
-    else      setStats('offline');                         // server genuinely band hai
+    else      setStats('offline');
   });
 }
 
@@ -1455,9 +1436,6 @@ setInterval(updateServerStats, 15000);
 updateServerStats();
 document.addEventListener('DOMContentLoaded', updateServerStats);
 
-/* ============================================
-   TAB NAVIGATION
-============================================ */
 function showPage(page, btn) {
   haptic(8);
   document.querySelectorAll('.tab-page').forEach(p => {
@@ -1475,9 +1453,6 @@ function showPage(page, btn) {
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
-/* ============================================
-   COPY IP
-============================================ */
 function copyIP(ip) {
   haptic(12);
   navigator.clipboard.writeText(ip).then(() => { showToast('✨ ' + ip + ' — Copied!');
